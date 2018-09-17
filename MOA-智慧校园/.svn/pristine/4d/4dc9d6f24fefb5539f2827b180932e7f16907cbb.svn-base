@@ -1,0 +1,73 @@
+ <!doctype html>
+<html>
+<head> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>智慧校园</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+    <style>
+       
+
+        /*#footer ul li:nth-child(1){ background-image: url(./image/bottombtn0101.png); }
+        #footer ul li:nth-child(2){ background-image: url(./image/bottombtn0201.png); }
+        #footer ul li:nth-child(3){ background-image: url(./image/bottombtn0301.png); }
+        #footer ul li:nth-child(4){ background-image: url(./image/bottombtn0401.png); }*/
+        /*#footer ul li:nth-child(1).active{ background-image: url(./image/bottombtn0102.png); }
+        #footer ul li:nth-child(2).active{ background-image: url(./image/bottombtn0202.png); }
+        #footer ul li:nth-child(3).active{ background-image: url(./image/bottombtn0302.png); }
+        #footer ul li:nth-child(4).active{ background-image: url(./image/bottombtn0402.png); }*/
+        button{
+            margin-bottom: .5rem!important;
+
+        }
+    </style>
+</head>
+<body>
+<div class="aui-content-padded">
+
+    <button class="aui-btn aui-btn-danger aui-btn-block aui-btn-sm" onclick="openWin('widget://html/demo/xunfei/textToSpeech.html','文字转语音')">
+  文字转语音
+ </button>  
+
+ <button class="aui-btn aui-btn-danger aui-btn-block aui-btn-sm" onclick="openWin('widget://html/demo/xunfei/speechToText.html','语音转文字')">
+  语音转文字
+ </button>
+  
+ 
+
+</div>
+
+ </body>
+</html> 
+<script type="text/javascript">
+    apiready = function () {
+
+  
+         
+    }
+
+
+    openWin = function (url,text) {
+
+        api.openWin({
+            name: text,
+            url: 'widget://html/common/win.html',
+            delay:100,
+            bgColor:'#fff',
+            pageParam: {
+                title: text,
+                name: text,
+                url:url
+             }
+        });
+
+
+    }
+ 
+
+
+ 
+</script>

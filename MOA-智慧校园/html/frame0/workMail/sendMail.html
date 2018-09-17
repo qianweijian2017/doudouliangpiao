@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../css/sendmail.css"/>
+   
+ </head>
+<body class="clearfix">
+  <div class="winmodal"></div>
+
+  <section class="sendBox clearfix" id="sendBox"  >
+   <div class="headerTip">
+   	<i class="aui-iconfont aui-icon-info"></i>
+                请按要求填写相关信息，并保存发送！
+    </div>
+    <ul class="aui-list aui-form-list">
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        邮件标题
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" placeholder="输入邮件标题"  v-model='title'>
+                    </div>
+                     <div class="aui-pull-right" style="margin-right: 15px;"  >
+                      &nbsp;
+                    </div>
+                </div>
+            </li>
+
+              <li class="aui-list-item">
+                <div class="aui-list-item-inner" >
+                    <div class="aui-list-item-label">
+                        发送对象
+                    </div>
+                    <div class="aui-list-item-input"  @click="openContact();">
+                        <div placeholder="点击图标选择发布人员"    class="pushObject" >
+
+                              <span v-text='sendJsonStr'></span>
+
+                        </div>
+                    </div>
+                     <div class="aui-pull-right" style="margin-right: 15px;"  @click="openContact();" >
+<i class="iconfont icon-lianxirenkaobei" style="font-size: 16px; "></i>
+                    </div>
+                </div>
+            </li>
+
+            <li  class="textRow">
+                <div  >
+                    <h3>邮件内容</h3>
+                    <div class="textareaBox">
+                        <textarea placeholder="请输入内容" v-model='content'></textarea>
+                    </div>
+                </div>
+            </li>
+            
+
+ 
+<!--  <li  class="textRow  aui-margin-t-10  aui-padded-b-10" style="border-bottom: none;">
+                    <ul class="aui-row">
+                        <li class="aui-list-item" style="padding-left: 0;">
+                            <div class="aui-list-item-inner">
+                                <div class="aui-list-item-label text-left">
+                                    传送方式
+                                </div>
+                                <div class="aui-list-item-input aui-pull-right text-center">
+                                    <label class="aui-margin-r-10"><input class="aui-checkbox" value="0" type="checkbox" name="send_way_str" checked=""> 消息</label>
+                                    <label class="aui-padded-l-10"><input class="aui-checkbox"  value="1"  type="checkbox" name="send_way_str"> 推送</label>
+                                    <label class="aui-padded-l-10"><input class="aui-checkbox"  value="2"  type="checkbox" name="send_way_str"> 短信</label>
+                                </div>
+                            </div>
+                        </li>
+                   </ul>
+             </li> -->
+
+            <li  class="textRow  aui-margin-t-10  aui-padded-b-10" style="border-bottom: none;">
+                    <ul class="aui-row">
+                        <li class="aui-list-item" style="padding-left: 0;">
+                            <div class="aui-list-item-inner">
+                                <div class="aui-list-item-label text-left">
+                                    邮件重要程度
+                                </div>
+                                <div class="aui-list-item-input aui-pull-right text-center">
+                                    <label class="aui-margin-r-10"><input class="aui-radio checkTheme" value="0" type="radio" name="chengdu" checked=""> 一般</label>
+                                    <label class="aui-padded-l-10"><input class="aui-radio checkTheme"  value="1"  type="radio" name="chengdu"> 特别</label>
+                                </div>
+                            </div>
+                        </li>
+                   </ul>
+             </li>
+
+           <li class="textRow">
+
+                <div>
+                    <h3>上传附件<span >(  文件个数:{{pathArr.length}},  进度:{{fileProgress}}% )</span></h3>
+
+                    <ul class="fileBox">
+
+                						<li class="file" v-for='(item,key) in pathArr'>
+            <div class="imgBox">
+                              <i class="iconfont icon-Excel" v-if="item.type=='excel'"></i>
+                              <i class="iconfont icon-word" v-if="item.type=='word'"></i>
+                              <i class="iconfont icon-txt" v-if="item.type=='txt'"></i>
+                              <i class="iconfont icon-wenhao" v-if="item.type=='notype'"></i>
+
+                                    <i class="aui-iconfont aui-icon-close imgclose" @click='remove(item.path)'></i>
+
+                                         
+                                            <img  :src="item.https"  class="upimg" @error="removeImg(key)"  v-if="item.type=='img'" @click="showBigPic($event)">
+
+
+                                    </div>
+
+                						</li>
+
+                						<li class="add" @click="addFile()">
+                                <i class="iconfont icon-jia1"></i>
+                						</li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="filelist">
+        					<p v-for='(item,key) in pathArr' >{{item.name}}</p>
+                </div>
+
+            </li>
+
+        </ul>
+
+</section>
+
+
+</body>
+
+<script type="text/javascript" src='../../../script/api.js'></script>
+<script type="text/javascript" src='../../../script/common.js'></script>
+<script type="text/javascript" src='../../../script/demo/alioss.js'></script>
+<script type="text/javascript" src='../../../script/base/tip.js'></script>
+
+<script type="text/javascript" src='../../../script/frame0/fileoper.js'></script>
+<script type="text/javascript" src="../../../script/vue/vue2.js"></script> 
+
+
+
+<script type="text/javascript">
+      window.vm = {};
+        var operArr = {
+          sendSaveApi : '',
+          isSend : false,
+          isSave : false
+        }
+      var fileArr = null;
+
+      apiready = function(){
+
+
+        loadCommonJs();
+
+        initVue();
+
+        addEventUploadProgress();
+
+        addEventModal();
+
+        initAliOss();
+
+
+      }
+    addEventUploadProgress = function () {
+
+        api.addEventListener({
+            name: 'uploadProgress'
+        }, function(ret, err) {
+            if (ret.value) {
+
+              var extra = ret.value;
+ 
+                  if(extra.progress ){
+  
+                        var progressParams = {   
+                          fileProgress  : extra.progress
+                        }
+
+                       vm.updateUploadProgress(progressParams);
+  
+
+                    }
+   
+
+ 
+ 
+
+            }  
+        });
+
+
+        api.addEventListener({
+            name: 'uploadDone'
+        }, function(ret, err) {
+
+          api.removeEventListener({  name: 'uploadProgress' });
+
+           var doneData = ret.value;
+           log(doneData,true)
+           // return;
+  
+            if (doneData) {
+
+                var pathArr = vm.pathArr || [];
+ 
+                 for(var i = 0 ; i < pathArr.length ;i++){
+
+                      pathArr[i].https = doneData.aliObjectPath[i].url 
+                      pathArr[i].url = doneData.aliObjectPath[i].url 
+                      pathArr[i].mingcheng = doneData.aliObjectPath[i].mingcheng
+                      pathArr[i].houzhui = doneData.aliObjectPath[i].houzhui
+                 }
+
+                vm.updatePathArr(pathArr);
+  
+                          // var checkImgLength = function () {
+  
+                          //     if(doneData.aliObjectPath.length ===  vm.pathArr.length){
+
+                                
+
+ 
+                          //            vm.updatePathArr(pathArr);
+ 
+  
+
+                          //      }else{
+
+                          //            setTimeout(function () {
+ 
+                          //                   checkImgLength();
+         
+                          //             },300)
+
+                          //      }
+
+
+                            
+                          // }
+
+                           
+
+            } else {
+
+                // alert(JSON.stringify(err));
+
+            }
+        });
+      }
+
+ 
+
+      reply = function () {
+        
+      }
+ 
+
+      doUpMailServer = function () {
+
+        var wenjian_data = []
+
+        var wenjian_data_str ='';
+
+        var pathArr = vm.pathArr 
+
+
+        var chengdu = getRadioChecked('chengdu');
+
+        // var send_way_str = getCheckBoxChecked('send_way_str')  
+
+       if( jsonHaveKey(pathArr[0] , 'url') ){
+
+                    for(var i = 0 ; i < pathArr.length ; i++){
+
+                         wenjian_data.push({
+                          url : pathArr[i].url,
+                          mingcheng : pathArr[i].mingcheng,
+                          houzhui : pathArr[i].houzhui
+                         });
+
+                    }   
+
+                    wenjian_data_str = JSON.stringify(wenjian_data);
+                    
+                    wenjian_data_str = wenjian_data_str.replace('/\\/g','')
+
+        } 
+
+       
+ 
+        var selectIdArr = $api.getStorage('selectIdArr') || [];
+
+         var  email_id  =  api.pageParam.params.isCaogao ? api.pageParam.params.mail.id : null;
+
+            
+ 
+          ajax({
+             aApi : operArr.sendSaveApi,
+             params:{
+                email_id : email_id,
+                jiaoshi_id : $api.getStorage('user').id,
+                jiaoshi_mingcheng : $api.getStorage('user').mingcheng,
+                wenjian_data : wenjian_data_str + "",
+                read_id : selectIdArr.join(','),
+                title : vm.title,
+                neirong : vm.content,
+                chengdu : chengdu,
+                send_way_str : ''
+             }
+
+          },function (data) { 
+
+            hideProgress();
+
+   
+              if(data.code == 1){
+ 
+ 
+
+                if(operArr.isSend){
+
+                    api.execScript({
+                       name: '办公邮件',
+                       frameName: 'fajianxiang',
+                       script: 'location.reload();'
+                   });
+                      api.execScript({
+                       name: '办公邮件',
+                       frameName: 'shoujianxiang',
+                       script: 'location.reload();'
+                   });
+
+
+                     sendSuccess({
+                      oper : 'send'
+                     }); 
+                      
+ 
+ 
+                  }else if(operArr.isSave){
+
+                      toast(data.msg); 
+
+                      api.execScript({
+                         name: '办公邮件',
+                         frameName: 'caogaoxiang',
+                         script: 'location.reload();'
+                     });
+                       sendSuccess({
+                        oper : 'save'
+                       }); 
+
+
+                  }
+ 
+  
+
+              }else{
+
+                toast(data.msg)
+
+              }
+
+ 
+          })
+
+      }
+
+
+
+        addEventModal = function () {
+
+          api.addEventListener({
+              name: 'cover'
+          }, function(ret, err) {
+            $api.dom('.winmodal').style.display = 'block'
+          });
+
+
+           api.addEventListener({
+                  name: 'closecover'
+              }, function(ret, err) {
+                $api.dom('.winmodal').style.display = 'none'
+              });
+
+        }
+
+      text = function () {
+
+          api.closeWin({
+              name: '新建邮件',
+              animation:{
+                type : 'none'
+              }
+          });
+          
+
+      }
+
+      updateName = function () {
+ 
+           vm.updateName()  ;
+
+      }
+
+      initVue = function () {
+
+
+     window.vm = new Vue({
+          el:'#sendBox',
+          data:{
+            pathArr : [],
+            sendJson:[],
+            sendJsonStr:'',
+            title : '',
+            currentFileIndex: 0,
+            allFileCount : 0,
+            fileProgress :0,
+            content :''
+          },
+          methods:{
+
+             updateName : function () {
+
+                this.sendJson = $api.getStorage('selectJiaoshiArr') || []
+            
+ 
+                var jiaoshiStr = this.sendJson.join(',');
+
+                if(jiaoshiStr.length > 100){
+
+                      this.sendJsonStr = jiaoshiStr.substr(0,100) + '等...'
+
+                }else{
+                      this.sendJsonStr = jiaoshiStr.substr(0,100)
+
+                }
+ 
+
+            },
+            updatePathArr : function (pathArr) {
+            
+
+                  this.pathArr = [];
+ 
+                  this.pathArr = pathArr;
+  
+ 
+
+            },
+            updateUploadProgress:function (extra) {
+                   this.currentFileIndex= extra.currentFileIndex
+                   this.allFileCount = this.pathArr.length;
+                   this.fileProgress = extra.fileProgress
+            },
+            showBigPic : function (event) {
+
+              showBigPic(event.currentTarget);
+
+              
+            },
+            removeImg : function (index) {
+ 
+ 
+                 
+                    if( index >= 0 ){
+
+ 
+                          var pathArr = this.pathArr;
+
+                          pathArr.splice(index, 1);
+
+                          this.pathArr = pathArr;
+ 
+
+                    }
+
+            },
+             addFile : function () {
+
+                 var _this = this;
+
+
+                  
+                 // var button = ['文件','拍照','图片'];
+                 var buttons = ['拍照','图片'];
+
+                  api.actionSheet({
+                      title: '请选择文件类型',
+                      cancelTitle: '取消',
+                      buttons : buttons
+                  }, function(ret, err) {
+                      if (ret) {
+                         var index  = ret.buttonIndex;
+                          switch(index){
+                            // case 1 : _this.openFileBrowser();break;
+                            case 1 : _this.openPaiZhao();break;
+                            case 2 : _this.openPicture();break;
+                          }
+                      } else {
+
+                      }
+                  });
+
+
+
+             }, 
+             openPaiZhao:function () {
+              var _this = this;
+                  api.getPicture({
+                      sourceType: 'camera',
+                      encodingType: 'jpg',
+                      mediaValue: 'pic',
+                      destinationType: 'url',
+                      allowEdit: true,
+                      quality: 50, 
+                      saveToPhotoAlbum: true
+                  }, function(ret, err) {
+                      if (ret) {
+
+                        var path = ret.data;
+
+ 
+                             var list = [{
+                              path :path ,
+                              thumbPath : path
+                            }];
+                            
+     
+                            _this.doDealPic(list);
+                          
+                        
+
+
+
+                      } else {
+
+                      }
+                  });
+             },
+              doDealPic:function (list) {
+
+                        var newPath = this.pathArr || [];
+
+                          for(var i =0 ; i < list.length;i++){
+
+                                    this.appendFile({
+                                            path : list[i].path,
+                                            thumbPath : list[i].thumbPath
+                                    })
+
+                                     newPath.push({
+                                            path : list[i].path,
+                                            thumbPath : list[i].thumbPath
+                                    });
+
+                          }
+                          
+ 
+
+                       // transPath(newPath,function (newPathArr) {
+
+                           uploadAliOss(newPath,function (serverFile) {
+
+                                   fileArr = serverFile;
+
+                            });
+
+                      // });
+
+
+                
+              },
+             remove:function (path) {
+
+              var _this = this;
+
+              confirm('确认删除吗?',function (data) {
+
+                  if(data){
+
+                          showProgress('删除中')
+
+                            var newPathArr = [];
+                            var pathArr = _this.pathArr;
+
+                            for(var i = 0  ; i < pathArr.length ;i++ ){
+
+                                if(pathArr[i].path == path){
+                                    continue;
+                                }
+
+                                newPathArr.push(pathArr[i]);
+
+                            }
+
+                            if(path.match('http')!=null){
+
+                                console.log(path)
+ 
+                                deleteAliOss(path)
+                            }
+
+
+                            _this.pathArr = newPathArr;
+
+
+
+                    }
+
+
+              })
+
+
+
+             },
+             openFile : function () {
+
+              var _this = this;
+              log('openFile')
+
+              fileOperFileBrowser(function (data) {
+                    log(data,true)
+                
+              })
+
+
+
+
+              } ,
+               checkFileType:function (ext) {
+                    var type ='';
+                     switch(ext){
+                         case 'png' : type = 'img';break;
+                         case 'jpg' : type = 'img';break;
+                         case 'jpeg' : type = 'img';break;
+                         case 'docx' : type = 'word';break;
+                         case 'doc' : type = 'word';break;
+                         case 'xls' : type = 'excel';break;
+                         case 'xlsx' : type = 'excel';break;
+                         case 'txt' : type = 'txt';break;
+                         default : type = 'notype';break;
+                       }
+                       return type;
+              },
+              appendFile :function (options) {
+
+                      var path = options.path;
+                      var thumbPath = options.thumbPath;
+
+
+                        if(!thumbPath)return;
+
+                       var urlArr = thumbPath.split('/');
+
+                        var name = urlArr[urlArr.length-1];
+
+                        var nameArr = name.split('.');
+
+                        var ext  = nameArr[nameArr.length-1];
+
+
+                        ext = ext.toLowerCase();
+ 
+
+                        var type = this.checkFileType(ext);
+
+                        if(ext === 'heic'){ 
+ 
+                            ext = 'jpg'
+                            name.replace('HEIC',ext);
+                            path.replace('HEIC',ext); 
+                            thumbPath.replace('HEIC',ext); 
+
+
+                        }
+  
+                         var pathArr = [] ;
+
+                         if(api.pageParam.params.isCaogao){
+
+                                name = name.split('_v_')[0] + '.' + ext;
+                         }
+
+
+                         pathArr.push({
+                              thumbPath : thumbPath,
+                              path : path,
+                              name : name,
+                              ext : ext,
+                              type : type
+                         })
+
+                         if(this.pathArr){
+
+                            this.pathArr = this.pathArr.concat(pathArr);
+ 
+
+                         }else{
+
+                            this.pathArr = pathArr;
+
+
+                         }
+ 
+ 
+
+              },
+
+
+               openPicture : function () {
+
+                    var _this = this;
+
+                    var UIAlbumBrowser = api.require('UIAlbumBrowser');
+                    UIAlbumBrowser.open({
+                        max: 9,
+                        styles: {
+                            bg: '#fff',
+                            mark: {
+                                icon: '',
+                                position: 'bottom_left',
+                                size: 20
+                            },
+                            nav: {
+                                bg: '#e51c23',
+                                titleColor: '#fff',
+                                titleSize: 14,
+                                cancelColor: '#fff',
+                                cancelSize: 14,
+                                finishColor: '#333',
+                                finishSize: 14
+                            }
+                        },
+                        rotation: true
+                    }, function(ret) {
+                        if (ret) {
+
+                            if(ret.eventType ==='confirm'){
+
+                              var list = ret.list ;
+
+                               transPath(list,function (newPath) {
+
+                                  _this.doDealPic(newPath);
+                                
+                              })
+ 
+
+
+
+                            }
+
+                               // var path = ret.data;
+
+
+                        }
+                    });
+
+                },
+                openContact : function () {
+
+                  var inputs = $api.domAll('input');
+
+
+                  for(var j = 0 ; j  < inputs.length; j++){
+
+                       inputs[j].blur();
+
+                   }
+
+                 
+                   setTimeout(function () {  //输入框聚焦时，再打开frame会有bug ，加个延迟
+                      
+                          var contactHeight = 550;
+
+                            api.sendEvent({
+                                name: 'cover'
+                            });
+          
+                           api.openFrame({
+                                name: 'contactWin',
+                                url: 'widget://html/common/contact/contactWin.html',
+                                rect: {
+                                    x: 0,
+                                    y: api.winHeight - contactHeight  - api.safeArea.bottom,
+                                    w: api.winWidth,
+                                    h: contactHeight + api.safeArea.bottom
+                                }, 
+                                pageParam: {
+                                    contactHeight : contactHeight,
+                                    winName : api.winName
+                                },
+                                scrollEnabled:false,
+                                animation:{
+                                subType : 'from_bottom',
+                                duration:300
+                              }
+                            });
+
+                   },150)
+
+
+
+                },
+                getSaveMess:function () {
+
+                  var _this = this;
+
+                      if(api.pageParam.params.isCaogao){
+
+                        var mail = api.pageParam.params.mail;
+   
+                        ajax({
+                             aApi : 'Bgyoujian/getEmailDetail',
+                             params:{
+                                email_id : mail.id
+                             }
+                          },function (data) {
+
+
+                            if(data.code==1){
+
+                               var detail = data.data;
+
+                               var wenjian = detail.wenjian;
+
+                                for(var i = 0 ; i < wenjian.length ;i ++){
+
+                                    wenjian[i].mingcheng =  wenjian[i].mingcheng.split('_v_')[0]
+                 
+                                }
+                                
+
+                                for(var j = 0 ; j < wenjian.length ; j++){
+ 
+
+                                       _this.appendFile({
+                                            path : wenjian[j].url,
+                                            thumbPath : wenjian[j].url
+
+                                       });
+
+                                }
+  
+
+                                _this.title = detail.title;
+
+                                var renyuan = detail.renyuan;
+
+
+                                var read_mingcheng = [];
+
+                                for(var k = 0 ; k < renyuan.length ; k++){
+ 
+                                     read_mingcheng.push(renyuan[k].read_mingcheng);
+
+                                     saveMailPeople(renyuan[k].read_id,renyuan[k].read_mingcheng)
+
+          
+                                }
+
+
+ 
+                                _this.sendJsonStr = read_mingcheng.join(",");
+
+                                var send_way_str = detail.send_way_str || 0
+                                var chengdu = detail.chengdu || 0
+
+                    
+                               
+
+                                setCheckBoxChecked('send_way_str', send_way_str );
+                                setRadioChecked('chengdu',Number(chengdu));
+
+                                _this.content = detail.neirong  || ''
+ 
+
+
+                            }else{
+
+                                  toast(data.msg)
+                            }
+
+
+                          
+                                
+                          })
+                                     
+                                                
+                   }
+
+
+
+                       
+
+
+
+                }
+
+
+
+          },
+
+          created:function () {
+
+              this.getSaveMess();
+
+              $api.dom('#sendBox').style.display = 'block'
+             //获取新品推荐
+             // this.getNewGoods();
+          }
+    });
+
+
+ }
+
+     //点击保存时
+
+      sendMail = function () {
+         if(vm.pathArr.length > 0 && vm.fileProgress !=0 && vm.fileProgress < 100){
+ 
+              toast('文件上传中')
+              return;
+        }
+         if(!vm.title){
+          toast('请输入标题')
+          return;
+        }
+         if(!vm.content){
+          toast('请输入内容')
+          return;
+        }
+         if(!vm.sendJsonStr){
+          toast('请选择发送对象')
+          return;
+        }
+
+           var item =  [{
+                text: '存草稿',
+                icon: 'widget://icon/common/save.png'
+            }, {
+                text: '发送',
+                icon: 'widget://icon/common/send.png'
+            } , {
+                text: '取消',
+                icon: 'widget://icon/common/cancel.png'
+            }];
+
+          dialogBoxShare(item,function (index) {
+        
+
+               switch(index){
+                 case 0  :  
+                         operArr = {
+                            sendSaveApi : 'Bgyoujian/EmailZancun',
+                            isSend : false,
+                            isSave : true
+                          };
+                        doSend('正在保存');
+                       
+                        break;
+                 case 1 :
+                         operArr = {
+                            sendSaveApi : 'Bgyoujian/sendEmail',
+                            isSend : true,
+                            isSave : false
+                          };
+                        doSend('发送中');
+
+                        break; 
+
+               }
+
+
+
+       });
+
+
+
+
+    }
+
+
+   
+    
+
+      transPath=function (pathArr,callback) {
+
+          var UIAlbumBrowser = api.require('UIAlbumBrowser');
+
+
+          (function loopTrans(i)   {
+
+                if(i === pathArr.length){
+
+                  callback(pathArr);
+
+                  return;
+                }
+
+                  UIAlbumBrowser.transPath({
+                        path: pathArr[i].path
+                    }, function(ret, err) {
+
+                          if(ret.path){
+ 
+                            pathArr[i].path = ret.path;
+ 
+
+                          }
+
+                         loopTrans(++i)
+
+
+                    });
+
+
+
+          }(0))
+
+
+      }
+
+ 
+ 
+    doSend = function (tips) {
+ 
+     
+ 
+      showProgress(tips);
+
+ 
+      doUpMailServer();
+
+ 
+
+    }
+
+    
+
+
+
+
+
+
+</script>

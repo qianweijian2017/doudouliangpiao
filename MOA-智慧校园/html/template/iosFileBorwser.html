@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/login.css"/>
+    <style type="text/css"> 
+         
+    </style>
+</head>
+<body>
+ 
+ </body>
+</html> 
+<script type="text/javascript" src="../../script/api.js"></script> 
+<script type="text/javascript" src="../../script/common.js"></script> 
+ 
+<script type="text/javascript">
+  var url;
+    apiready = function(){
+            loadCommonJs();
+
+            var params =  api.pageParam.params || {}; 
+
+            url = params.url  ||''; 
+
+
+           if(!url){
+
+            toast('路径无效');
+
+                setTimeout(function () {
+                        api.closeWin();
+                   },1500)
+
+            return;
+           }
+
+           showLoading(); 
+
+           openWorderFile();
+    }
+    openWorderFile = function () {
+     
+
+      if(url.match('http')!=null){
+
+            download(url,function (path) {
+
+                     openView(path);
+                
+            })
+
+         }else{
+            openView(url);
+      }
+
+          
+    }
+
+
+// 目前支持的文档格式主要有 excel、doc、pdf  ,  支持Android&iOS 
+
+    openView = function (path) {
+
+         hideLoading();
+
+         var docReader = api.require('docReader');
+ 
+            docReader.open({
+                path : path,
+                autorotation: false
+            }, function(ret, err) {
+                if (ret.status) {
+                    // alert(JSON.stringify(ret));
+                } else {
+                    alert(JSON.stringify(err));
+                }
+            });
+    }
+        
+</script>
+ 
+  
+ 

@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>打开文件</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css" />
+    <style type="text/css"> 
+     
+    </style>
+</head>
+ <body>
+
+ 	<div id="filelist">
+
+
+ 	</div>
+ 
+
+</body>
+</html>
+<script type="text/javascript" src='../../../script/api.js'></script>  
+<script type="text/javascript" src='../../../script/common.js'></script>  
+<script type="text/javascript" src="../../../script/art/template-web.js" ></script>
+<script type="text/html" id="fileScript">
+
+	 {{each list value i }}
+	  <div class="aui-content-padded">
+
+		  <button class="aui-btn aui-btn-primary aui-btn-block aui-btn-sm" onclick="openDoc('widget://res/file/{{value}}','{{value}}' )"> 打开{{value}}
+	     </button>
+	 
+	 </div>
+ 
+ 	{{/each}}
+ 
+
+</script>
+
+<script type="text/javascript">
+	apiready = function(){
+		loadCommonJs();
+
+		fileList();
+ 	}
+ 	fileList = function () {
+
+ 			var fs = api.require('fs');
+
+			fs.readDir({
+			    path: 'widget://res/file'
+			}, function(ret, err) {
+
+			    if (ret.status) {
+
+			    	var data = ret.data;
+
+			    	file = {
+			    		list : data
+			    	};
+
+
+
+			    	var html = template('fileScript',file);
+
+			    	$api.dom('#filelist').innerHTML = html;
+ 
+
+
+			    } else {
+
+			    }
+			});
+ 	}
+	    
+  
+</script>
+ 
+ 

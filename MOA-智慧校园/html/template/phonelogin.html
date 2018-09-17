@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+  	<!-- <link rel="stylesheet" type="text/css" href="../../css/login.css"/> -->
+    <style type="text/css">
+      
+.headerBar{
+font-size: 15px; height: 50px; line-height: 50px; background: #e51c23; color: #fff; text-align: center; font-weight: 500; margin-bottom: 5px; position: relative;margin: 0;
+   
+ }
+.headerBar span{font-size: 15px; color: #fff; }
+.headerBar a{display: block; position: absolute; color: #fff; left: 0; width: 50px; height: 50px; line-height: 50px;
+background: url(../../imgs/common/bback.png) no-repeat center center;
+ -webkit-background-size: 70% 70%;
+background-size: 70% 70%;
+bottom: 0;
+
+}
+
+.headerBar a.feekback{right: 50px; }
+
+.headerBar a.share{left: auto; right: 0; background-image: url(../../imgs/common/share.png); }
+/*头部返回end*/
+#mobilecode{
+    width: 140px;
+}
+
+#login_box{
+  margin-top: 20px;
+  padding: 20px 16px 0 16px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+ 
+.login_box cite{
+
+  width: 100%;
+  height: 38px;
+  border: 1px solid #333333;
+  margin-bottom: 15px;
+}
+#login_box cite span{ 
+  line-height: 40px;
+   float: left;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    width: 85px;
+    float: left;
+    clear: both; 
+    font-size: 14px;
+    position: relative;
+}
+#login_box cite span i{
+  color: #ff7374;
+    font-size: 14px;
+
+}
+#login_box cite span:after{
+  content: '';
+  display: block;
+  width: 1px ;
+  height: 25px;
+  background:#333;
+  position: absolute;
+  right: 0;
+  top: 8px;
+
+}
+#login_box cite  input{
+  height: 38px;
+  font-size: 14px;
+  padding-left: 15px;
+   width: 210px;
+  float: left;
+}
+#login_box .acountLogin{
+    margin-top: 15px;
+    width: 100%;
+    height: 40px;
+    font-size: 15px;
+    color: #fff;
+  background: #ff5b5b;
+  border-radius: 5px;
+}
+ 
+#save{
+  background: none;
+}
+ /*头部返回end*/
+#mobilecode{
+    width: 140px;
+}
+
+.login_box input{
+  border: none;
+}
+#headerBar a.loginback{
+  background-image: url(../../icon/login/loginback.png)!important;
+  width: 30px;
+}
+#phonereg{
+  height: 40px;
+  background: #e51c23;
+}
+.login_box cite{
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -o-flex;
+  display: flex;
+}
+.login_box cite span{
+    float: left;
+    line-height: 40px;
+
+    text-align: right;
+    color:#333;
+    font-size: 13px;
+    -webkit-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    -o-flex: 1;
+    flex: 1;
+
+ }
+
+.login_box cite input{
+  -webkit-flex: 3;
+  -moz-flex: 3;
+  -ms-flex: 3;
+  -o-flex: 3;
+  flex: 3;
+
+}
+ #regCode{
+   width: 60%; 
+   float: left;
+
+ }
+ span.daojishi{
+  float: right;
+  width: 30%;
+  height: 40px;
+  line-height: 40px;
+  color: #fff;
+  background-color: #e51c23;
+  text-align: center;
+  font-size: .8em;
+
+ }
+#daoji1{ 
+
+  color: #999 ;
+  background: #efefef;
+}
+    </style>
+</head>
+<body>
+
+    <header id="headerBar" class="headerBar">
+        <span id="title">登录</span>
+     </header>
+ 
+   
+  <section class="login_box clearfix" id="login_box">
+      <cite class="clearfix">
+        <span>中国 <i>+86</i></span>
+        <input type="number" name="" id="mobile" value="" placeholder="请输入手机号" autofocus=""> 
+      </cite>
+ 
+
+        <cite class="clearfix regCode" id="regCode">
+          
+            <input type="text"    id="mobilecode" placeholder="手机验证码">
+ 
+        </cite>
+
+        <span class="daojishi" id="daoji1"   style="display: none;"><em id="daojishi">60</em>s后获取</span>
+        <span class="daojishi" id="daoji2"  onclick="fnTimeout()" >获取验证码</span>
+
+       
+      <button  class="acountLogin" onclick="doPhoneLogin()" id="phonereg" style="background: #e51c23;"  >登录</button>
+       
+
+  </section>
+   
+ </body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+ 
+<script type="text/javascript">
+var oper;
+ apiready = function(){
+      loadCommonJs();
+ 
+     var header = $api.byId('headerBar');
+
+     $api.fixStatusBar(header);
+     
+     oper = api.pageParam.oper;
+     setHeaderBar({
+       full: false,
+       color:'light',
+       bar : '#e51c23'
+     }) 
+
+
+ 
+   }
+ 
+</script>
+<script type="text/javascript">
+
+    doPhoneLogin = function(){
+ 
+      showLoading();
+      var  username = dom('#mobile').value;
+      var  mobilecode = dom('#mobilecode').value;
+  
+
+         ajax({
+           do : 'LoginByPwd',
+           params:{
+            mobile :username ,
+            mobilecode : mobilecode 
+
+           }
+        },function(data){ 
+
+            
+            if(data.errno==0){
+
+
+              toast(data.message);
+               
+              $api.setStorage('user',data.data);
+               api.setPrefs({
+                      key: 'user',
+                      value: data.data
+                });
+                
+              
+               
+
+               hideLoading();
+               setTimeout(function(){
+                    
+                    
+                    api.closeToWin({
+                        name : 'root'
+                    });
+                    clearFull();
+                    setHeaderBar({
+                        color: 'light',
+                        bar : '#e51c23',
+                        full : false
+                      })
+               },1000)
+
+
+            }else{
+
+              toast(data.message);
+
+            }
+  
+        })
+    }
+
+</script>
+ <script type="text/javascript">
+
+ var dsArr = [];
+
+  var time =  60  ;
+  var regClick = true;
+  function fnTimeout(){
+
+    if(!regClick)return;
+    
+    regClick = false;
+
+    setTimeout(function () {
+      regClick = true;
+    },9000)
+
+changeReg()
+
+
+    sendSms(function(data){
+
+      if(data){  
+
+           dsArr['daoji'] = dsTimeout = setInterval(function(){
+
+            var  timeDom = document.querySelector('#daojishi');
+            var cTime = --time;
+            timeDom.innerHTML = cTime;
+
+            if(time === 0){
+              changeReg()
+              time = 60;
+              clearDingshi();
+              clearInterval(dsTimeout);
+            } 
+          },1000)
+
+      }else{
+
+        toast(data.errmsg)
+      }
+
+
+    });
+  }
+
+
+  sendSms = function(callback){ 
+      
+        var mobile = dom('#mobile').value;
+        if(!checkPhone(mobile)){
+
+          return;
+        }
+        ajax({
+           do : 'sms',
+           params:{
+            mobile : mobile,
+            report:false
+           }
+        },function(data){
+
+
+          if(data.data){
+
+            toast(data.message)
+
+            callback(true);
+
+                
+          }else{
+
+              toast(data.message)
+
+          }
+
+        })
+      
+  }
+
+  function changeReg(){
+    dom('#daoji1').style.display = dom('#daoji1').style.display =='none' ? 'block' : 'none'
+    dom('#daoji2').style.display = dom('#daoji2').style.display =='none' ? 'block' : 'none'
+  }
+  function clearDingshi(){
+    if(dsArr){
+
+      for(var i in dsArr){
+         clearInterval(dsArr[i])
+     }
+
+    }
+    
+  }
+</script>
+ 

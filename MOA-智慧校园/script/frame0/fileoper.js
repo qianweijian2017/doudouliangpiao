@@ -1,0 +1,288 @@
+  window.lookArticlefile = function (url,ext) {
+
+      api.actionSheet({ 
+          cancelTitle: '取消', 
+          buttons: ['查看附件', '复制文档地址']
+      }, function(ret, err) {
+          if (ret) {
+
+              var index = ret.buttonIndex;
+
+              switch(index){
+                case 1 : lookFileDetail(url,ext);break;
+                // case 2 : downFileDetail(url,ext);break;
+                case 2 : copyText(url,ext);break;
+              }
+
+          } else {
+
+              // alert(JSON.stringify(err));
+          }
+      });
+
+
+    }
+    window.copyText = function (url) {
+
+        var clipBoard = api.require('clipBoard');
+
+        clipBoard.set({
+            value: url
+        }, function(ret, err) {
+
+               toast('智慧校园：复制成功')
+
+        });
+    
+  }
+
+   window.lookFileDetail = function (url,ext) {
+
+ 
+         var ext = ext.toLowerCase();
+
+         var $eventDom = {  src : url  };
+
+         switch(ext){
+ 
+            case 'jpg' : case 'png' :case 'jpeg' : showBigPic($eventDom) ;break;
+      
+            case 'docx':case 'doc': case 'pdf': case 'txt':  case 'xls': case 'xlsx':case 'xltx':case 'xlt': docReader(url);break;
+ 
+
+         }
+
+            
+
+        
+
+      }
+
+     window.docReader = function (url) {
+
+      
+
+             if(url.match('http')!=null){
+
+                    download(url,function (path) {
+
+
+                       doOpenDoc(path); 
+ 
+                    })
+
+
+              }else{
+                       doOpenDoc(path); 
+ 
+
+
+              }
+
+        
+
+ 
+       
+     }
+
+
+    window.doOpenDoc = function (path) {
+
+      if(api.systemType==='ios'){
+
+
+              var docReader = api.require('docReader');
+       
+                    docReader.open({
+                        path:url,
+                        autorotation: false
+                    }, function(ret, err) {
+                        if (ret.status) {
+                            // alert(JSON.stringify(ret));
+                        } else {
+
+                          switch(err.code){
+                            case -1:toast('未知错误');break; 
+                            case 1:toast('文件不存在');break; 
+                            case 2:toast('文件格式不支持');break; 
+                          }
+
+                        }
+                    });
+
+      }else{
+                  // 实现文件的展示功能，支持多种文件格式(pdf, word, execl, txt, ppt) (仅支持Android )
+
+             var superFile = api.require('superFile');
+  
+             superFile.open({ path : path });
+      }
+
+
+
+      
+    }
+    //两个模块都有问题
+    window.fileOperFileBrowser = function (callback) {
+
+      if(api.systemType==='ios'){
+        
+              var fileBrowser = api.require('fileBrowser');
+              fileBrowser.open(function(ret) {
+                  if (ret) {
+                      alert(JSON.stringify(ret));
+                  }
+              });
+                        
+        
+      }else{ 
+
+            var selectFile = api.require('selectFile');
+
+              selectFile.open(function(ret, err){
+              log(ret,true)
+              log('selectFile')
+              log(err,true)
+
+                  if(ret.status){
+ 
+
+                      callback(ret);
+
+ 
+                  }else{
+
+                      alert('选择文件不存在');
+                  }
+              });
+
+
+      }
+      
+    }
+
+           
+
+    
+   
+      window.downFileDetail = function (url,ext) {
+
+              var downloadManager = api.require('downloadManager');
+              downloadManager.openManagerView({
+                  title: '下载管理'
+              }, function(ret, err) {
+ 
+                       downloadManager.enqueue({
+                          url: url, 
+                          cache: true,
+                          allowResume: true,
+                          title: url,
+                          networkTypes: 'all'
+                      }, function(rets, err) {
+                          if (rets) {
+
+                            if(rets.id){
+
+                                   downloadManager.query({
+                                      ids: [ rets.id  ]
+                                  }, function(ret, err) {
+
+                                    var res = ret.data[0] 
+
+
+                                    if (res.status==1){
+  
+                                          toast('正在下载...')
+                                          return;
+
+                                    }
+
+                                     if (res.status == 3) {
+
+                                          var path = res.savePath;
+
+                                           downloadManager.openDownloadedFile({
+                                              id: rets.id
+                                          }, function(ret, err) {
+                                              if (ret.status) {
+                                                  // alert(JSON.stringify(ret));
+
+                                              } else {
+
+                                                  // alert(JSON.stringify(err));
+                                              }
+                                          });
+
+                                         
+
+
+                                      } 
+                                  });
+
+
+                            }
+ 
+
+                          } else {
+                              alert(JSON.stringify(err));
+                          }
+                      });
+
+                 
+              });
+
+
+         
+      }
+
+
+ window.imageFilterCompress = function (options,callback) {
+
+      options = options || {};
+
+      var path = options.path;
+      var size = options.size ||{}; 
+
+
+
+      showProgress('压缩中');
+
+       var savePath = 'fs://compress';
+
+       path = (path instanceof Array) ? path[0] : path
+        
+       var newPath = path.split('/');
+ 
+       var imgName = newPath[newPath.length-1];
+  
+       var imageFilter = api.require('imageFilter');
+
+        imageFilter.compress({
+            img : path , 
+            scale : 0.9,
+            size:size,
+            save:{
+                 album: false ,      //(可选项)布尔值，是否保存到系统相册，默认false 
+                 imgPath : savePath ,        //(可选项)保存的文件路径,字符串类型，无默认值,不传或传空则不保存，若路径不存在文件夹则创建此目录
+                 imgName: imgName      //(可选项)保存的图片名字，支持png和jpg格式，若不指定格式，则默认png，字符串类型，无默认值,不传或传空则不保存
+
+          }
+        },function( ret, err ){    
+           
+
+            if( ret.status ){ 
+
+                var saveFullPath = savePath + '/' + imgName;
+ 
+                callback(saveFullPath);
+
+
+            }else{
+                // alert( JSON.stringify( err ) );
+            }
+
+        });
+
+
+
+    }

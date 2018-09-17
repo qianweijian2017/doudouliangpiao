@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>云API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../css/index.css"/>
+
+  <style media="screen">
+
+
+    .calllist h6{
+       font-size: 11px;
+      color: #666;
+      text-indent: 15px;
+      line-height: 30px;
+      background-color: #F6F7F9;
+    }
+    .calllist .messlist{
+
+    }
+    .calllist .messlist .messItem{
+
+      padding: 0 20px;
+
+        border-top: 1px solid #E5E5E5; 
+        position: relative;
+    }
+ 
+    .calllist .messlist .messItem .h4{
+
+      line-height: 30px;
+      color: #333;
+      margin-top: 10px;
+      align-items: center;
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flex;
+      display: -o-flex;
+      display: flex;
+
+
+    }
+     .calllist .messlist .messItem .h4 span{
+          font-size: 10px;
+          transition: scale(.9);
+          color: #fff;
+          padding: 2px 6px;
+          line-height: 1;
+          background-color: #ff2600;
+          display: inline!important;
+          border-radius: 6px;
+          margin-right: 7px;
+
+
+    }
+
+
+    .calllist .messlist .messItem  .people{
+      color: #929695;
+      font-size: 11px;
+      padding-bottom: 10px;
+
+
+    }
+     .calllist .messlist .messItem  .detail{
+      color: #969696;
+      font-size: 11px;
+      float: right;
+      position: absolute;
+      top: 45%;
+      right: 20px;
+    }
+
+    .gonggao{
+      padding: 0 20px;
+      color: #666; 
+      margin-top: 3px;
+      margin-bottom: 3px;
+      border-bottom: 1px solid #EBEBEB;
+      border-top: 1px solid #EBEBEB;
+      height: 40px;
+      overflow: hidden;
+
+    }
+    .gonggao .item{
+      display: block;width: 100%;
+      position: relative;
+
+    }
+   
+    .gonggao  .bottom{
+      height: 15px;
+      line-height: 15px;
+      color: #D5D5D7;
+      padding-bottom: 12px;
+      margin-top: 9px;
+    }
+     .gonggao .bottom span {
+
+      color: #999;
+      font-size: 11px;
+      float: left;
+
+
+    }
+    .gonggao .bottom time.time {
+      float: right;
+      color: #999; 
+      font-size: 11px; 
+
+    }
+     .gonggao .comTitle{
+        width: 100%; 
+     }
+     .gonggao .comTitle .title{
+         float: left;
+         text-indent: 20px;
+
+     }
+
+    .gonggao  .btnDetail{
+      float: right;
+      border-radius: 2px;
+      padding: 0 10px;
+      font-size: 11px; 
+      position: absolute;
+      right: 0px;
+      top: 14px;
+
+    }
+    .gonggao{
+      position: relative;
+    }
+    .gonggao .tan{
+      position: absolute;
+      left: 15px;
+      top: 13px;
+      width: 12px;
+      height: 12px;
+      right: auto;
+      bottom: auto;  
+    }
+    #banner{
+      height: 140px;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="indexBox" >
+
+  <section  class="banner" id="banner">
+
+  </section>
+
+  <section class="gonggao swipe theme theme0 clearfix" v-cloak v-if='maxMess.length > 0'  >
+
+    <i class="tan iconfont icon-gonggao"></i>
+
+    <ul id="slider2"  >
+ 
+        <li class="item"  v-for='(item,key) in maxMess' @click="openGongGaoDetail(item.id)">
+
+
+          <div class="comTitle clearfix"> 
+                 
+                  <span class="title clamp1">  {{item.title}}</span>
+
+          </div>  
+
+             <time class="btnDetail themeBorder1" >详情</time>
+
+        <!--   <div class="bottom"> 
+  
+                <span class="fl">发件人：{{item.sender}}</span>
+                <time class="time">{{item.time}}</time>
+
+          </div> -->
+
+         </li> 
+
+    </ul>
+  </section>
+
+  <section class="menuBox clearfix" id="menuBox" v-cloak>
+     <ul class="ulMenu theme theme0 clearfix">
+
+          <li class="liItem border-right  border-bottom" onclick="openSchool('学校通知',1,'school')">
+             <div class="number" v-if='tongzhi_notread_num'>{{tongzhi_notread_num}}</div>
+             <i class="iconfont icon-message"></i>
+
+             <div class="menuText">
+              学校通知
+             </div>
+         </li>
+
+       <li class="liItem  border-right  border-bottom"  onclick="openWorkMail()">
+          <div class="number" v-if='youjian_notread_num'>{{youjian_notread_num}}</div>
+
+             <i class="iconfont icon-mail"></i> 
+
+           <div class="menuText">
+             办公邮件
+            </div>
+       </li>
+
+       <li class="liItem border-bottom"  onclick="openMessCenter('消息中心',3)">
+            <div class="number" v-if='msg_notread_num'>{{msg_notread_num}} </div>
+             <i class="iconfont icon-lingdang"></i> 
+
+
+           <div class="menuText">
+             消息中心
+            </div>
+       </li>
+ 
+          <li class="liItem border-right border-bottom"  onclick="openWeek()">
+
+             <i class="iconfont icon-menu"></i> 
+
+
+            <div class="menuText">
+            周程信息
+            </div>
+          </li>
+ 
+     <!--   <li class="liItem border-right border-bottom"  onclick="openItem('校历',5)">
+           <i class="iconfont icon-zy_rili"></i> 
+
+
+           <div class="menuText">
+            校历
+           </div>
+       </li> -->
+<!-- 
+       <li class="liItem border-bottom"  onclick="openItem('机构/通讯录',6)">
+             <i class="iconfont icon-Fill"></i> 
+
+
+           <div class="menuText">
+            机构/通讯录
+           </div>
+       </li>
+ -->
+      <!--  <li class="liItem border-right"  onclick="openItem('流程申请',7)">
+             <i class="iconfont icon-plus"></i> 
+
+
+           <div class="menuText">
+            流程申请
+           </div>
+
+       </li> -->
+
+       <li class="liItem border-right"  onclick="openAffairs('总务报修',8)">
+             <i class="iconfont icon-ZWBX_YH"></i> 
+
+
+           <div class="menuText">
+            总务报修
+           </div>
+       </li>
+
+      <!--  <li class="liItem"  onclick="openCommonFile()">
+           <i class="iconfont icon-iconsvgggongxiangwenjian"></i> 
+ 
+           <div class="menuText">
+            公共文件
+           </div>
+       </li> -->
+
+     </ul>
+
+  </section>
+
+
+
+  <!-- 通知列表 -->
+
+  <section class="calllist" id="calllist" v-cloak>
+
+    <h6>办公邮件</h6>
+    <ul class="messlist">
+
+      <li class="messItem"  v-for='(item,key) in messList' @click="openmail(key)">
+
+        <div class="h4 clamp1" > <span > New</span>{{item.title}}</div>
+
+        <div class="people">
+            发件人：{{item.send_mingcheng}}
+        </div>
+
+        <div class="detail">
+
+          查看详情 >
+
+        </div>
+ 
+      </li>
+   
+    </ul>
+  
+      <div class="dataTip" v-if='noData'>暂无新邮件</div> 
+      <div class="dataTip" v-if='isTip'>最多显示5条</div> 
+ 
+  </section>
+
+</div>
+
+</body>
+
+<script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript" src="../../script/common.js" ></script>
+<script type="text/javascript" src="../../script/vue/vue2.js"></script> 
+
+<script type="text/javascript" src="../../script/zepto/zepto.min.js"></script>
+<script type="text/javascript" src="../../script/zepto/zepto.fx.js"></script>
+<script type="text/javascript" src="../../script/zepto/touchslider.js"></script>
+
+
+
+<script type="text/javascript">
+
+  openSchool = function () {
+
+      // var canSendMess = checkMenu(13);
+      var canSendMess =false;
+
+  
+         api.openWin({
+              name:'学校通知',
+              url: 'widget://html/common/win.html',
+              title : '学校通知',
+              pageParam: {
+                  title: '学校通知',
+                  url:'widget://html/frame0/schoolMess/messWin.html',
+                  name :'学校通知',
+                  sendmess : canSendMess,
+                  nobounces:true,
+                  params:{
+                    footerH : footerH,
+                    headerH : headerH,
+                    sendmess : canSendMess
+
+                  }
+              }
+          });
+ 
+
+
+  }
+
+      // 打开周程信息
+      openWeek = function () {
+
+         api.openWin({
+                  name:'周程管理',
+                  url: 'widget://html/common/win.html',
+                  title : '周程管理',
+                  pageParam: {
+                      title: '周程管理',
+                      url:'widget://html/frame0/weekManager/weekinfo.html',
+                      name :'周程管理',  
+                      params:{
+                          
+                      }
+                  }
+              });
+      }
+
+      // 办公邮件
+      openWorkMail = function () {
+
+        var canSendMail = false;
+        // var canSendMail = checkMenu(17)
+  
+         api.openWin({
+              name:'办公邮件',
+              url: 'widget://html/common/win.html',
+              title : '办公邮件',
+              pageParam: {
+                  title: '办公邮件',
+                  url:'widget://html/frame0/workMail/win/centerWin.html',
+                  name :'办公邮件',
+                  addmail : canSendMail,
+                  nobounces:true,
+                  params:{
+                    footerH : footerH,
+                    headerH : headerH,
+                    addmail : canSendMail
+
+                  }
+              }
+          });
+      
+        
+      }
+
+      // 消息中心
+
+    openMessCenter = function () {
+        var addaffairs =  checkMenu(18)
+      
+           api.openWin({
+              name:'消息中心',
+              url: 'widget://html/common/win.html',
+              title : '消息中心',
+              pageParam: {
+                  title: '消息中心',
+                  url:'widget://html/frame0/messCenter/win/centerWin.html',
+                  name :'消息中心', 
+                  sendMail:true,
+                  params:{
+                    footerH : footerH,
+                  sendMail:true,
+                    headerH : headerH 
+
+                  }
+              }
+          });
+    }
+
+
+    // 总务报修
+
+    openAffairs = function () {
+
+      var addaffairs = 1;
+
+         api.openWin({
+              name:'总务报修',
+              url: 'widget://html/common/win.html',
+              title : '总务报修',
+              pageParam: {
+                  title: '总务报修',
+                  url:'widget://html/frame0/affairsRepair/daishouli.html',
+                  name :'总务报修',
+                  addaffairs : addaffairs,
+                  params:{
+                    footerH : footerH,
+                    headerH : headerH,
+                    addaffairs : addaffairs
+
+                  }
+              }
+          });
+ 
+    }
+
+    openCommonFile = function () {
+  
+
+          api.openWin({
+              name:'公共文件',
+              url: 'widget://html/common/win.html',
+              title : '公共文件',
+              pageParam: {
+                  title: '公共文件',
+                  url : 'widget://html/frame0/file/error.html',
+                  name :'公共文件', 
+                  params:{
+                    footerH : footerH,
+                    headerH : headerH
+
+                  }
+              }
+          });
+
+      
+    }
+    openItem = function (title ,id) {
+
+
+      api.openWin({
+          name:title,
+          url: 'widget://html/common/win.html',
+          title : title,
+          pageParam: {
+              title: title,
+              url:'',
+              name :'',
+              params:{
+
+              }
+          }
+      });
+
+
+    }
+</script>
+ 
+<script type="text/javascript">
+
+  window.headerH;
+  window.footerH;
+	apiready = function(){
+
+     loadCommonJs();
+
+   
+
+     headerH = api.pageParam.headerH
+     footerH = api.pageParam.footerH
+
+
+        if($api.getStorage('user')){
+
+            initData();
+
+        }else{
+
+            goLogin();
+
+        }
+ 
+
+	}
+
+  refreshLocation = function () {
+      location.reload();
+  }
+
+  initData = function () {
+    
+     openBanner();
+
+     initMess();
+
+     initRefresh(function () {
+
+          openBanner();
+
+          vm.clickTab();
+
+     })
+
+
+
+  }
+
+
+  initMess = function () {
+ 
+
+     window.vm = new Vue({
+          el:'#indexBox',
+          data:{
+            loadding      : true, 
+            noData        : false,
+            onClass       : ['on'],
+            currentPage   : 1,
+            catId         : 0,
+            messList      : [],
+            tabItem       :[{
+              name : '邮件'
+            },{
+              name : '通知'
+            }],
+            postSw        : true, 
+            newGoodsAPI   : '',
+            userRank      : 1,
+            limit         : 6,
+            user          : {},
+            maxMess       :[],
+            msg_notread_num :'',
+            youjian_notread_num:'',
+            tongzhi_notread_num:'',
+            all_notread_num : '',
+
+            // userRank      : "{$user_rank}" ? "{$user_rank}" :0,
+            bFirstPost    : true,
+            indexShow     : true,
+            json          : [{
+                title :  '标标题标题标题标题标题题',
+                time : '08:00',
+                content : '这里是内容区域，新版中的列表布局可以很轻松的帮助开发者完成常见列表样式。',
+            }],
+            isDebug          :false,
+            isTip           :true
+          },
+          methods:{
+              clickTab:function (index){
+
+               
+                showProgress('加载中')
+
+
+                this.emptyData();
+
+                this.getData(true);
+ 
+
+              },
+              openGongGaoDetail:function (key) {
+                openGongGaoDetail(key);
+                
+              },
+              sliderMess:function () {
+
+
+
+              setTimeout(function () {
+
+ new TouchSlider('slider2',{duration : 600, interval:3000, direction:1, autoplay:true, align:'middle', mousewheel:true, mouse:true, fullsize:true});
+                            
+                },300)
+
+                     
+              },
+              appendGongGao :function (data) {
+
+                var  _this = this; 
+                 
+                _this.maxMess = data || [];
+ 
+                if(_this.maxMess.length>0){
+
+                    _this.sliderMess();
+                }
+ 
+
+              },
+
+              openmail : function (index) {
+
+                  openMailDetail(this.messList[index]);
+
+              },
+              appendWorkMail:function (data) {
+                var  _this = this; 
+                  if(!data  || data.length ===0){
+                    this.noData = true;
+                    this.isTip = false;
+                    return;
+                  }
+
+                  _this.messList = data ||[];
+ 
+                
+              },
+              appendMenuTips:function (data) {
+
+                $api.setStorage('all_notread_num',data.all_notread_num);
+ 
+                this.msg_notread_num = data.msg_notread_num 
+                this.youjian_notread_num = data.youjian_notread_num 
+                this.tongzhi_notread_num = data.tongzhi_notread_num 
+
+                this.updateBadge()
+ 
+              },
+              updateBadge:function () {
+                
+                 api.sendEvent({
+                      name: 'upateBadge', 
+                  });
+ 
+              },
+
+              getData:function (bFirstPost) {
+
+                this.bFirstPost = bFirstPost;
+
+                this.loadding = true;
+
+                var _this = this;
+ 
+                var timestamp     = Date.parse(new Date())/1000;
+ 
+                    // alert(JSON.stringify(sign));
+  
+
+                ajax({
+                  aApi : 'index/getShouye',
+                  params:{
+                    jiaoshi_id : $api.getStorage('user').id
+                  }
+                },function (data) {
+
+                  hideProgress();
+                  hideRefresh();
+                  hideRefresh();
+               
+ 
+                  if(data.code==1){
+
+                          var resData = data.data; 
+
+
+                          _this.appendGongGao(resData.gonggao_data);
+
+                          _this.appendWorkMail(resData.email_data);
+
+                          _this.appendMenuTips(resData);
+
+
+
+                  }else{
+
+                       toast(data.msg);
+
+                  }
+                })
+                
+  
+
+             } ,
+
+             changeCategoryStyle:function (index) {
+
+
+                  this.onClass = [];
+                  this.onClass[index] ='on';
+             },
+             emptyData:function () {
+                  this.currentPage  = 1;
+                  this.json  =[{
+                    title :  '标标题标题标题标题标题题',
+                    time : '08:00',
+                    content : '这里是内容区域，新版中的列表布局可以很轻松的帮助开发者完成常见列表样式。',
+                }];
+
+             },
+
+             bindScroll:function () {
+               var _this = this;
+
+                initLoadMore({
+                       distance: 600,
+                       callback:function () {
+                          if(_this.postSw){
+
+                                  _this.postSw = false;
+                                  _this.currentPage++;
+                                  _this.loadding = true;
+                                  _this.getData(false);
+
+
+                          }
+
+                          
+                       }
+                    })
+
+
+
+
+             }
+          },
+           beforeCreate:function (){
+               log("实例创建之前"+'beforeCreate')
+          },
+
+           beforeMount:function() {
+               log("数据编译之前"+'beforeMount')
+           },
+          mounted:function() {
+
+               log("数据编译完成"+'mounted')
+           },
+           beforeUpdate:function () {
+               console.log("数据更新之前"+'beforeUpdate')
+           },
+           updated:function () {
+               console.log("数据解析完成"+'updated')
+           },
+           beforeDestroy:function () {
+               log("数据销毁之前"+'beforeDestroy')
+           },
+           destroyed:function () {
+               log("数据销毁完成"+'destroyed')
+           },
+           created:function () {
+
+               //同步返回结果：
+
+             log("实例创建完成")
+
+             var  user =  $api.getStorage('user') || false;
+
+
+              this.user =  user
+
+              this.getData(true);
+
+
+
+ 
+          },
+
+
+
+
+
+         
+    });
+
+
+
+
+    }
+
+
+
+
+ 
+
+
+
+// 轮播  openBanner
+	openBanner = function () {
+
+    var bannerH = $api.dom('#banner').offsetHeight;
+ 
+ 		 var UIScrollPicture = api.require('UIScrollPicture');
+
+      UIScrollPicture.open({
+          rect: {
+              x: 0,
+              y: 0,
+              w: api.winWidth,
+              h: bannerH
+          },
+          data: {
+              paths: [
+                  'widget://image/banner/banner.jpg', 
+              ],
+              // captions: ['apicloud', 'apicloud']
+          },
+          styles: {
+              caption: {
+                  height: 30,
+                  color: '#E0FFFF',
+                  size: 10,
+                  bgColor: '#333',
+                  position: 'bottom'
+              },
+              indicator: {
+                 dot:{
+                   w:8,
+                   h:8,
+                   r:4,
+                   margin:5
+                },
+                align: 'center',
+                color: '#FFFFFF',
+                activeColor: '#2ABB9C'
+              }
+          },
+          placeholderImg: 'widget://res/slide1.jpg',
+          contentMode: 'scaleToFill',
+          interval: 3,
+          fixedOn: api.frameName,
+          loop: true,
+          fixed: false
+      }, function(ret, err) {
+          if (ret) {
+           	if(ret.eventType ==='click'){
+
+               // alert(ret.index)
+          	}
+
+          } else {
+              // alert(JSON.stringify(err));
+          }
+      });
+	}
+// 轮播openBanner end
+
+
+</script>
+
+
+</html>

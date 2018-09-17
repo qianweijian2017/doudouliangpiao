@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../css/commonContact.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../script/aui/css/aui.css"/> 
+    <style type="text/css"> 
+   #contactBox .rightBar.colRowBox{
+         width: 100vw;
+         overflow-y: scroll;
+         left: 0;
+         top: 0; 
+         bottom: 0; 
+      background-color: #f7f7f7;
+
+     }
+      
+.colRowBox .ulList li{
+      line-height: 45px;
+      height: 45px;
+      border-bottom: 1px solid #fff;
+     }
+  </style>
+ </head>
+<body> 
+ 
+<div id="contactBox" class="contactBox" style="display: none;">
+<!--  id : this.louceng[i].id,
+                        xuexiao_id :  this.louceng[i].xiaoqu_id,
+                        xiaoqu_id :  this.louceng[i].xiaoqu_id,
+                        quyu_id :  this.louceng[i].quyu_id,
+                        bianhao :  this.louceng[i].bianhao,
+                        mingcheng :  this.louceng[i].mingcheng,
+                        fangjian_num :  this.louceng[i].fangjian_num  -->
+ 
+
+       <section class="rightBar colRowBox touch-scroll">
+            
+            <ul class="ulList clearfix" id="ulList">
+
+               
+              <li v-for='(key,item) in list' @click="clickLouceng(item.idx,item.mingcheng,item.xiaoqu_id,item.xuexiao_id,item.quyu_id,$event)"  class="{{item.active ? 'active' : ''}}"  tapmode> 
+
+                {{item.mingcheng}}({{item.fangjian_num}})
+                <i class="iconfont icon-queren aui-pull-right aui-margin-r-10" ></i>
+
+              </li>
+            </ul> 
+
+            <div class="noContact" v-if='list.length===0'>暂无</div>
+
+       </section>
+
+
+</div>
+
+       
+</body>
+
+<script type="text/javascript" src='../../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../../script/common.js'></script>
+<script type="text/javascript" src="../../../../script/vue/vue.js"></script>
+<script type="text/javascript" src="../../../../script/vue/vue-resource.js"></script>
+
+<script type="text/javascript">
+      apiready = function(){
+
+        loadCommonJs();
+ 
+
+                                                                                                                                                                                                
+        if(api.safeArea.bottom > 0){
+ 
+            $api.dom('.rightBar').style.paddingBottom = api.safeArea.bottom + 'px'
+        }
+ 
+
+        loadKezu();
+
+  
+  
+      }
+        
+
+     
+
+      loadKezu = function () {
+
+          window.vm = new Vue({
+             el:'#contactBox',
+             data:{ 
+                  jianzhuwu :'' , 
+                  rightBar : '',
+                  leftCount : 0,
+                  rightCount :0, 
+                  allLeftBar : '',
+                  allRightBar : '' ,
+                  onClass : ['active'],
+                  rightClass : [''],
+                  louceng : [],
+                  showRightAllTitle:true
+ 
+             },
+             methods:{
+
+                clickLouceng : function (index,mingcheng,xiaoqu_id,xuexiao_id,quyu_id,event) {
+ 
+ 
+                     this.addListClass(event);
+
+                     this.saveBaoxiuXiaoquId(mingcheng,xiaoqu_id, xuexiao_id, quyu_id);
+
+                     $api.setStorage('loucengText',mingcheng)
+                    
+                     $api.setStorage('canclicktab',1)
+
+                     api.execScript({
+                         name: '我要报修',
+                         frameName: 'flower',
+                         script: 'tab(2);'
+                     });
+
+                     $api.setStorage('fangjian',this.louceng[index].fangjian)
+  
+
+                }, 
+                saveBaoxiuXiaoquId:function (xiaoqu_id,xuexiao_id,quyu_id) {
+
+
+                  
+                },
+                addListClass :function (event) {
+
+                     var target = event.currentTarget;
+
+                     var ulList = $api.domAll('#ulList li');
+
+                     for(var j = 0 ;  j < ulList.length ; j++){
+
+                          if(ulList[j] === target){
+
+                           $api.addCls(ulList[j], 'active'); 
+
+                          }else{
+
+                           $api.removeCls(ulList[j], 'active'); 
+
+                          }
+
+                     }
+ 
+
+                },
+
+                doKezu  : function () {  
+
+                  $api.dom('#contactBox').style.display ='block'
+
+                  var louceng = $api.getStorage('louceng') || [];
+
+                  this.louceng = louceng;
+ 
+                  var list = [];
+                    
+                  for(var i = 0 ; i <  this.louceng.length ; i ++){
+
+                    list.push({ 
+                        idx : i,
+                        id : this.louceng[i].id,
+                        xuexiao_id :  this.louceng[i].xiaoqu_id,
+                        xiaoqu_id :  this.louceng[i].xiaoqu_id,
+                        quyu_id :  this.louceng[i].quyu_id,
+                        bianhao :  this.louceng[i].bianhao,
+                        mingcheng :  this.louceng[i].mingcheng,
+                        fangjian_num :  this.louceng[i].fangjian_num 
+
+                    }) 
+                  }
+
+
+                  this.listCount = list.length;
+ 
+                  this.list = list;
+
+ 
+                  
+                },
+                 
+                 
+                addRightBarClass:function (jiaoshi_id) {
+
+
+                    var rightBar = this.rightBar;
+                    var allRightBar = this.allRightBar;
+
+                    for(var i = 0 ; i < rightBar.length ; i++){
+
+                          if(rightBar[i].jiaoshi_id == jiaoshi_id){
+ 
+                               rightBar[i].active  =  true  
+
+
+
+                          }
+
+
+                    }
+
+                    for(var i = 0 ; i < allRightBar.length ; i++){
+
+                          if(allRightBar[i].jiaoshi_id == jiaoshi_id){
+
+
+                               allRightBar[i].active  =  true  
+
+
+
+                          }
+
+
+                    }
+
+                    this.allRightBar = allRightBar;
+                    this.rightBar = rightBar;
+
+                  
+                } 
+
+             },
+             created:function () {
+
+                  this.doKezu();
+
+               
+             },
+             ready:function () {
+
+                  // this.checkAllSelect();
+             },
+             //数据渲染完成
+             compiled:function () { 
+
+                   
+              }
+          })
+
+
+      }
+
+
+
+
+    
+
+       
+
+    
+  
+</script>
+  
+ 

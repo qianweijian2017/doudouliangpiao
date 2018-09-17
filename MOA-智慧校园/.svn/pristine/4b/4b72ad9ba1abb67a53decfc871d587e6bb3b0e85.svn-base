@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../script/aui/css/aui.css" /> 
+  <style type="text/css"> 
+  html,body{
+    background-color: #fff;
+  }
+  .centerBox{
+    background-color: #fff;
+    margin-top: 60px;
+    text-align: center;
+  }
+  i.aui-iconfont{
+    
+      font-size: 6rem;
+  }
+    .building{
+      color: #e51c23 !important
+    }
+    p.text{
+      font-size: 1rem;
+      text-align: center;
+
+    }
+    .noNetWork{
+      color: #e51c23;
+
+    }
+    .tips{
+      display: none;
+    }
+
+ </style>
+</head>
+<body>
+   
+      
+ <section class="centerBox">
+      <div id="progress" class="tips">
+        <i class="aui-iconfont aui-icon-date building"></i>
+        <p class="text">待开发</p>
+    </div>
+      <div id="noNetWork" class="tips">
+        <i class="aui-iconfont aui-icon-close noNetWork"></i>
+        <p class="text">网络错误</p>
+    </div>
+ </section>
+
+
+ </body>
+</html>
+<script type="text/javascript" src='../script/api.js'></script>
+
+<script  charset="utf-8">
+
+  var header ,headerH ,title,name,url;
+      apiready = function () {
+ 
+        checkConnect();
+
+    }
+    checkConnect = function () {
+      if(api.connectionType==='none'){
+
+        $api.dom('#noNetWork').style.display ='block'
+
+      }else{
+
+        $api.dom('#progress').style.display ='block'
+      }
+    }
+ 
+
+
+
+
+</script>

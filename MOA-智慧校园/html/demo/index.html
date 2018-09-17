@@ -1,0 +1,172 @@
+ <!doctype html>
+<html>
+<head> 
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>智慧校园</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <style>
+       
+
+        /*#footer ul li:nth-child(1){ background-image: url(./image/bottombtn0101.png); }
+        #footer ul li:nth-child(2){ background-image: url(./image/bottombtn0201.png); }
+        #footer ul li:nth-child(3){ background-image: url(./image/bottombtn0301.png); }
+        #footer ul li:nth-child(4){ background-image: url(./image/bottombtn0401.png); }*/
+        /*#footer ul li:nth-child(1).active{ background-image: url(./image/bottombtn0102.png); }
+        #footer ul li:nth-child(2).active{ background-image: url(./image/bottombtn0202.png); }
+        #footer ul li:nth-child(3).active{ background-image: url(./image/bottombtn0302.png); }
+        #footer ul li:nth-child(4).active{ background-image: url(./image/bottombtn0402.png); }*/
+         
+    </style>
+</head>
+<body>
+<div class="aui-content-padded">
+
+     <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/xunfei/index.html','voiceRecognizer模块')">讯飞语音识别(voiceRecognizer)
+     </button> 
+
+</div>
+<div class="aui-content-padded">
+
+     <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/rongcloud/index.html','融云即时通信')">融云即时通信
+     </button> 
+
+</div>
+
+<div class="aui-content-padded">
+     <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/ajpush/ajpush.html','ajpush模块')">极光推送(ajpush)
+     </button>
+</div>
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/alioss/alioss.html','aliyunOSS模块')">阿里云存储(aliyunOSS )
+     </button>
+</div>
+
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/posPrinter/posPrinter.html','posPrinter模块')">蓝牙/通用小票打印机(posPrinter)
+     </button>
+</div>
+
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openbaiduWin('../baidumap/baidu_map')"> 百度地图(bMap)
+     </button>
+
+</div>
+
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openbaiduWin('../baidumap/demo_line')"> 地图案例一：(线路规划)(bMap)
+     </button>
+
+</div>
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="UIWebBrowser()"> UIWebBrowser
+     </button>
+
+</div>
+ 
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/trans/trans.html','trans模块')">XML -> JSON、图片 <--> base64(trans)
+     </button>
+
+</div>
+
+ 
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/my/my.html','personalCenter模块')">个人中心（ personalCenter ）
+     </button>
+
+</div>
+ 
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/superfile/superfile.html','superFile模块')">文件的展示功能 superFile  ）仅支持安卓 
+     </button>
+
+</div>
+
+
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/opendoc/opendoc.html','浏览文档' )"> 浏览文档（docInteraction）
+     </button>
+
+</div>
+
+
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/class/class.html','班级展示',true)"> 班级展示
+     </button>
+
+</div>
+
+<div class="aui-content-padded">
+      <button class="aui-btn aui-btn-danger aui-btn-block" onclick="openWin('widget://html/demo/navigator/navigator.html','班级展示',true)"> NVNavigationBar
+     </button>
+
+</div>
+
+
+ </body>
+</html> 
+<script type="text/javascript">
+
+    apiready = function () { 
+         
+    }
+
+    alertParams = function () {
+        var wgtParam = api.wgtParam;  //比如： {"name": "API Demo"}
+     }
+
+
+    openWin = function (url,text,up) {
+      if(up){
+        
+          api.setScreenOrientation({  orientation: 'landscape_left' });
+
+      }
+
+        api.openWin({
+            name: 'xunfei',
+            url: '../../html/common/win.html',
+            delay:100,
+            bgColor:'#fff',
+            pageParam: {
+                title: text,
+                name: text,
+                url:url
+             }
+        });
+
+
+    } 
+
+    UIWebBrowser = function () { 
+     
+        api.openWin({
+            name: 'UIWebBrowser',
+            url: 'widget://html/common/win.html',
+            delay:100,
+            bgColor:'#fff',
+            pageParam: {
+                title: 'UIWebBrowser',
+                name: 'UIWebBrowser',
+                // url: 'widget://html/demo/index.html',
+                url: 'widget://html/template/iosFileBorwser.html',
+             }
+        });
+
+
+    }
+
+     function openbaiduWin(name){
+        api.openWin({
+            name: ''+name+'_win',
+            url: ''+name+'_win.html',
+            bounces:false,
+            delay: 300
+        });
+        
+     }
+</script>

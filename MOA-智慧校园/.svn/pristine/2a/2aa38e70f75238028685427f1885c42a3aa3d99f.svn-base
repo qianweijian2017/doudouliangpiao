@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/login.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css"/>
+<style type="text/css" media="screen">
+html,body{
+  background: #F5F6FB;
+}
+header{background: #e51c23;}
+#headerBar{font-size: 14px;}
+   #wxLogin{
+    background-image: url(../../icon/login/wxicon.png);
+
+  }
+  #phoneLogin{
+    background-image:url(../../icon/login/phonelogin.png);
+  }
+  #noAcount{line-height: 60px; text-align: center; color: blue; font-size: 12px; }
+  .forgotPwd{
+    font-size: 13px;
+    color: #e51c23;
+    float: right;
+    text-align: right;
+    margin-right: 20px;
+    line-height: 4;
+  }
+  #accountLogin{
+    background-color: #03a9f4;
+  }
+  .login_box{
+    margin-top: 30px;
+  }
+</style>
+</head>
+<body>
+
+ 
+  <section class="login_box">
+
+      <cite class="clearfix">
+         <span>手机号</span>
+         <input type="number" name="" id="tel"  placeholder="输入手机号" required="" tapmode>
+      </cite>
+
+       <cite class="clearfix">
+         <span>旧密码</span>
+         <input type="password" name="" id="old_password"  placeholder="输入旧密码" required="" tapmode>
+      </cite>
+
+       <cite class="clearfix">
+         <span>新密码</span>
+         <input type="password" name="" id="new_password"  placeholder="输入6~12位新密码" required="" tapmode>
+      </cite>
+
+        <cite class="clearfix">
+           <span>确认密码</span>
+           <input type="password" name="" id="new_password1"  placeholder="再次输入6~12位新密码" required="" tapmode>
+        </cite>
+
+      <button id="acountLogin" class="acountLogin" style="background-color: #e51c23;"  onclick="doForgot()">确认修改</button>
+
+  </section>
+
+
+ </body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+
+<script type="text/javascript">
+    apiready = function(){
+        loadCommonJs();
+        
+ 
+
+    }
+
+</script>
+
+<script type="text/javascript">
+
+    window.doForgot = function(){
+
+
+
+      var tel = $api.dom('#tel').value;
+
+      var old_password = $api.dom('#old_password').value;
+
+      var new_password = $api.dom('#new_password').value;
+
+      var new_password1 = $api.dom('#new_password1').value;
+
+      if(new_password != new_password1){
+
+        toast('两次确认密码不一致');
+        return;
+      }
+
+      if(new_password.length < 6 || new_password1.length < 6){
+
+        toast('密码长度必须大于6位');
+        return;
+      }
+
+      showProgress('修改中...');
+
+      ajax({
+        aApi : 'Wdxinxi/resetPassword',
+        params:{
+          tel : tel,
+          old_password : old_password,
+          new_password : new_password
+        }
+      },function (data) {
+
+          hideProgress();
+
+        if(data.code==1){ //修改成功
+
+          setTimeout(function () {
+
+            api.closeWin();
+
+          },1300)
+
+
+            toast(data.msg);
+
+
+        }else{
+
+          toast(data.msg);
+
+        }
+
+
+
+
+      })
+
+
+    }
+
+</script>
+<script type="text/javascript">
+    forgotPwd = function () {
+         api.openWin({
+            name: 'forgot',
+            url: './forgot.html',
+            pageParam: {
+                oper: 'forgot'
+            }
+        });
+    }
+</script>

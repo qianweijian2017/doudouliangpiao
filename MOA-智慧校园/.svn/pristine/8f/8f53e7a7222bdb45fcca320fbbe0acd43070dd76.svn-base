@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../script/aui/css/aui.css"/> 
+   <style type="text/css">  
+    .aui-list-item .aui-list-item-inner .aui-list-item-title .new{
+      background-color: #f66;
+      color: #fff;
+      padding: 2px 3px;
+      line-height: 1;
+      border-radius: 3px;
+      margin-left: 5px;
+      font-size: 11px;
+    }
+    .aui-list-item .aui-list-item-inner .aui-list-item-title{
+      color: #333;
+      font-size: 14px;
+    }
+    .aui-list .aui-list-item-text{
+      font-size: 13px;
+    }
+    .aui-media-list .aui-list-item-inner{
+      padding-bottom: .2rem;
+    }
+    .aui-danger{
+      width: 100%;
+      clear: both;
+      display: block;
+    }
+    .aui-danger   .aui-danger-item{
+          float: right;
+          margin-right: 15px;
+          font-size: 13px;
+    }
+    #tips-1{
+      display: none;
+    }
+  </style>
+ </head>
+<body> 
+   
+    <section class="messBox" id="messBox">
+
+      <div class="aui-tips aui-margin-b-15" id="tips-1" v-if='tips'  >
+        <i class="aui-iconfont aui-icon-danger"></i>
+        <div class="aui-tips-title">{{tips}}</div>
+        <i class="aui-iconfont aui-icon-close" tapmode="" @click="closeTips()"></i>
+    </div>
+
+
+      <ul class="aui-list aui-media-list" id="messList">
+
+
+        <li class="aui-list-item clearfix" v-for='(key,item) in messList' @click="OpenMail(key)"> 
+
+                <div class="aui-media-list-item-inner">
+                    
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title">{{item.msg_title | filterTitle}}<span class="new" v-if='item.read'>New</span></div>
+                            <div class="aui-list-item-right">{{item.send_mingcheng}}</div>
+                        </div>
+                      <!--   <div class="aui-list-item-text clamp1">
+                            {{item.content | filterContent}}
+                        </div> -->
+                    </div>
+                </div>
+                <div class="aui-danger" style="padding-top:0">
+                    
+                    <div class="aui-danger-item">{{item.send_time}}</div>
+
+                </div>
+            </li>
+ 
+
+
+
+        </ul>
+
+        <div class="dataTip" v-if='noData'>暂无新通知</div> 
+        <div class="dataTip" v-if='end'>内容全部加载完成</div> 
+        <div class="dataTip" v-if='loadding'>内容加载中</div> 
+  
+    </section>
+
+       
+</body>
+
+<script type="text/javascript" src='../../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../../script/common.js'></script>
+<script type="text/javascript" src='../../../../script/zepto/zepto.min.js'></script>
+<script type="text/javascript" src="../../../../script/vue/vue.js"></script>
+<script type="text/javascript" src="../../../../script/vue/vue-resource.js"></script>
+
+<script type="text/javascript">
+      apiready = function(){
+
+        loadCommonJs()
+ 
+
+           initMess();
+
+           initRefresh(function () {
+ 
+                 vm.clickTab();
+
+           })
+
+
+      }
+
+     initMess = function () {
+ 
+
+     window.vm = new Vue({
+          el:'#messBox',
+          data:{
+            loadding      : true,
+            end           : false,
+            noData        : false,
+            onClass       : ['on'],
+            currentPage   : 1,
+            catId         : 0,
+            messList      : [],
+            tips          : '内容',
+            tabItem       :[{
+              name : '邮件'
+            },{
+              name : '通知'
+            }],
+            postSw        : true,
+            indexApi      : getServerUrl() + 'index/checkJiaoshiLogin',
+            newGoodsAPI   : '',
+            userRank      : 1,
+            limit         : 6,
+            user          : {},
+            maxMess       :[],
+
+            // userRank      : "{$user_rank}" ? "{$user_rank}" :0,
+            bFirstPost    : true,
+            indexShow     : true,  
+            isTip          :true
+          },
+          methods:{
+              clickTab:function (index){
+
+               
+                showProgress('加载中')
+
+                location.reload();
+
+ 
+
+
+              },
+              closeTips:function () {
+                    $api.setStorage('messTip',this.tips);
+
+                    this.tips = false;
+
+              },
+              setTips : function (tips) {
+
+                if($api.getStorage('messTip') == tips){
+
+                    this.tips = false;
+
+                }else{
+                    this.tips = tips;
+
+                }
+
+
+              },
+              OpenMail:function (index) {
+
+                var mail = this.messList[index];
+ 
+                 api.openWin({
+                    name: '通知',
+                    url: 'widget://html/common/win.html',
+                    delay:0,
+                    bgColor:'#fff',
+                    pageParam: {
+                        title: '通知详情',
+                        name: '通知详情',
+                        // url: 'widget://html/demo/index.html',
+                        url: 'widget://html/frame0/schoolMess/messDetail.html',
+                        // shareArticle : true,
+                        params : mail
+                     }
+                });
+         
+
+                    
+              },
+               
+              dealMessList:function () {
+
+                var  _this = this; 
+
+                ajax({
+                   aApi : 'Bgtongzhi/getTongzhiRead',
+                   params : {
+                        jiaoshi_id : $api.getStorage('user').id,
+                        page : this.currentPage  
+                   }
+                },function (data) {
+                  log('刷新')
+
+                  hideProgress();
+                  hideRefresh();
+
+ 
+                  if(data.code==1){
+
+
+                    if(data.data.length === 0 && _this.currentPage ==1){
+
+                       _this.end = false;
+                       _this.noData = true;
+                       _this.loadding = false;
+                       return; 
+
+                    }
+//                         {
+//     "id": "4",
+//     "send_time": "2018-08-13 21:50:49",
+//     "read": "1",
+//     "msg_guanlian_id": "1",
+//     "read_mingcheng": "读取人2",
+//     "send_mingcheng": "发送人2",
+//     "read_time": "2018-08-13 21:51:12",
+//     "msg_leixing_id": "1",
+//     "msg_leixing_mingcheng": "测试",
+//     "send_id": "1",
+//     "msg_title": "标题2",
+//     "read_id": "2"
+// }
+ 
+
+                      if(data.data.length === 0){
+ 
+                           _this.postSw = false;
+
+                           _this.end = true;
+                           return;
+                      }
+ 
+                          var data = data.data;
+
+                          var tips = data.tips;
+                          
+                          if(tips) $api.dom('#tips-1').style.display = 'block';
+
+  
+                          _this.setTips(data.tips);
+
+                         log(data,true)
+
+                         for(var j = 0 ; j < data.length;  j++){
+
+                               _this.messList.push({
+                                      "id": data[j].id,
+                                      "send_time": data[j].send_time,
+                                      "read": data[j].read,
+                                      "msg_guanlian_id": data[j].msg_guanlian_id,
+                                      "read_mingcheng":  data[j].read_mingcheng,
+                                      "send_mingcheng":  data[j].send_mingcheng,
+                                      "read_time":  data[j].read_time,
+                                      "msg_leixing_id":  data[j].msg_leixing_id,
+                                      "msg_leixing_mingcheng": data[j].msg_leixing_mingcheng,
+                                      "send_id":  data[j].send_id,
+                                      "msg_title": data[j].msg_title,
+                                      "read_id": data[j].read_id
+                             })
+
+                         }
+ 
+ 
+
+                         _this.end = false;
+                         _this.loadding = true;
+                         _this.postSw = true;
+
+
+                          if(_this.bFirstPost){
+                            _this.bFirstPost = false;
+                            _this.bindScroll();
+                          }
+ 
+
+
+                  }else{
+
+
+                    toast(data.msg)
+
+
+                  }
+
+
+
+                  
+                });
+
+                    
+
+ 
+ 
+  
+
+                  
+                
+              },
+
+              getData:function (bFirstPost) {
+
+                this.bFirstPost = bFirstPost;
+
+                this.loadding = true;
+
+                var _this = this;
+
+                $api.dom('#messBox').style.display = 'block'
+
+
+                var timestamp = Date.parse(new Date())/1000;
+
+            
+
+                    // alert(JSON.stringify(sign));
+
+ 
+                this.dealMessList();
+                  
+
+
+             } ,
+              
+             emptyData:function () {
+
+                  this.currentPage  = 1; 
+
+                  this.messList  = [ ]; 
+
+ 
+
+             },
+
+             bindScroll:function () {
+               var _this = this;
+
+
+      $(window).scroll(function () {
+
+           if( ( $(window).height() +  $(window).scrollTop() + 600 )  >
+               $(document).height() && _this.postSw ){
+
+
+                      _this.postSw = false;
+                      _this.currentPage++;
+                      _this.loadding = true;
+                      _this.getData(false);
+
+           }
+
+
+
+      });
+
+
+
+
+             } ,
+             initFilter:function () {
+
+                Vue.filter('filterContent', function (value) {
+
+                     if (!value) return ''
+                    value = value.toString().substr(0,28)
+                    return value
+                  })
+
+                Vue.filter('filterTitle', function (value) {
+
+                     if (!value) return ''
+                    value = value.toString().substr(0,25)
+                    return value
+                  })
+
+
+              }
+            
+          },
+          
+          created:function () {
+ 
+
+            this.initFilter();
+               //同步返回结果：
+
+             var  user =  $api.getStorage('user') || false;
+
+
+            this.user =  user
+
+            this.getData(true);
+
+            
+
+
+
+
+
+             //获取新品推荐
+             // this.getNewGoods();
+          }
+    });
+
+
+
+
+    }    
+  
+</script>
+  
+ 

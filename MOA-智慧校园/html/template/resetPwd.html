@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/login.css"/>
+<style type="text/css" media="screen">
+html,body{
+  background: #F5F6FB;
+}
+header{background: #e51c23;}
+   #wxLogin{
+    background-image: url(../../icon/login/wxicon.png);
+
+  }
+  #phoneLogin{
+    background-image:url(../../icon/login/phonelogin.png);
+  }
+  #noAcount{line-height: 60px; text-align: center; color: blue; font-size: 12px; }
+  .forgotPwd{
+    font-size: 13px;
+    color: #e51c23;
+    float: right;
+    text-align: right;
+    margin-right: 20px;
+    line-height: 4;
+  }
+</style>
+</head>
+<body>
+
+  <header id="header">
+      <div class="title" id="loginTitle">
+        <!-- <i id="regBtn" onclick="openRegisterBox()" tapmode>去注册</i> -->
+        <!-- <div onclick="closewin()" class="close" tapmode ></div> -->
+         <span>重置密码</span>
+      </div>
+  </header>
+  <section class="login_box">
+
+      <cite class="clearfix">
+       <span>用户名:</span>
+        <input type="number" name="" id="tel" placeholder="请输入您的手机号" required="" tapmode>
+      </cite>
+       <cite class="clearfix">
+         <span>密码:</span>
+        <input type="password" name="" id="password"  placeholder="输入6~12位密码" required="" tapmode>
+
+      </cite> 
+      <button id="acountLogin" class="acountLogin" onclick="dologin()">登录</button>
+
+  </section>
+
+
+  <!-- <img src="../../icon/loginBG.jpg" class="loginBG" id="loginBG" /> -->
+ </body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+ 
+
+<script type="text/javascript">
+
+    dologin = function(){
+
+      showProgress('登录中...');
+
+
+        ajax({
+           aApi : 'index/checkJiaoshiLogin',
+           params:{
+            tel : dom('#tel').value,
+            password : dom('#password').value
+
+           }
+        },function(data){
+ 
+             // "data": {
+               //  "xiaoqu_id": "1",
+               //  "xuenian_id": "2",
+               //  "xuenian_mingcheng": "2018学年",
+               //  "nianji_id": "49",
+               //  "nianji_mingcheng": "初一",
+               //  "banji_id_str": "76,77,78",
+               //  "banji_mingcheng_str": "01班,02班,03班",
+               //  "mingcheng": "邓彬",
+               //  "sex": "0",
+               //  "jianjie": null,
+               //  "zhuangtai": "0",
+               //  "juese_cache_str": "1",
+               //  "zidingyi_cache_str": "2"
+             //  }
+
+            hideProgress();
+
+            if(data.code==0){
+
+              toast(data.msg);
+
+            }else{
+
+              toast(data.msg)
+ 
+                var user = data.data;
+ 
+
+                $api.setStorage('user',user);
+
+                api.setPrefs({
+                    key: 'user',
+                    value: user
+                });
+
+
+
+                api.execScript({
+                    name: 'root', 
+                    frameName:'frame0',
+                    script: 'initData();'
+                });
+ 
+
+               setTimeout(function(){
+ 
+                   api.closeToWin({
+                          name : 'root'
+                   });
+                    
+
+               },1300)
+
+
+            }
+
+        })
+    }
+
+</script>
+<script type="text/javascript">
+    forgotPwd = function () {
+         api.openWin({
+            name: 'forgot',
+            url: './forgot.html',
+            pageParam: {
+                oper: 'reg'
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+
+    regSheet = function(){
+      api.actionSheet({
+        title: '请选择登录方式',
+        cancelTitle: '取消',
+        buttons: ['微信注册','手机号注册']
+    }, function(ret, err) {
+
+        if (ret) {
+           var index = ret.buttonIndex;
+          switch(index){
+
+              case 1 : wxreg(); break;
+              case 2 : phonereg(); break;
+          }
+
+
+        } else {
+            // alert(JSON.stringify(err));
+        }
+    });
+    }
+    phonereg = function(){
+        api.openWin({
+            name: 'phonereg',
+            url: './phonereg.html',
+            pageParam: {
+                oper: 'reg'
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+
+ apiready = function(){
+  loadCommonJs();
+
+      var header = $api.byId('header');
+
+       $api.fixStatusBar(header);
+
+       addEventKeyBack();
+
+       setHeaderBar()
+
+  
+
+   }
+   addEventKeyBack = function () {
+     
+         api.addEventListener({
+            name: 'keyback'
+          }, function(ret, err) {
+     
+        });
+
+   }
+
+   window.closewin = function () {
+       api.setFullScreen({
+          fullScreen: false
+       });
+      clickSw = true;
+
+      api.closeWin( );
+   }
+
+</script>
+
+
+
+
+ <script type="text/javascript">
+
+
+
+var clickSw ;
+
+
+window.wxLogin = function(){
+  clickSw = true;
+
+
+ // if(clickSw){
+        clickSw = false;
+        wxAuth(function (res,err) {
+           if(res.status){
+              var params = {};
+
+              params.code = res.code;
+
+              wxgetToken(params,function (rets,errs) {
+
+                if(rets.status){
+
+                      var openId = rets.openId;
+                      var accessToken = rets.accessToken;
+                      var subParams = {
+                        openId : openId,
+                        accessToken:accessToken
+                      }
+
+                      getUserInfo(subParams,function (resp,error) {
+
+                            if(resp.status){
+
+                                  var unionid = resp.unionid
+
+                                  goWxLogin(unionid);
+
+
+                            }
+
+                      })
+
+
+                }
+
+
+
+
+              })
+
+           }else{
+
+              toast('取消了登录');
+           }
+
+        })
+
+
+
+// }
+}
+
+wxAuth = function (callback) {
+ var wx = api.require('wx');
+
+    wx.auth({
+
+      }, function(ret, err) {
+
+          if(ret.status){
+
+              callback(ret,err)
+
+          }else{
+
+            switch(err.code){
+              case '-1': msg = '未知错误';break;
+              case 1: msg = '用户取消';break;
+              case 2: msg = '拒绝授权';break;
+              case 3: msg = '当前设备未安装微信客户端';break;
+              default: msg = '登录失败';break;
+
+            }
+
+            toast(msg);
+            closewin();
+
+          }
+
+
+    })
+}
+wxgetToken = function (params,callback) {
+ var wx = api.require('wx');
+
+         wx.getToken({
+            code: params.code
+
+          }, function(ret, err) {
+
+              if(ret.status){
+                  // ret 返回值
+                  // status: true,      //布尔型；true||false
+                  // accessToken: '',   //字符串类型；接口调用凭证，传给 getUserInfo 接口 获取用户信息；有效期2小时
+                  // dynamicToken: '',  //字符串类型；当 accessToken 过期时把该值传给 refreshToken 接口刷新 accessToken 的有效期。dynamicToken 的有效期为30天
+                  // expires: 7200,     //数字类型；accessToken 有效期，单位（秒）
+                  // openId: ''         //字符串类型；授权用户唯一标识
+
+                  callback(ret,err)
+
+              }else{
+                 switch(err.code){
+                    case '-1': msg = '未知错误';break;
+                    case 1: msg = 'apiKey值为空或非法';break;
+                    case 2: msg = 'apiSecret值为空或非法';break;
+                    case 3: msg = 'code值为空或非法';break;
+                    case 4: msg = '网络超时';break;
+                    default: msg = '登录失败';break;
+
+                }
+
+                  toast(msg);
+                  closewin();
+
+              }
+
+
+
+        });
+}
+
+getUserInfo = function (params,callback) {
+ var wx = api.require('wx');
+
+   wx.getUserInfo({
+
+      accessToken: params.accessToken,
+      openId: params.openId
+
+    }, function(ret,err){
+
+          if(ret.status){
+
+              callback(ret,err)
+
+          } else{
+             switch(err.code){
+                    case '-1': msg = '未知错误';break;
+                    case 1: msg = 'accessToken 过期';break;
+                    case 2: msg = 'openId非法';break;
+                    case 3: msg = 'openId值为空';break;
+                    case 4: msg = 'accessToken值为空';break;
+                    case 5: msg = 'accessToken非法';break;
+                    case 6: msg = '网络超时';break;
+                    default: msg = '登录失败';break;
+
+                }
+
+                  toast(msg);
+                  closewin();
+          }
+
+    })
+}
+
+</script>

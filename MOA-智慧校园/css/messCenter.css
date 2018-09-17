@@ -1,0 +1,32 @@
+ 
+  .aui-list-item .aui-list-item-inner .aui-list-item-title{
+    color: #333;
+    font-size: 14px;
+  }
+  .aui-list .aui-list-item-text{
+    font-size: 13px;
+  }
+  .aui-media-list .aui-list-item-inner{
+    padding-bottom: .2rem;
+  }
+  .aui-info{
+    width: 100%;
+    clear: both;
+    display: block;
+  }
+  .aui-info   .aui-info-item{
+        float: right;
+        margin-right: 15px;
+        font-size: 13px;
+  }
+  #tips-1{
+    display: none;
+  }
+  .tipNum{
+    display: inline;
+    color: #f66;
+  }
+      .aui-radio:checked{
+      background-color:#e51c23 !important;
+    border: solid 1px #e51c23 !important;
+    }

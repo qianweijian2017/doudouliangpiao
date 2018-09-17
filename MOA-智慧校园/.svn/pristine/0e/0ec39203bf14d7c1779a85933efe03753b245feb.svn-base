@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css"/> 
+   <style type="text/css">  
+	   .messBox{
+	   	background-color: #000;
+	   }
+	   
+    
+  </style>
+ </head>
+<body> 
+
+	<header class="aui-bar aui-bar-nav aui-margin-b-15">
+        <a class="aui-pull-left aui-btn" onclick="closeContact()">
+            <span class="aui-iconfont aui-icon-close"></span>
+        </a>
+        <div class="aui-title">
+             选择人员
+        </div>
+          <a class="aui-pull-right aui-btn"> 
+          	<i class="iconfont icon-team"></i>
+          	确认
+        </a>
+    </header>
+   
+    <section class="messBox" >
+  
+     	 
+   
+    </section>
+
+       
+</body>
+
+<script type="text/javascript" src='../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../script/common.js'></script>
+
+<script type="text/javascript" src="../../../script/vue/vue.js"></script> 
+
+<script type="text/javascript">
+      apiready = function(){
+
+        loadCommonJs();
+
+        getCacheRenyuan();
+  
+
+      }
+
+      closeContact = function () {
+      	confirm('提示','未保存要发送的联系人，是否退出?',function (data) {
+      		if(data){
+      			api.closeFrame();
+      		}
+      	})
+      }
+
+      getCacheRenyuan = function () {
+        
+      	ajax({
+      		 aApi : 'Bgtongzhi/getCacheRenyuan',
+      		 params:{
+      		 	 xiaoqu_id : $api.getStorage('user').xiaoqu_id
+      		 } 
+      	},function (data) {
+      		log(data,true)
+      		if(data.code==1){
+
+
+      				 
+
+      		}else{
+
+      			toast(data.msg)
+
+      		}
+      	})
+      }
+
+    
+  
+</script>
+  
+ 

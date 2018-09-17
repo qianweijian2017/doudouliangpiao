@@ -1,0 +1,592 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" /> 
+
+  <style media="screen">
+    .winHeader { 
+      font-size: 14px;
+    }
+   #edit{
+      display: none ;
+    }
+    #rightBox .rightbtn{
+      display: none;
+    }
+   
+   .commonBtn{
+      font-size: 13px;
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flex;
+      display: -o-flex;
+      display: flex;
+      align-items: center;
+    }
+    .commonBtn i{
+      margin-right: 4px;
+
+    }
+    .commonBtn em{
+
+
+    }
+
+    #shareArticle i{
+      color: #fff;
+      margin-right: 2px;
+      font-size: 12px;   
+    }
+
+  </style>
+</head>
+<body>
+  <div class="winmodal"></div>
+   
+  <header class="aui-bar aui-bar-nav winHeader themeBg"  id="headerBar">
+
+       <a class="aui-pull-left" onclick="closeWin()" tapmode>
+           <span class="aui-iconfont aui-icon-left"></span>
+       </a>
+
+       <div class="aui-title" id="title"></div>
+
+    <div id="rightBox">
+
+        <a class="aui-pull-right rightbtn" id="edit" onclick="oper(this, 1)" tapmode>
+             <span class="aui-iconfont aui-icon-edit"></span>
+         </a>
+
+         <a class="aui-pull-right rightbtn" id="save" onclick="oper(this, 0)" tapmode>
+            <span class="aui-iconfont aui-icon-correct"></span>
+         </a>
+
+          <!-- 发布 -->
+
+          <a class="aui-pull-right rightbtn" id="sendmess" onclick="sendMessage()" tapmode>
+            <span class="commonBtn">
+              <em> 发布</em>
+           </span>
+          <a class="aui-pull-right rightbtn" id="mailsave" onclick="saveMessage()" tapmode>
+            <span class="commonBtn">
+              <em> 保存</em>
+           </span>
+         </a>
+
+         <!-- 文章分享 -->
+          <a class="aui-pull-right rightbtn" id="shareArticle" onclick="shareArticle()" tapmode>
+            <span class="commonBtn">
+              <i class="iconfont icon-share"  ></i>
+               <em>分享</em>
+           </span>
+         </a>
+
+         <!-- 发邮件 -->
+
+          <a class="aui-pull-right rightbtn" id="addmail" onclick="openAddMail()" tapmode>
+            <span class="commonBtn">
+              <i class="iconfont icon-fabu" ></i>
+               <em>发邮件</em>
+           </span>
+         </a>
+
+
+          <a class="aui-pull-right rightbtn" id="sendmail" onclick="sendMail()" tapmode>
+            <span class="commonBtn">
+              <i class="iconfont icon-fabu" ></i>
+              <em>发送</em>
+           </span>
+         </a>
+    
+    <!-- 我要报修 -->
+        <a class="aui-pull-right rightbtn" id="addaffairs" onclick="openAddAffairs()" tapmode>
+            <span class="commonBtn">
+              <i class="aui-iconfont aui-icon-gear" style="font-size: 12px" ></i>
+              <em>我要报修</em>
+           </span>
+         </a>
+          <a class="aui-pull-right rightbtn" id="sendBaoxiu" onclick="sendBaoxiu()" tapmode>
+            <span class="commonBtn">
+              <i class="iconfont icon-queren1"  ></i>
+              <em>提交</em>
+               
+           </span>
+         </a>
+          <a class="aui-pull-right rightbtn" id="reply" onclick="reply()" tapmode>
+            <span class="commonBtn"> 
+              <em>回复</em>
+               
+           </span>
+         </a>
+
+       <a class="aui-pull-right rightbtn" id="noRead" onclick="noRead()" tapmode>
+            <span class="commonBtn"> 
+              <em>全部己读</em>
+               
+           </span>
+         </a> 
+         
+          <a class="aui-pull-right rightbtn" id="editBaoxiu" onclick="editBaoxiu()" tapmode>
+            <span class="commonBtn">
+              <i class="iconfont icon-wodegongzuo2"  ></i>
+              <em></em>
+               
+           </span>
+         </a>
+           
+         
+     </div>
+
+   </header>
+
+
+
+ </body>
+</html>
+<script type="text/javascript" src='../../script/api.js'></script>
+
+<script  charset="utf-8">
+
+  var header ,headerH ,title,name,url;
+      apiready = function () {
+
+         $api.fixStatusBar($api.dom('#headerBar'))
+
+         headerH = $api.dom('#headerBar').offsetHeight  ;
+         document.body.appednChild = '<div class="modal"></div>'
+
+         innerParams();
+
+         addEventKeyBack();
+
+         checkhasUrl();
+
+         checkBtn();
+ 
+         addEventWeidu();
+
+         addEventModal()
+
+    }
+
+    addEventWeidu = function () {
+
+        api.addEventListener({
+            name: 'noRead'
+        }, function(ret, err) {
+             if(ret.value){
+                  var extra = ret.value;
+
+                  if(extra.isWeidu){
+
+                    $api.dom('#noRead').style.display = 'block'
+
+                  }else{
+                    $api.dom('#noRead').style.display = 'none'
+
+                  }
+             }
+        });
+    }
+
+    noRead = function () {
+
+         api.execScript({
+            name: api.winName,
+            frameName: 'weidu',
+            script: 'noRead();'
+        });
+      
+    }
+
+    addEventModal = function () {
+      api.addEventListener({
+          name: 'cover'
+      }, function(ret, err) {
+        $api.dom('.winmodal').style.display = 'block'
+      });
+ 
+         api.addEventListener({
+              name: 'closecover'
+          }, function(ret, err) {
+            $api.dom('.winmodal').style.display = 'none'
+          });
+    }
+
+
+
+
+    saveMessage = function () {
+
+         api.execScript({
+            name: api.winName,
+            frameName: api.pageParam.title,
+            script: 'saveMessage();'
+        });
+
+    }
+    shareArticle = function () {
+
+       api.execScript({
+            name: api.winName,
+            frameName: api.pageParam.title,
+            script: 'shareArticle();'
+        });
+
+    }
+
+    sendMail = function () {
+      
+          api.execScript({
+              name: api.winName,
+              frameName: api.pageParam.title,
+              script: 'sendMail();'
+          });
+
+      }
+
+      sendBaoxiu = function () {
+
+           api.execScript({
+              name: api.winName,
+              frameName: api.pageParam.title,
+              script: 'sendBaoxiu();'
+          });
+           
+      }
+
+      reply = function () {
+           api.execScript({
+              name: api.winName,
+              frameName: api.pageParam.title,
+              script: 'reply();'
+          });
+           
+      }
+
+    
+    
+    addEventKeyBack = function () {
+      
+        api.addEventListener({
+            name: 'keyback'
+        }, function(ret, err) {
+            closeWin();
+        });
+
+    }
+    sendMessage = function () {
+ 
+        api.openWin({
+              name:'新建通知',
+              url: 'widget://html/common/win.html',
+              title : '新建通知',
+              pageParam: {
+                  title: '新建通知',
+                  url:'widget://html/frame0/schoolMess/sendMess.html',
+                  name :'新建通知', 
+                  sendmail:true,
+                  params:{
+                      
+                  }
+              }
+          });
+
+
+    }
+    openAddMail = function () {
+
+        api.openWin({
+              name:'新建邮件',
+              url: 'widget://html/common/win.html',
+              title : '新建邮件',
+              pageParam: {
+                  title: '新建邮件',
+                  url:'widget://html/frame0/workMail/sendMail.html',
+                  name :'新建邮件', 
+                  sendmail:true,
+                  params:{
+                      
+                  }
+              }
+          });
+
+    }
+
+    openAddAffairs = function () {
+
+       api.openWin({
+              name:'我要报修',
+              url: 'widget://html/common/win.html',
+              title : '我要报修',
+              slidBackEnabled:false,
+              pageParam: {
+                  title: '我要报修',
+                  url:'widget://html/frame0/affairsRepair/sendAffairs.html',
+                  name :'我要报修',
+                  baoxiu:true,
+                  params:{
+                      
+                  }
+              }
+          });
+    }
+    closeWin = function () {
+
+        if(api.pageParam.backconfirm){
+
+          api.confirm({
+              title: '提示',
+              msg: api.pageParam.backconfirm,
+              buttons: ['确定', '取消']
+          }, function(ret, err) {
+              if (ret) {
+                var index = ret.buttonIndex;
+                if(index===1){
+                        api.setScreenOrientation({  orientation: 'portrait_up' });
+                        api.closeWin();
+                }
+              } else {
+                  // alert(JSON.stringify(err));
+              }
+          });
+ 
+             
+
+        }else{
+
+            api.setScreenOrientation({  orientation: 'portrait_up' });
+              api.closeWin();
+        }
+
+      
+
+    }
+
+    addAffairs = function () {
+      
+    }
+    checkBtn = function () {
+
+      if(api.pageParam.edit){
+
+       $api.dom('#edit').style.display = 'block';
+
+      }
+
+       if(api.pageParam.save){
+
+          $api.dom('#save').style.display = 'block';
+       
+      }
+
+      if(api.pageParam.sendmail){
+
+          $api.dom('#sendmail').style.display = 'block';
+
+      }
+       if(api.pageParam.sendmess){
+
+          $api.dom('#sendmess').style.display = 'block';
+
+      }
+      
+      if(api.pageParam.mailsave){
+
+          $api.dom('#mailsave').style.display = 'block';
+
+      }
+      if(api.pageParam.shareArticle){
+
+          $api.dom('#shareArticle').style.display = 'block';
+
+      }
+      if(api.pageParam.addmail){
+
+          $api.dom('#addmail').style.display = 'block';
+
+      }
+      if(api.pageParam.sendmail){
+
+          $api.dom('#sendmail').style.display = 'block';
+
+      }
+       if(api.pageParam.addaffairs){
+
+          $api.dom('#addaffairs').style.display = 'block';
+
+      }
+     if(api.pageParam.baoxiu){
+
+          $api.dom('#sendBaoxiu').style.display = 'block';
+
+      }
+       if(api.pageParam.editBaoxiu){
+
+          $api.dom('#editBaoxiu').style.display = 'block';
+
+      }
+
+      if(api.pageParam.reply){
+
+           $api.dom('#reply').style.display = 'block';
+
+      }
+      
+
+
+
+
+
+
+    }
+
+    editBaoxiu = function () {
+
+      api.execScript({
+          name: api.winName,
+            frameName: api.pageParam.title,
+          script: 'editBaoxiu();'
+      });
+     
+    }
+
+    oper = function ($this,hideindex) {
+
+        $this.style.display = 'none'
+
+         var hideDom = document.querySelectorAll('#rightBox .rightbtn');
+
+         hideDom[hideindex].style.display = 'block'
+
+         if(hideindex==1){ //点击编辑时
+
+           var methods = api.pageParam.methods+'();';
+
+            api.execScript({
+                name: api.winName,
+                frameName: api.pageParam.title,
+                script: methods
+            });
+
+
+         }
+
+
+    }
+
+
+
+ 
+    changeWinTitle = function (title) {
+
+        $api.dom('#title').innerHTML = title;
+
+
+    }
+
+    openError = function () {
+
+       api.openFrame({
+              name: '待开发',
+              url: 'widget://error/error.html',
+              allowEdit : true,
+              reload : api.pageParam.reload ? true : false,
+              rect: {
+                  x: 0,
+                  y: headerH,
+                  w: api.winWidth,
+                  h: api.winHeight - headerH
+              },
+              bounces : api.pageParam.nobounces === true ? false : true,
+              pageParam: {
+                  params: api.pageParam.params,
+                  headerH : headerH
+              }
+          });
+    }
+
+
+    checkhasUrl = function () {
+
+       var url = api.pageParam.url;
+
+      if(api.pageParam.url.match('widget')!=null){
+
+          var fs  = api.require('fs'); 
+
+          var ret = fs.existSync({
+              path: url
+          });
+          if (ret.exist) {
+
+              openWin();
+
+               
+          } else {
+
+            openError();
+
+              // alert(JSON.stringify(err));
+          }
+
+      }else{
+
+        openError();
+
+      }
+    }
+    
+    openWin = function(){ 
+
+
+          api.openFrame({
+              name: api.pageParam.title,
+              url:  api.pageParam.url,
+              allowEdit:true,
+              reload : api.pageParam.reload ? true : false,
+              rect: {
+                  x: 0,
+                  y: headerH,
+                  w: api.winWidth,
+                  h: api.winHeight - headerH
+              },
+              bounces : api.pageParam.nobounces === true ? false : true,
+              pageParam: {
+                  params: api.pageParam.params,
+                  headerH : headerH
+              }
+          });
+
+
+    }
+    openNoFile = function () {
+
+      api.openFrame({
+          name: api.pageParam.title,
+          url:  'widget://html/common/error.html' ,
+          allowEdit:true, 
+          rect: {
+              x: 0,
+              y: headerH,
+              w: api.winWidth,
+              h: api.winHeight - headerH
+          } 
+      });
+    }
+    innerParams = function(){
+      $api.dom('#title').innerHTML = api.pageParam.title
+
+
+    }
+
+
+
+
+
+
+</script>

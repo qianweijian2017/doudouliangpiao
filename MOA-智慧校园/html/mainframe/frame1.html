@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>端API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/index.css"/>
+
+    <style media="screen">
+    .menuBox{
+
+      padding-top: 10px;
+      padding-bottom: 10px;
+      display: none;
+    }
+      .menuBox .aui-col-xs-4{
+      border-right: 1px solid #efefef;
+      border-bottom: 1px solid #efefef;
+     }
+      .menuBox .aui-col-xs-4:nth-child(1),.menuBox .aui-col-xs-4:nth-child(2),.menuBox .aui-col-xs-4:nth-child(3){
+
+        border-top: 1px solid #ddd;
+
+      }
+    .menuBox img.icon{
+      width: 30px;
+      height: 30px;
+      display: block;
+      margin: auto;
+
+    }
+    .menuBox i.iconfont{
+
+      font-size: 28px;
+    }
+    .menuBox   .aui-grid-label{
+      color: #333;
+      font-size: 12px;
+
+    }
+    .menuBox .aui-badge{
+      background-color: #FF5521;
+      right: 10px;
+      top: 5px;
+      left: auto;
+      font-size: 10px;
+    }
+
+
+      .wordHeader{
+        border-bottom: .02rem solid #efefef;
+        text-align: center;
+        position: relative;
+      }
+      .wordHeader .cbanner{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        z-index: 1;
+      }
+       .wordHeader h1{
+        z-index: 2;
+        position: relative;
+       }
+       #username{
+        padding-top: 10px;
+        padding-left: 10px;
+        color: #36A3F7;
+       }
+       .taskBar{
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+        background: #fff;
+
+       }
+       .taskBar .title{
+            color: #666;
+            font-size: 13px;
+            line-height:2;
+            font-weight: 500;
+
+       }
+       .taskBar ul{
+        padding: 0 10px;
+       }
+       .taskBar ul  li{
+          padding: 0 5px;
+          clear: both;
+       }
+        .taskBar .comCol{
+        width: 50%;
+        float: left;
+       }
+        .taskBar .left{
+
+
+       }
+        .taskBar .right{
+
+       }
+        .comTitle{
+            background: #fff;
+            padding-top: 15px;
+            height: 15px;
+            color: #666;
+       }
+       .current.comTitle{
+           padding: 0 10px;
+          padding-top: 15px;
+          margin: 0;
+          height: 34px;
+
+       }
+       .banjiBox{
+        text-align: justify;
+
+       }
+       .banjiBox span{
+          padding: 10px 20px;
+
+          background-color: #fff; 
+
+          font-size: 11px;
+          color: #333;
+          border-radius: 4px;
+          margin-bottom: 5px;
+
+       }
+
+       /*当日课程*/
+       .courseBox{
+        padding-top: 10px;
+        background: #fff;
+
+       }
+       .courseBox ul{
+
+       }
+       .courseBox ul li{
+        float: left;
+        clear: both;
+        width: 100%;
+        border-bottom: 1px solid #F2F2F2;
+
+       }
+       .courseBox ul li span{
+        font-size: 12px;
+        color: #666;
+        display: block;
+        float: left;
+        line-height: 40px;
+        height: 40px;
+       }
+       .courseBox ul li span.left{
+        width: 23%;
+        text-align: center;
+
+       }
+       .courseBox ul li span.center{
+        width: 54%;
+        text-align: center;
+
+       }
+       .courseBox ul li span.right{
+        width: 23%;
+        text-align: center;
+
+       }
+
+       
+    </style>
+</head>
+<body>
+
+
+<!--   <section class="aui-content-padded">
+       <h2>当天课程</h2>
+        <div class="aui-content">
+
+
+        </div>
+   </section> -->
+<section class="comTitle" style="padding: 10px;"> 
+
+    <i class="tan iconfont icon-tanhao xinxiIcon"></i>
+        任教信息
+</section>
+
+  <section class="taskBar  theme theme0"  >
+    <ul  class="infolist">
+        <li>
+          <div class="comCol left">
+
+              <p class="title">
+                     任教年级
+              </p>
+              <div  class="banjiBox" id="nianji_mingcheng">
+                     
+
+              </div>
+
+          </div>
+
+          <div class="comCol right">
+             <p class="title">
+                     任教学科
+              </p>
+              <div  class="banjiBox" id="xiaoqu_xueke_mingcheng">
+
+                     <!-- <span   >数学 </span> -->
+
+
+              </div>
+          </div>
+
+        </li>
+        <li >
+          <p class="title">
+                 任教班级
+          </p>
+
+          <div id="banji_mingcheng_str" class="banjiBox">
+
+          </div>
+
+        </li>
+    </ul>
+
+  </section>
+
+  <section class="current comTitle" >
+    <i class="tan iconfont icon-tanhao currentIcon"></i>
+        当天课程
+  </section>
+
+  <section class="courseBox  theme theme0" id="courseBox">
+
+   <!--      <ul class="ulList clearfix">
+
+              <li class="liRow">
+                  <span class="left">
+语文
+                </span>
+
+                <span class="center">
+第一节（18：00-18：70）
+                </span>
+
+                <span class="right">
+高一1班
+                </span>
+             </li>
+ 
+
+
+
+        </ul>
+    
+ -->
+  </section>
+
+
+   <section class="aui-grid aui-margin-b-15 menuBox theme theme0 clearfix" id="menuBox">
+
+
+
+
+  </section>
+
+
+</body>
+<script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript" src="../../script/common.js" ></script>
+<script type="text/javascript" src="../../script/art/template-web.js" ></script>
+
+<script type="text/html" id="courseScript"> 
+ 
+  <ul class="ulList clearfix">
+
+
+{{each list value index}} 
+  
+    {{if value.xueke_mingcheng}}
+
+                  <li class="liRow">
+                      <span class="left">
+     {{value.xueke_mingcheng}}
+                    </span>
+
+                    <span class="center">
+     {{value.mingcheng}}（{{value.start_time}} - {{value.end_time}}）
+                    </span>
+
+                    <span class="right">
+    {{value.banji_mingcheng}}
+                    </span>
+                 </li>
+
+     {{/if}}
+
+ {{/each}}
+
+        </ul>
+    
+
+
+</script>
+
+<script type="text/html" id="banji_mingcheng">
+
+  {{each list value index}}
+    
+    {{if value}}
+    <span onclick="openCellClass('{{value}}','{{index}}')" class="themeBorder">
+        {{value}}
+    </span>
+    {{/if}}
+
+  {{/each}}
+
+</script>
+
+<script type="text/html" id="menuScript">
+
+  {{each list value i}}
+
+       <div class="aui-col-xs-4" onclick="openFrame1('{{value.name}}','{{value.title}}','{{value.url}}','{{value.right}}')">
+ 
+             <i class="iconfont {{value.iconclass}}"></i>
+
+            <div class="aui-grid-label">
+             {{value.name}}
+           </div>
+       </div>
+
+  {{/each}}
+
+
+</script>
+
+
+<script type="text/javascript">
+    apiready = function(){
+        
+
+        loadCommonJs(); 
+
+        appendUser();
+
+        initUser();
+
+        initCourse();
+
+        initRefresh(function () {
+
+            initUser(); 
+
+            initCourse();
+
+        })
+
+
+
+    }
+
+    initCourse = function () {
+
+          var jiaoshi_id = $api.getStorage('user').id;
+    
+
+          ajax({
+            aApi : 'Gzkebiao/getOneJiaoshiKebiao',
+            params:{
+                jiaoshi_id :   jiaoshi_id
+            }
+          },function (data) {
+
+ 
+
+              if(data.code==1){
+
+                var resData = data.data;
+
+
+                // 处理数据
+                var kebiao_json =  resData.kebiao_json;
+
+                var shiduan_detail = resData.shiduan_detail;
+ 
+                var week_day = Number(resData.week_day);
+
+                week_day = week_day == 0 ? 6 : ( week_day-1 );
+
+                
+                //当天课程
+                var list = [];
+  
+
+                //数组倒置
+
+
+                kebiao_json = kebiao_json.arrayReverse()[week_day]; 
+ 
+                for(var j = 0 ; j < kebiao_json.length ; j++){
+ 
+
+                         list.push({
+                              xueke_id : kebiao_json[j].xueke_id,
+                              xueke_mingcheng : kebiao_json[j].xueke_mingcheng,
+                              jiaoshi_id : kebiao_json[j].jiaoshi_id,
+                              jiaoshi_mingcheng : kebiao_json[j].jiaoshi_mingcheng,
+                              banji_id : kebiao_json[j].banji_id,  
+                              banji_mingcheng : kebiao_json[j].banji_mingcheng,  
+                              start_time :  removeZero(shiduan_detail[j].start_time),  
+                              end_time :  removeZero(shiduan_detail[j].end_time),  
+                              mingcheng :  shiduan_detail[j].mingcheng,  
+                              xuexiao_id :  shiduan_detail[j].xuexiao_id,  
+                              xiaoqu_id :  shiduan_detail[j].xiaoqu_id  
+                         }) 
+
+                }
+
+
+ 
+
+                //数组倒置end
+ 
+                //当天课程
+                var data = {
+                   list : list,
+                   nianji_mingcheng : resData.nianji_mingcheng
+                };
+
+
+
+
+
+                var html = template('courseScript',data);
+
+
+                $api.dom('#courseBox').innerHTML = html;
+
+
+
+              }else{
+
+
+              }
+
+
+
+
+
+
+          })
+      
+    }
+    openCellClass = function (banji_text,index) {
+
+      var banjiIdArr = $api.getStorage('banjiIdArr') || [];
+      
+     api.setScreenOrientation({  orientation: 'landscape_left' });
+ 
+ 
+
+       api.openWin({
+              name : banji_text,
+              title : banji_text,
+              slidBackEnabled :  true,
+              url: 'widget://html/common/win.html',
+              pageParam:  {
+                  title : banji_text,
+                  name : banji_text,
+                  url : 'widget://html/frame1/myclass.html',
+                  params:{ 
+                      xuexiao_id : $api.getStorage('user').xuexiao_id,
+                      banji_id : banjiIdArr[index]
+                  }
+              }
+          });
+
+    }
+
+    removeZero = function (time) {
+
+      time = time.split(':')[0] + ' : ' + time.split(':')[1]
+
+
+      return time;
+    }
+
+    initUser  = function () {
+
+      var user = $api.getStorage('user') || {};
+        
+
+      ajax({
+        aApi :　'index/getJiaoshi',
+        params:{
+           jiaoshi_id : $api.getStorage('user').id
+        }
+      },function (data) {
+
+        log(data,true)
+ 
+          if(data.code==1){
+
+ 
+                $api.setStorage('user',data.data); 
+ 
+
+                api.setPrefs({   key: 'user',   value: data.data   });
+
+                 toast(data.msg)
+
+
+                 appendUser();
+
+          }else{
+
+            toast(data.msg)
+
+          }
+
+
+
+
+      })
+
+    }
+
+    appendGangWei = function (user) {
+
+        var gangwei = user.gangwei;
+
+        var nianji_mingcheng = [];
+ 
+
+
+        if(gangwei){
+
+
+            for(var i = 0 ; i < gangwei.length ; i++){
+
+                 nianji_mingcheng.push('<span class="themeBorder">'+ gangwei[i].nianji_mingcheng +'</span>')
+
+            }
+            log(user,true)
+
+            $api.dom('#nianji_mingcheng').innerHTML = nianji_mingcheng.join('');
+
+        }
+
+    }
+
+    appendBanji = function (user) {
+
+        var gangwei = user.gangwei;
+
+        var banji_mingcheng_str  = '';
+        var banji_id_str = '';
+
+         for(var i = 0 ; i < gangwei.length ; i++ ){
+
+             banji_mingcheng_str += gangwei[i].banji_mingcheng_str +",";
+             banji_id_str += gangwei[i].banji_id_str +",";
+
+        } 
+
+
+        var banjiArr  = banji_mingcheng_str.split(',');
+
+        var banjiIdArr = banji_id_str.split(',');
+
+
+        $api.setStorage('banjiIdArr',banjiIdArr);
+
+
+        var banji = {
+          list : banjiArr
+        }
+
+
+        var html = template('banji_mingcheng',banji);
+ 
+
+        $api.dom('#banji_mingcheng_str').innerHTML =  html;
+
+    }
+
+
+    appendUser = function () {
+
+        var user = $api.getStorage('user') || {};
+ 
+ 
+        // $api.dom('#username').innerHTML = user.mingcheng  ;
+        if(user.gangwei && user.gangwei.length > 0){
+
+               //年级 
+              appendGangWei(user);
+              //年级end 
+
+              //班级
+              
+              appendBanji(user);
+              
+              //班级end
+
+        }
+
+
+        // 学科
+        $api.dom('#xiaoqu_xueke_mingcheng').innerHTML ='<span class="themeBorder">'+( user.xiaoqu_xueke_mingcheng || '无')+' </span>'
+
+ 
+         var newMenu = getAllowMenu() ;
+
+ 
+          var menu = {
+            list : newMenu
+          };
+
+          var menuHTML = template('menuScript',menu);
+          
+          $api.dom('#menuBox').style.display = 'block'
+
+          $api.dom('#menuBox').innerHTML = menuHTML;
+
+          hideRefresh();
+
+
+
+
+        // "xiaoqu_id": "1",
+        // "xuenian_id": "2",
+        // "xuenian_mingcheng": "2018学年",
+        // "nianji_id": "49",
+        // "nianji_mingcheng": "初一",
+        // "banji_id_str": "76,77,78",
+        // "banji_mingcheng_str": "01班,02班,03班",
+        // "mingcheng": "邓彬",
+        // "sex": "0",
+        // "jianjie": null,
+        // "zhuangtai": "0",
+        // "juese_cache_str": "1",
+        // "zidingyi_cache_str": "2"
+
+    }
+
+    openOneClass = function (index) {
+        
+        var  banjiIdArr = $api.getStorage('banjiIdArr');
+
+        var  banji_id = banjiIdArr[index];
+ 
+        openClass(banji_id);
+
+          
+    }
+
+
+
+    openFrame1 = function (name,title,url,right) {
+
+
+      if(right==='right'){
+
+          openClass();
+
+          return;
+
+      }
+ 
+
+      api.openWin({
+          name: name,
+          url: 'widget://html/common/win.html',
+          slidBackEnabled : right === 'right' ? false : true,
+          pageParam:  {
+            name : name,
+            title: name,
+            url :  url
+          }
+      });
+
+    }
+
+
+</script>
+</html>

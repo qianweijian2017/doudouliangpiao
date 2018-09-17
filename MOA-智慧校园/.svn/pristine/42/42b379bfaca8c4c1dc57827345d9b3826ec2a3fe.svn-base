@@ -1,0 +1,338 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>APP</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../css/loading.css" />
+</head>
+<body>
+    <header class="aui-bar aui-bar-nav aui-bar-danger" id="misHeader">
+        <a class="aui-btn aui-pull-left aui-bar-danger" id="backBtn" tapmode onclick="closeWin()">
+            <span class="aui-iconfont aui-icon-left"></span>
+        </a>
+        <div class="aui-title" id="zhName"></div>
+        <a class="aui-iconfont aui-icon-menu aui-pull-right"></a>
+    </header>
+    <div class="aui-content">  
+        <div class="aui-card" id="ceshiUser" style="margin-top:10px;padding:5px;">
+            <p style="font-size: 16px;color: black">生成数据</p>
+            <ul class="aui-grid-nine" id="selectTimeBox">
+                <li class="aui-col-xs-6 aui-text-center" tapmode onclick="selectStartDay()" id="riqiStartBox"><img src="../image/riqi4.png" style="width:60px"><p>选择开始日期</p></li>
+                <li class="aui-col-xs-6 aui-text-center" tapmode onclick="selectEndDay()" id="riqiEndBox"><img src="../image/riqi4.png" style="width:60px"><p>选择结束日期</p></li>
+            </ul>
+            <div class="aui-btn aui-btn-danger" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="buildAll()">时间段数据</div>
+            <div class="aui-btn aui-btn-danger" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="build(0,1)">某天数据</div>
+            <div class="aui-btn aui-btn-danger" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="build(6,1)">创建会员</div>
+            <div class="aui-btn aui-btn-info" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="build(1,1)">创建请假</div>
+            <div class="aui-btn aui-btn-info" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="build(2,1)">创建考勤</div>
+            <div class="aui-btn aui-btn-info" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="build(3,1)">创建预约</div>
+            <div class="aui-btn aui-btn-info" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="build(4,1)">创建订单</div>
+            <div class="aui-btn aui-btn-info" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="build(5,1)">创建统计</div>
+        </div>
+        <div class="aui-card" id="ceshiUser" style="margin-top:10px;padding:5px;">
+            <p style="font-size: 16px;color: black">初始化数据</p>
+            <div class="aui-btn aui-btn-danger" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="test(0)">清空所有数据</div>
+            <div class="aui-btn aui-btn-danger" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="test(1)">更新缓存</div>
+            <div class="aui-btn aui-btn-warning" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="test(2)">初始化所有房间</div>
+            <div class="aui-btn aui-btn-success" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="test(3)">初始化所有设备</div>
+            <div class="aui-btn aui-btn-info" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="test(4)">初始化所有人员</div>
+            <div class="aui-btn aui-btn-info" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="test(5)">所有人员考勤</div>
+        </div>
+    </div>
+    <div class="aui-card aui-noborder" style="margin-top:10px;padding:20px;">
+        <ul class="aui-list-view aui-in" id="viewBox">
+            <p style="font-size:20px;color:red;text-align: center;">请点击按钮操作</p>
+        </ul>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js"></script>
+<script type="text/javascript" src="../script/mis.js"></script>
+<script type="text/javascript" src="../script/function.js"></script>
+<script type="text/javascript">
+var header,headerHeight,frameHeight,userType,companyHaoma;
+var dayNum;
+var doingNum = todoNum = 0;
+var doingDay = todoDay = 0;
+var allDayNum;
+var buildDay;
+var checkAjaxObj,checkBuildObj;
+var dayArr = new Array();
+var selectStartDate = selectEndDate  = '';
+var companyId = $api.getStorage('companyId');
+var missionDay = $api.getStorage('missionDay');
+var testActionArr = ['cleanAll','newCache','resetRoom','resetShebei','resetPeople','kaoqinPeople'];
+var testMsgArr = ['清除全部数据完毕','创建缓存完毕','初始化全部房间完毕','初始化全部设备完毕','初始化所有人员完毕','所有人员考勤完毕'];
+var buildMsgArr = ['一键生成全部数据','生成请假流水数据完毕','生成考勤流水数据完毕','生成预约流水数据完毕','生成订单流水数据完毕','全部执行完毕','生成会员完毕'];
+var stepNameArr = ['','第1步：创建请假流水','第2步：创建考勤流水','第3步：创建预约流水','第4步：创建订单流水','第5步：创建统计数据','生成虚拟会员'];
+var hasClick = 0;
+function loading(msg){
+    var loadStr = '<div style="text-align: center;padding: 50px;"><div class="loading-2"><i></i><i></i><i></i><i></i><i></i></div><p>执行'+msg+'中....</p></div>';
+    $api.html($api.byId('viewBox'), loadStr);
+}
+function test(index){
+    if(hasClick == 1){
+      alert('执行中，请勿重复操作！');
+      return false;
+    }
+    var thisAction = testActionArr[index];
+    var showStr = testMsgArr[index]
+    loading('');
+   // alert(appUrl+'Test/'+thisAction)
+   hasClick = 1;
+    api.ajax({
+        url: appUrl+'Test/'+thisAction,
+        method: 'post',
+        data: {
+            values: { 
+                company_id: companyId,
+                mission_day:missionDay
+            }
+        }
+    }, function(ret, err) {
+        hasClick = 0;
+        if (ret) {
+            $api.html($api.byId('viewBox'), '<p style="font-size:20px;color:red;text-align: center;">'+showStr+'</p>');
+        } else {
+          alert(JSON.stringify(err))
+            api.toast({
+                msg: '网络错误'
+            });
+        }
+    });
+}
+function buildAll(){
+    if(hasClick == 1){
+      alert('执行中，请勿重复操作！');
+      return false;
+    }
+    if(selectStartDate == '' || selectEndDate == ''){
+        alert('请选择日期');
+        return false;
+    }
+  doingDay = todoDay = 0;
+  dayNum = setDay();
+  buildDayArr();
+  buildDay = selectStartDate;
+  allDayNum = dayArr.length;
+  //alert(allDayNum)
+  build(0,0);
+  checkBuildObj =setInterval("checkBuild()",50);
+}
+function buildDayArr(){
+  dayArr.splice(0,dayArr.length);
+  for(var i = 0;i<=dayNum;i++){
+    if(i == 0){
+      dayArr[i] = buildDay;
+    }else{
+      if(i == dayNum){
+        dayArr[i] = selectEndDate;
+      }else{
+        dayArr[i] = getDayByAdd(i);
+      }
+    }
+  }
+}
+function getDayByAdd(dayNum){
+  var staStr = (selectStartDate + " 00:00:00").replace(/-/g,"/");
+  var staDate = new Date(staStr);
+  staDate.setDate(staDate.getDate()+dayNum); 
+  var newDayStr = timeDateToStr(staDate);
+  return newDayStr;
+}
+function timeDateToStr(newDate){
+  var fullYear = newDate.getFullYear();
+  var month = newDate.getMonth();
+  month = month +  1;
+  if(month < 10){
+    month = '0' + month;
+  }
+  var day = newDate.getDate(); 
+  if(day < 10){
+    day = '0' + day;
+  }
+  var newDateStr = fullYear + '-' + month + '-' + day;
+  return newDateStr;
+}
+function setDay(){
+  //结束时间
+  var end_str = (selectEndDate + " 00:00:00").replace(/-/g,"/");//一般得到的时间的格式都是：yyyy-MM-dd hh24:mi:ss，所以我就用了这个做例子，是/的格式，就不用replace了。
+  var end_date = new Date(end_str);//将字符串转化为时间
+  //开始时间
+  var sta_str = (selectStartDate + " 00:00:00").replace(/-/g,"/");
+  var sta_date = new Date(sta_str);
+  var num = (end_date-sta_date)/(1000*3600*24);//求出两个时间的时间差，这个是天数
+  var days = parseInt(Math.ceil(num));//转化为整天（小于零的话剧不用转了）
+  return days;
+}
+function checkBuild(){
+  if(todoDay < allDayNum){
+    if(todoDay == doingDay){
+      buildDay = dayArr[doingDay];
+      build(0,0);
+    }
+  }else{
+    if(doingDay == allDayNum){
+      $api.html($api.byId('viewBox'), '<p style="font-size:20px;color:red;text-align: center;">生成'+selectStartDate+'-'+selectEndDate+'（共'+allDayNum+'天）全部数据</p>');
+      clearInterval(checkBuildObj);
+      clearInterval(checkAjaxObj);
+    }
+  }
+}
+function build(index,type){
+  if(hasClick == 1){
+      alert('执行中，请勿重复操作！');
+      return false;
+    }
+  todoDay++;
+  if(selectStartDate == ''){
+    alert('请输入开始日期');
+    return false;
+  }
+  if(type == 1){
+    buildDay = selectStartDate;
+    $api.html($api.byId('viewBox'), '<p style="font-size:20px;color:red;text-align: center;">生成'+buildDay+'日的数据</p>');
+  }
+  if(index == 0){
+    todoNum = 1;
+    doingNum = 1;
+    sendAjax(buildDay,doingNum);
+    checkAjaxObj =setInterval("checkAjax()",50);
+  }else{
+    sendAjax(buildDay,index);
+  }
+}
+function sendAjax(buildDay,index){
+  todoNum++;
+  loading(stepNameArr[index]);
+  var valueJson = { 
+      build_type: index,
+      mission_day:buildDay,
+      company_id:companyId
+  }
+  //alert(index)
+  hasClick = 1;
+  api.ajax({
+      url: appUrl+'Test/buildData',
+      method: 'post',
+      data: {
+          values: valueJson
+      }
+  }, function(ret, err) {
+      hasClick = 0;
+      if (ret) {
+            //alert(JSON.stringify(ret))
+            doingNum++;
+            if(index == 5){
+                doingDay++;
+                clearInterval(checkAjaxObj)
+            }
+            var showStr = buildMsgArr[index];
+            $api.html($api.byId('viewBox'), '<p style="font-size:20px;color:red;text-align: center;">生成'+buildDay+'日数据，'+showStr+'</p>');
+      } else {
+        alert(JSON.stringify(err))
+          api.toast({
+              msg: '网络错误'
+          });
+      }
+  });
+}
+function checkAjax(){
+  if(todoNum <= 5){
+    if(todoNum == doingNum){
+      sendAjax(buildDay,todoNum);
+    }
+    var doingStr = stepNameArr[doingNum];
+    var todoStr = stepNameArr[todoNum];
+    $api.html($api.byId('viewBox'), '<p style="font-size:20px;color:red;text-align: center;">生成'+buildDay+'日数据，执行'+doingStr+'中...</p>');
+  }else{
+    if(doingNum == 6){
+        $api.html($api.byId('viewBox'), '<p style="font-size:20px;color:red;text-align: center;">已完成'+buildDay+'日全部数据的生成</p>');
+    }
+  }
+}
+function closeWin(){
+  //alert(1)
+    api.closeWin();
+}
+function selectStartDay(){
+    api.openPicker({
+        type: 'date',
+        date: '',
+        title: '选择开始日期'
+    }, function(ret, err) {
+        if (ret) {
+            var selectStartYear = ret.year;
+            var selectStartMonth = ret.month;
+            var selectStartDay = ret.day;
+            selectStartDateStr = String(selectStartYear).substring(2) + '年' + selectStartMonth + '月' + selectStartDay + '日';
+            if(selectStartMonth < 10){
+                selectStartMonth = '0' + selectStartMonth;
+            }
+            if(selectStartDay < 10){
+                selectStartDay = '0' + selectStartDay;
+            }
+            hasSelectStartDate = 1;
+            selectStartDate = selectStartYear + '-' + selectStartMonth + '-' + selectStartDay;
+            $api.html($api.byId('riqiStartBox'), '<img src="../image/riqi0.png" style="width:60px"><p style="color:red">'+selectStartDateStr+'</p>');
+            $api.html($api.byId('viewBox'), '<p style="font-size:20px;color:red;text-align: center;">你选择了日期是：'+selectStartDateStr+'</p>');
+        }
+    });
+}
+function selectEndDay(){
+    api.openPicker({
+        type: 'date',
+        date: '',
+        title: '选择结束日期'
+    }, function(ret, err) {
+        if (ret) {
+            var selectEndYear = ret.year;
+            var selectEndMonth = ret.month;
+            var selectEndDay = ret.day;
+            selectEndDateStr = String(selectEndYear).substring(2) + '年' + selectEndMonth + '月' + selectEndDay + '日';
+            if(selectEndMonth < 10){
+                selectEndMonth = '0' + selectEndMonth;
+            }
+            if(selectEndDay < 10){
+                selectEndDay = '0' + selectEndDay;
+            }
+            selectEndDate = selectEndYear + '-' + selectEndMonth + '-' + selectEndDay;
+            var d1 = new Date(selectStartDate.replace(/\-/g, "\/"));  
+            var d2 = new Date(selectEndDate.replace(/\-/g, "\/")); 
+            if(d1 >=d2){
+                alert('开始时间不能等于或小于结束时间');
+                return false;
+            }
+            $api.html($api.byId('riqiEndBox'), '<img src="../image/riqi0.png" style="width:60px"><p style="color:red">'+selectEndDateStr+'</p>');
+            $api.html($api.byId('viewBox'), '<p style="font-size:20px;color:red;text-align: center;">你选择的时间段是：'+selectStartDateStr+'——'+selectEndDateStr+'</p>');
+        }
+    });
+}
+apiready = function(){
+    api.parseTapmode();
+    companyHaoma = api.pageParam.companyHaoma;
+    userType = api.pageParam.userType;
+    //alert(appUrl)
+    
+    var className1 = 'aui-bar-danger';
+    var className2 = 'aui-btn-danger';
+    header = $api.byId('misHeader');
+    $api.addCls(header, className1);
+    $api.addCls($api.byId('backBtn'), className2);
+    $api.html($api.byId('zhName'), '系统测试');
+    fixStatusBar(header);
+    headerHeight = $api.offset($api.byId('misHeader')).h;
+    frameHeight = api.winHeight - headerHeight;
+    var url = './';
+    if(appUrl == undefined){
+      setTimeout("closeWin()",500);
+      alert('请先登录一个测试用户，再使用此功能');
+      return false;
+    }else{
+      $api.html($api.byId('viewBox'), '<p style="font-size:20px;color:red;text-align: center;">当前测试公司代码为：“'+companyHaoma+'”</p>');
+    }
+    
+};
+</script>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" />
+
+ 
+</head>
+<body>
+  
+ 
+ 
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript" src="../../script/common.js" ></script>
+
+<script type="text/javascript">
+    apiready = function(){
+      loadCommonJs();
+
+      var imgArr = api.pageParam.imgArr ; 
+      var imgIndex = api.pageParam.imgIndex ; 
+  
+       openImageView(imgArr,imgIndex);
+
+
+    }
+
+    openImageView = function (imgArr,imgIndex) {
+
+    		var photoBrowser = api.require('photoBrowser');
+
+			photoBrowser.open({
+			    images: imgArr,
+			    activeIndex:imgIndex ? imgIndex : 0, 
+			    bgColor: '#000'
+			}, function(ret, err) {
+
+			    if (ret.eventType==='click') {
+
+			    	var index = ret.index;
+
+			    	photoBrowser.close();
+			    	api.closeWin();
+
+
+
+
+			    }else if(ret.eventType==='longPress'){
+
+
+			    		
+
+
+
+			    } else {
+			        alert(JSON.stringify(err));
+			    }
+			});
+    	
+    }
+
+    
+
+   
+    
+</script>

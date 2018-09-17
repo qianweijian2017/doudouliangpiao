@@ -1,0 +1,31 @@
+[     
+    { 
+        "sender": "发件人是我", 
+        "title":"校园公告",
+        "content": "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容", 
+        "filePath" : "widget://doc.docx",
+        "filename" : "文件名字",
+        "time" : "2018年8月7日12:29:35",  
+        "id": 1 
+    },
+     { 
+        "sender": "是你", 
+        "title":"重大公告",
+        "content": "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
+        "filePath" : "widget://doc.docx",
+        "filename" : "文件名字",
+        "time" : "2018年8月7日12:29:35",  
+        "id": 2 
+    },
+     { 
+        "sender": "是我", 
+        "title":"重大通知",
+        "content": "内容内容内容内容内容内容内容内容内容内容内容内容", 
+        "filePath" : "widget://doc.docx",
+        "filename" : "文件名字",
+        "time" : "2018年8月7日12:29:35",  
+        "id": 3
+    }
+     
+
+]

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>基本信息</title>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/> 
+  <style type="text/css"> 
+      .header{
+        margin-top: 20px;
+      }
+      .header img{
+        width: 100px;
+        height: 100px;
+        display: block;
+        margin:auto;
+
+      }
+
+       .header .versionRow{
+        font-size: 13px;
+        height: 60px;
+        line-height: 60px;
+        text-align: center;
+       }
+
+       .exitRow{
+        margin-top: 40px;
+       }
+
+
+
+ </style>
+</head>
+<body>
+
+   <header class="header">
+      <img src="../../image/base/iconInerr_200.png">
+      <div class="versionRow">广州中学智慧校园 <span id="version"></span></div>
+    </header>
+  <section class="baseBox" id="baseBox">
+
+    
+      
+ 
+  </section>
+
+ <section class="exitRow aui-content-padded">
+        <div class="aui-btn  themeBg aui-btn-block aui-btn-sm" onclick="exit()">退出</div>
+ </section>
+
+ </body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/art/template-web.js"></script>
+
+<script type="text/html" id="baseScript">
+   
+  
+</script>
+
+<script type="text/javascript">
+    apiready = function(){
+
+
+        loadCommonJs();  
+
+        initVersion();
+  
+ 
+  
+    }
+
+    initVersion = function () {
+      var appVersion = api.appVersion; // 比如： 1.0.0
+ 
+
+      $api.dom('#version').innerHTML = ' v' + appVersion;
+
+
+    }
+
+      exit = function () {
+ 
+     goLogin();
+
+      api.execScript({
+          name: 'root', 
+          script: 'activeTab(0,true);'
+      });
+
+    }
+  
+ 
+
+</script>
+ 

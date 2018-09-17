@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../css/headTab.css"/>  
+    <link rel="stylesheet" type="text/css" href="../../../../script/aui/css/aui.css"/> 
+   <style type="text/css">  
+	  
+     /*头部返回end*/
+.tab .aui-active{
+  color: #ff2222;
+  border-color: #e51c23;
+}
+.tablist{
+  height: 40px;
+  line-height: 40px; 
+}
+.tablist .tabItem{ 
+  height: 38px;
+  line-height: 38px;
+  border-bottom: 2px solid transparent;
+  text-align: center;
+  font-size: 13px;
+  margin: 0 20px;
+  color: #333;
+
+}
+
+.tablist .tabItem.active {
+   
+  height: 38px;
+  line-height: 38px;
+  border-bottom: 2px solid #e51c23; 
+  color: #e51c23;
+ 
+}
+.aui-title{
+  font-size: 14px;
+}
+.aui-pull-right.aui-btn{
+  font-size: 14px;
+}
+#tab .tabItem.pan{
+  color: #666;
+}
+	   
+     #userBar{
+      background-color: #e51c23;
+     }
+    
+  </style>
+ </head>
+<body> 
+  <header class="aui-bar aui-bar-nav" id="userBar">
+        <a class="aui-pull-left aui-btn" onclick="closeContact()">
+            <span class="aui-iconfont aui-icon-close"></span>
+        </a>
+        <div class="aui-title">
+             选择报修位置
+        </div>
+         
+    </header>
+
+     <section class="list form-list tab"  id="tab" style="padding: 0">
+       <div class="tablist" >
+          <div class="tabItem active" onclick="tab(0)">楼区</div>
+          <div class="tabItem pan" onclick="tab(1)">楼层</div>
+          <div class="tabItem pan" onclick="tab(2)">教室</div>
+      </div>
+   </section>
+
+ 
+       
+</body>
+
+<script type="text/javascript" src='../../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../../script/common.js'></script>
+ 
+
+<script type="text/javascript">
+    var   tabH = 0;
+      apiready = function(){
+
+        loadCommonJs(); 
+
+
+ 
+        // tabH = api.pageParam.tabH;
+
+        tabH = $api.dom('#tab').offsetHeight +  $api.dom('#userBar').offsetHeight   ;
+
+
+        loadRenYuanInfo(function () {
+
+             openSelect();
+          
+        })
+
+  
+
+      }
+
+      loadRenYuanInfo = function (callback) {
+
+        var currentTime = Date.parse(new Date())/1000;
+
+        var jianzhuwu =  $api.getStorage('jianzhuwu') || {};
+ 
+        if(jianzhuwu.guoqi && currentTime < jianzhuwu.guoqi + 120 ){
+ 
+            callback($api.getStorage('jianzhuwu'));
+
+            return;
+ 
+        }
+
+        showProgress('正获取位置数据');
+
+        ajax({
+           aApi : 'Bgbaoxiu/getCacheJianzhuwu',
+           params:{
+               xiaoqu_id : $api.getStorage('user').xiaoqu_id
+           } 
+        },function (data) {
+
+          hideProgress(); 
+ 
+          if(data.code==1){
+
+
+                var jianzhuwu = JSON.parse(data.data.jianzhuwu);
+
+                jianzhuwu.guoqi = currentTime;
+
+                $api.setStorage('jianzhuwu',jianzhuwu);
+   
+                callback(jianzhuwu); 
+  
+
+          }else{
+
+            toast(data.msg)
+
+          }
+        })
+
+
+
+        
+      }
+
+      closeContact = function () {
+ 
+          api.sendEvent({
+                name: 'closecover'  
+           });
+
+
+        api.closeFrameGroup({
+             name: 'flowerFrame'
+         });
+
+         api.closeFrame();
+
+         
+
+      }
+      saveMessage = function () {
+        alert(api.frameName)
+      }
+      confirmContact = function () {
+
+        api.execScript({
+            name: '我要报修',
+            frameName: '我要报修',
+            script: 'updateName();'
+        });
+        
+        closeContact();
+      }
+
+
+
+
+
+
+      openSelect = function () {
+
+        var frames = [{
+                name: 'jiaoxuelou', 
+                url: './jiaoxuelou.html',
+                pageParam: {
+                    contactHeight: api.pageParam.contactHeight
+                }
+              },
+              { 
+                name: 'louceng', 
+                url: './louceng.html',
+                pageParam: {
+                    contactHeight: api.pageParam.contactHeight
+                }
+            },
+            { 
+                name: 'fangjian', 
+                url: './fangjian.html',
+                pageParam: {
+                    contactHeight: api.pageParam.contactHeight
+                }
+            }];
+ 
+ 
+           
+  
+
+        api.openFrameGroup({
+            name: 'flowerFrame',
+            rect: {
+                 x: 0, 
+                 y: api.winHeight - api.pageParam.contactHeight + tabH - api.safeArea.bottom , 
+                 w: api.winWidth,
+                 h: api.pageParam.contactHeight - tabH  + api.safeArea.bottom
+            },
+            bgColor:'#fff',
+            preload:0,
+            scrollEnabled: false,
+            frames: frames
+        }, function(ret, err) {
+
+            if (ret) {
+
+                 tab(ret.index); 
+
+            } else {
+                // alert(JSON.stringify(err));
+            }
+        });
+       
+      }
+
+      window.changeClass = function(index){
+
+         var tabs = $api.domAll('#tab .tabItem');
+
+          for(var i = 0 ; i < tabs.length ; i++ ){
+              if(i === index){
+                $api.addCls(tabs[i],'active')
+              }else{
+                $api.removeCls(tabs[i],'active')
+
+              }
+          }
+
+      }
+
+ 
+
+
+      tab = function(index){  
+
+        if($api.getStorage('canclicktab')==1){
+
+              changeClass(index)
+
+              api.setFrameGroupIndex({
+                  name: 'flowerFrame',
+                  index: index,
+                  scroll: true
+              }); 
+              $api.setStorage('canclicktab',0)
+
+        }
+     
+            
+          
+
+      }
+
+    
+  
+</script>
+  
+ 

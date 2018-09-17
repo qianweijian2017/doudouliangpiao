@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" />
+
+
+    <style>
+    header:active,header:hover{
+      background-color: #efefef;
+    }
+
+    </style>
+</head>
+<body>
+  
+
+ <section class="settingRow">
+
+   <div class="aui-content aui-margin-t-15">
+
+      <ul class="aui-list aui-list-in  aui-margin-b-5">
+
+            <li class="aui-list-item"> 
+                <div class="aui-list-item-inner">
+                    昵称
+
+                    <div class="aui-list-item-right" id="username">
+                       
+                    </div>
+
+                </div>
+            </li>
+
+
+          </ul>
+
+
+        <ul class="aui-list aui-list-in  aui-margin-b-5" onclick="sheetSex()">
+
+            <li class="aui-list-item"> 
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    性别
+                    <div class="aui-list-item-right">
+                      女
+                    </div>
+                </div>
+            </li>
+
+
+          </ul>
+ 
+ 
+
+    </div>
+
+ </section>
+ 
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript" src="../../script/common.js" ></script>
+
+<script type="text/javascript">
+    apiready = function(){
+      loadCommonJs();
+ 
+      initUser();
+ 
+        
+    }
+
+    initUser = function () {
+          
+      var user = $api.getStorage('user') || {} ;
+
+      $api.dom('#username').innerHTML = user.mingcheng;
+
+    }
+
+    sheetSex = function(){
+
+      api.actionSheet({
+          title: '修改性别',
+          cancelTitle: '取消', 
+          buttons: ['男','女']
+      }, function(ret, err) {
+
+          if (ret) {
+
+              // alert(JSON.stringify(ret));
+
+          } else {
+              // alert(JSON.stringify(err));
+          }
+      });
+
+    }
+
+   
+    
+</script>

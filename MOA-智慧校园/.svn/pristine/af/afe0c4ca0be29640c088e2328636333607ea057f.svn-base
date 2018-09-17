@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../css/messCenter.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../script/aui/css/aui.css"/> 
+   
+ </head>
+<body> 
+   
+    <section class="messBox" id="messBox" v-cloak>
+
+      <div class="aui-tips aui-margin-b-15" id="tips-1" v-if='tips'  >
+        <div class="aui-tips-title" style="color: #fff;">
+        <i class="aui-iconfont aui-icon-danger aui-pull-left aui-margin-r-10"></i>
+
+          已成功获取 <span class="tipNum">{{tips}} </span>条未读消息
+
+        </div>
+        <i class="aui-iconfont aui-icon-close" tapmode="" @click="closeTips()"></i>
+    </div>
+
+
+      <ul class="aui-list aui-media-list" id="messList">
+
+
+        <li class="aui-list-item clearfix" v-for='(item,key) in messList' @click="OpenMail(key)" > 
+
+                <div class="aui-media-list-item-inner">
+                    
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title">{{item.msg_title | filterTitle}}<span class="themenew" v-if='item.has_read==0'>New</span></div>
+                            <div class="aui-list-item-right">{{item.send_mingcheng}}</div>
+                        </div>
+                      <!--   <div class="aui-list-item-text clamp1">
+                            {{item.content | filterContent}}
+                        </div> -->
+                    </div>
+                </div>
+                <div class="aui-danger" style="padding-top:0">
+                    
+                    <div class="aui-danger-item">{{item.send_time}}</div>
+
+                </div>
+            </li>
+    
+        </ul>
+
+        <div class="dataTip" v-if='noData'>暂无新消息</div> 
+        <div class="dataTip" v-if='end'>内容全部加载完成</div> 
+        <div class="dataTip" v-if='loadding'>内容加载中</div> 
+ 
+    </section>
+
+       
+</body>
+
+<script type="text/javascript" src='../../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../../script/common.js'></script> 
+<script type="text/javascript" src='../../../../script/base/loadmore.js'></script>  
+<script type="text/javascript" src="../../../../script/vue/vue2.js"></script> 
+<script type="text/javascript" src="../../../../script/frame0/messCenter.js"></script>
+
+<script type="text/javascript">
+      apiready = function(){
+
+           loadCommonJs()
+ 
+           initMess({
+              url :'Bgxiaoxi/getMsg',
+              msg_type : 0,
+              type : 'weidu',
+            });
+
+           initRefresh(function () {
+ 
+                 vm.clickTab();
+
+           })
+
+ 
+      }
+
+      noRead = function () {
+
+        var  noReadIdArr = vm.noReadIdArr.join(",");
+
+        if(!noReadIdArr.length){
+          toast('无未读消息');
+          return;
+        }
+
+        confirm('提示','确认全部标为已读',function (data) {
+
+          if(!data) return;
+
+          showProgress();
+   
+   
+            ajax({
+              aApi : 'Bgxiaoxi/editMsgStatus',
+              params:{
+                msg_id : noReadIdArr,
+                jiaoshi_id : $api.getStorage('user').id
+
+              }
+            },function (data) {
+              hideProgress();
+                
+
+                if( data.code == 1 ){
+
+                      toast(data.msg);
+
+                      vm.end = false;
+                      vm.loading = false;
+                      vm.noData = true;
+                      
+                      setTimeout(function () {
+
+                          $api.dom('#messList').innerHTML = '';
+                        
+                      },1300)
+ 
+
+                }else{
+
+                  toast(data.msg);
+
+
+                }
+
+
+            })
+
+
+        })
+
+           
+
+        
+      }
+
+    
+  
+</script>
+  
+ 

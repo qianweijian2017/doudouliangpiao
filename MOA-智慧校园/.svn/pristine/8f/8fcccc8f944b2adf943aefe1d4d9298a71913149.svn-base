@@ -1,0 +1,258 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/> 
+    <style type="text/css" media="screen">
+      html,body {  font-size:12px; height:100%; background: #fff; }
+.hover{ opacity: .8; }
+
+.flex-wrap{ display: -webkit-box; display: -webkit-flex;  display: flex; }
+.flex-con{     -webkit-box-flex: 1;     -webkit-flex: 1;    flex: 1;}
+.flex-vertical{ -webkit-box-orient: vertical;-webkit-flex-flow: column;flex-flow: column;}
+.mainBox{ overflow: auto;}
+.border-t,
+.border-b{ position:relative;  }
+.border-t:before,
+.border-b:after{     content: '';     position: absolute;     left: 0;  top:0;     background: #ddd;   right:0;    height: 1px;     -webkit-transform: scaleY(0.5);             transform: scaleY(0.5);     -webkit-transform-origin: 0 0;             transform-origin: 0 0; }
+.border-b:after{ top:auto; bottom:0;  }
+
+#wrap{ height: 100%; }
+
+  
+
+/*头部返回*/
+
+.headerBar{
+font-size: 15px; height: 50px; line-height: 50px; background: #010101; color: #333; text-align: center; font-weight: 500; margin-bottom: 5px; position: relative;margin: 0;
+   
+ }
+.headerBar span{font-size: 15px; color: #fff; }
+.headerBar a{display: block; position: absolute; color: #fff; left: 0; width: 50px; height: 50px; line-height: 50px;
+background: url(../../icon/common/headerBak.png) no-repeat center center;
+ -webkit-background-size: 70% 70%;
+background-size: 70% 70%;
+bottom: 0;
+
+}
+
+.headerBar a.feekback{right: 50px; }
+
+.headerBar a.share{left: auto; right: 0; background-image: url(../../imgs/common/share.png); color: #000;}
+/*头部返回end*/
+
+
+/*头部搜索*/
+#header{width: 100%; height: 86px; background: #ff5359; }
+.header .headimg{width: 142px; height: 25px; margin:0 auto 8px; padding-top: 12px; }
+.header .headimg img{width: 100%; height: 100%; } 
+.header form.searchBar{width: 340px; height: 27px; margin: auto; background: #fff; border-radius:3px; }
+.header form.searchBar .searicon{width: 25px; height: 25px; display: block; background:url(../../imgs/common/search.png) no-repeat center center; -webkit-background-size: cover;
+    background-size: cover;
+    margin-top:2.5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    float: left;
+    border-right:1px solid #ccc;
+
+}
+.header form input{width: 295px; height: 100%; font-size: 12px; }
+.banner{height: 170px; width: 100%; }
+.banner img{width: 100%; height: 100%; }
+
+.goTop{background: rgba(0,0,0, 0.5); position: fixed; bottom: 40px; right:20px; height: 40px; width: 40px; border-radius: 50%; border: 1px solid #efefef;
+    z-index: 200;
+
+}
+.goTop i{background-image: url(../../icon/up.png); display: block; width: 30px; height: 30px; margin-left: 5px; margin-top: 5px; }
+
+#footer .active {
+      background-color:#efefef; 
+ }
+  #footer{
+      position: fixed;
+      left: 0;
+      bottom: 0;
+
+
+  }
+ #footer,#footer ul{
+  width:100%; 
+      height:40px;
+      padding:0 8px;  
+      background-color: #000; 
+      
+
+
+ }
+#footer ul{
+display: -webkit-flex;
+display: -moz-flex;
+display: -ms-flex;
+display: -o-flex;
+display: flex;
+}
+
+#footer ul li{
+  -webkit-flex: 1;
+  -moz-flex: 1;
+  -ms-flex: 1;
+  -o-flex: 1;
+  flex: 1;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+}
+
+#back > div{
+      width:38px;
+        height:38px;
+      background:url(../../icon/web/ic_back.png) no-repeat center; 
+      background-size:20px 20px;
+display: inline-block;
+    }
+    
+    #forward > div{
+      width:38px;
+        height:38px;
+      background:url(../../icon/web/ic_forward.png) no-repeat center; 
+      background-size:20px 20px;
+display: inline-block;
+
+    }
+    
+    #refresh > div{
+      width:38px;
+        height:38px;
+      background:url(../../icon/web/ic_refresh.png) no-repeat center; 
+      background-size:20px 20px;
+display: inline-block;
+
+    }
+    #manage{
+      background: none;
+    }
+
+    </style>
+ 
+</head>
+<body>
+    <header id="headerBar" class="headerBar"  >
+         <a  class="javascript:;"  onclick="historyBack()" tapmode></a>
+          <span id="title"  ></span>
+          <a href="javascript:;" class="share" id="save" style="display: none;">保存</a>
+
+          <a href="javascript:;" class="share" id="manage" style="display: none;" onclick="delCollect()">管理</a>
+   </header>
+   
+
+ <div id='footer' style="display: none;">
+  <ul > 
+        <li id='back' class='tab-item' tapmode='active' onclick='GoToHisBack()'>
+          <div></div>
+        </li>
+        <li id='forward' class='tab-item' tapmode='active' onclick='GoToHisForward()'>
+          <div></div>
+        </li>
+        <li id='refresh' class='tab-item' tapmode='active' onclick='GoToRefresh()'>
+          <div></div>
+        </li>
+         
+  </ul>
+
+ </div>
+
+ </body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script> 
+<script  charset="utf-8">
+   
+  var header ,headerH ,title,name,url;
+      apiready = function () {
+         $api.fixStatusBar($api.dom('#headerBar'))
+         
+         headerH = $api.dom('#headerBar').offsetHeight;
+ 
+        
+
+         innerParams(); 
+ 
+         openWin();
+
+         addEventBack();
+
+
+         
+  
+    }
+
+    historyBack = function(){
+
+      api.historyBack({
+          frameName: api.pageParam.title
+      }, function(ret, err) {
+        
+          if (!ret.status) {
+
+              api.closeWin();
+
+          }
+
+      });
+    }
+
+    addEventBack = function(){
+
+      api.addEventListener({
+          name: 'keyback'
+      }, function(ret, err) {
+          historyBack();
+      });
+
+    }
+    
+    
+    openWin = function(){ 
+
+ 
+      api.openFrame({
+          name: api.pageParam.title,
+          url: api.pageParam.url,
+          allowEdit:true, 
+          rect: {
+              x: 0,
+              y: headerH,
+              w: api.winWidth,
+              h: api.winHeight - headerH
+          },
+          bounces : false  ,
+          pageParam: {
+              params: api.pageParam.params,
+              headerH : headerH
+          }
+      });
+
+      
+    }
+    innerParams = function(){
+      $api.dom('#title').innerHTML = api.pageParam.title 
+      
+      if(api.pageParam.collect){
+         $api.dom('#manage').style.display = 'block'
+      }
+    }
+
+delCollect = function(){
+  api.execScript({
+      name: 'collect',
+      frameName: api.pageParam.title,
+      script: 'delGroup();'
+  });
+}
+     
+    
+ 
+
+</script>

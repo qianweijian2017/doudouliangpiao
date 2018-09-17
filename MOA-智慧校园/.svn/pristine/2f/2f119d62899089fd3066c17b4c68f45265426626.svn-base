@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" />
+
+
+    <style>
+    header:active,header:hover{
+      background-color: #efefef;
+    }
+    .header{
+      background-color: #fff;
+    }
+    .header .headPic{
+      display: block;
+      margin: auto;
+      margin-top: 3rem;
+    }
+    .header .username{
+        text-align: center;
+        padding-bottom: 1.5rem;
+        color: #333;
+        font-size: 14px;
+
+    }
+    .settingRow{
+
+    }
+    .settingRow i.iconfont{ 
+      font-size: 20px;
+    }
+
+    .exitRow{
+      margin-top: 100px;
+    }
+
+    </style>
+</head>
+<body>
+  <!-- <header class="header" tapmode="hover">
+
+      <ul class="aui-list aui-media-list ">
+
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media" style="width: 3rem;">
+                        <img src="http://www.auicss.com/aui2.0/image/liulangnan.png" class="aui-img-round">
+                    </div>
+                    <div class="aui-list-item-inner">
+                       <h3  id="username">智慧君</h3>
+                        
+                        <h6 id="xuenian_mingcheng">年度</h6>
+
+                    </div>
+
+                </div>
+                     
+
+            </li>
+       </ul>
+ </header> -->
+ 
+
+ <section class="settingRow">
+
+   <div class="aui-content aui-margin-t-15">
+
+        <ul class="aui-list aui-media-list aui-margin-b-5">
+            
+            <li class="aui-list-item aui-list-item-middle " onclick="UpdateHeadPic( this.getElementsByTagName('img')[0] )">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media" style="width: 3rem;">
+                        <img src="" id="touxiang_url"  class="aui-img-round aui-list-img-sm" >
+                    </div>
+                    <div class="aui-list-item-inner aui-list-item-arrow">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title aui-font-size-14">头像</div> 
+                        </div>
+                        
+                    </div>
+                </div>
+            </li>
+           
+        </ul>
+ 
+
+        <ul class="aui-list aui-list-in  aui-margin-b-5">
+ 
+            <li class="aui-list-item" onclick="forgotPwd()">
+                <div class="aui-list-item-label-icon">
+                    <i class="iconfont icon-mingpian" style="font-size: 14px;"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    重置密码
+                </div>
+            </li> 
+
+          </ul>
+
+           <ul class="aui-list aui-list-in  aui-margin-b-5">
+ 
+            <li class="aui-list-item" onclick="openPersonalUpdate()">
+                <div class="aui-list-item-label-icon">
+                    <i class="iconfont icon-icon-test" style="font-size: 17px;"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    基本信息
+                </div>
+            </li> 
+
+          </ul>
+    
+
+
+    </div>
+
+ </section>
+
+ 
+
+
+
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript" src="../../script/common.js" ></script>
+<script type="text/javascript" src="../../script/demo/alioss.js" ></script>
+<script type="text/javascript" src="../../script/frame0/fileoper.js" ></script>
+<script type="text/javascript" src="../../script/base/updateHeadPic.js" ></script>
+ <script type="text/javascript">
+    apiready = function(){
+
+      loadCommonJs();
+  
+      initUserInfo();
+
+      initUpdateHeadPic(function () {
+
+        api.execScript({
+            name: 'root',
+            frameName: 'frame2',
+            script: 'appendUser();'
+        });
+
+          initUserInfo();
+        
+      });
+
+      initAliOss(); 
+   
+    }
+
+    initUserInfo = function () {
+
+       var  user = $api.getStorage('user') || {} ;
+      
+        $api.dom('#touxiang_url').src = user.touxiang_url || '../../icon/common/touxiang.png';
+
+    }
+
+    
+
+
+   
+
+    
+   
+   
+
+   
+   forgotPwd = function () {
+ 
+         api.openWin({
+            name: '重置密码',
+            url: 'widget://html/common/win.html',
+            pageParam: {
+                title: '重置密码',
+                name: '重置密码',
+                url : 'widget://html/frame2/forgot.html'
+            }
+        });
+    }
+
+    openPersonalUpdate = function () {
+       api.openWin({
+            name: '基本信息',
+            url: 'widget://html/common/win.html',
+            pageParam: {
+                title: '基本信息',
+                name: '基本信息',
+                url : 'widget://html/frame2/personalUpdate.html'
+            }
+        });
+    }
+    
+    
+  
+        
+    
+</script>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>端API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../script/awesome/css/font-awesome.min.css">
+
+    <style media="screen">
+      .menuBox .aui-col-xs-4{
+         border-top: .02rem solid #efefef;
+            border-right: .02rem solid #efefef;
+      }
+      .menuBox .aui-grid-label p:nth-child(2){
+        padding-bottom: .5rem
+
+      }
+	   .fa{
+	   	font-size: 1.5rem;
+	   }
+     .fa.fa-film{ color:#0291F1; }
+     .fa.fa-firefox{ color:#FF4F1B; }
+     .fa.fa-file-text{ color:#0291F1; }
+     .fa.fa-file-pdf-o{ color:#DD0A0B; }
+     .fa.fa-file-word-o{ color:#7794CF; }
+     .fa.fa-file-excel-o{ color:#1C7243; }
+     .fa.fa-file-powerpoint-o{ color:#D2421F; }
+     .fa.fa-file-image-o{ color:#F5CA42; }
+     .fa.fa-file-archive-o{ color:#F97DFC; }
+     .fa.fa-file-audio-o{ color:#C0C5DD; }
+
+     .aui-grid .aui-col-xs-4{
+        padding: .3rem 0;
+
+     }
+     .aui-grid .aui-col-xs-4 i{
+        position: relative;
+     }
+     .aui-grid .aui-col-xs-4 i img{
+        position: absolute; 
+        width: 100%;
+        height: 100%;
+     }
+      .aui-grid .aui-col-xs-4 p{
+        line-height: 1.7;
+        font-size: 13px;
+      }
+
+    </style>
+</head>
+<body>
+
+ <div id="filelist">
+
+     
+ 
+
+ </div>
+
+  
+
+
+</body>
+<script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript" src="../../script/common.js" ></script>
+<script type="text/javascript" src='../../script/zepto/zepto.min.js'></script>
+<script type="text/javascript" src='../../script/zepto/zepto.touch.js'></script>
+
+<script type="text/javascript" src="../../script/art/template-web.js" ></script>
+
+<script type="text/html" id="fileScript">
+
+   <h4 class="aui-list-header aui-margin-l-15 aui-padded-t-15">最新文件</h4>
+
+        <section class="aui-grid aui-margin-b-15 aui-margin-t-15">
+
+          <div class="aui-row">
+
+               {{each newfile as value i}} 
+                    <div class="aui-col-xs-4 file"  data-id="{{value.id}}" data-name='{{value.name}}' data-url='{{value.url}}'>
+
+                     <i class="{{value.iconclass}}"> </i>
+
+                     <p>{{value.name}}</p>
+                   </div>
+               {{/each}}
+
+          </div>
+
+        </section>
+
+        <h4 class="aui-list-header aui-margin-l-15">全部文件</h4>
+
+        <section class="aui-grid aui-margin-b-15 aui-margin-t-15" >
+          <div class="aui-row">
+
+              {{each allfile as value i}} 
+                    <div class="aui-col-xs-4 file" data-id="{{value.id}}" data-name='{{value.name}}' data-url='{{value.url}}'>
+                       <i class="{{value.iconclass}}">  </i>
+                       <p>{{value.name}}</p>
+                   </div>
+               {{/each}}
+                
+               </div>
+        </section>
+
+</script>
+<script type="text/javascript">
+
+    apiready = function(){
+
+      loadCommonJs();
+
+      loadFileList();
+ 
+    }
+    addEventFile = function () {
+
+      $(function () {
+
+        $('.file').on('longTap',function(){
+
+          var name = $(this).data('name');
+          var url = $(this).data('url');
+
+          api.actionSheet({
+              title: '对'+name+'操作',
+              cancelTitle: '取消', 
+              buttons: ['打开','分享']
+          }, function(ret, err) {
+              if (ret) {
+
+                var index = ret.buttonIndex; //从1开始
+
+                switch(index){
+
+                  case 1: openDoc(url); break;
+
+                  case 2: shareDoc(); break;
+
+                }
+
+
+                  
+
+              } else {
+
+              }
+          });
+
+ 
+
+        })
+        
+      })
+ 
+
+    }
+
+    loadFileList = function () {
+
+        // ajax({
+        //    aApi :'',
+        //    params:{
+
+        //    }
+        // },function (data) {
+
+        // })
+
+
+
+        api.readFile({
+            path: 'widget://res/myfile.json'
+        }, function(ret, err) {
+            if (ret.status) {
+
+              var data = JSON.parse(ret.data);
+
+
+              data = {
+                 newfile : data.newfile,
+                 allfile : data.allfile
+              }
+ 
+              var html = template('fileScript',data);
+
+              $api.dom('#filelist').innerHTML = html;
+
+
+              addEventFile(); 
+
+            } else {
+              
+                alert(JSON.stringify(err));
+
+            }
+        });
+
+    }
+
+</script>
+
+</html>

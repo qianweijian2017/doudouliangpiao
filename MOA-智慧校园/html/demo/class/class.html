@@ -1,0 +1,859 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>班级展示</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+
+   <style type="text/css">
+   body{
+   	overflow-x: hidden;
+   	font-family: '微软雅黑';
+   	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	max-width: 100vw;
+   	padding-bottom: 40px;
+    }
+   table{
+   	border-collapse: collapse;
+   }
+   table,tr,td,th,tbody{
+
+   	border-collapse: collapse;
+   	display: block;
+   	width: 100%;
+   }
+   tbody{
+   	height: 100%;
+   }
+
+	.ThreeBox{
+		display: -webkit-flex;
+		display: -moz-flex;
+		display: -ms-flex;
+		display: -o-flex;
+		display: flex; 
+		position: relative;
+
+	}
+	.ThreeBox .seat{
+		-webkit-flex: 1;
+		-moz-flex: 1;
+		-ms-flex: 1;
+		-o-flex: 1;
+		flex: 1;
+		display: block;
+		text-align: center;
+
+
+	}
+	#rightBox{
+		width: 96%;
+		float: right;
+		clear: none;
+	}
+	#leftBox{
+		float: left; 
+		color: #fff;
+		width: 4%;
+		background-color: #1ABC9C;
+		color: #fff;
+		text-align: center;
+		font-size: 13px;
+		position: relative;
+		clear: none;
+
+ 
+	}
+	#leftBox span{  
+		width: 100%;
+		font-size: 14px; 
+		display: block;
+		left: 0;
+		bottom: 40%;
+		position: absolute;
+	}
+	#leftBox span.men{
+		bottom: 30%;
+
+	}
+	#rightBox .ThreeBox{
+		 
+		width: 100%;
+	}
+	 
+	 
+	.ThreeBox .seat.space{
+		-webkit-flex: .2;
+		-moz-flex: .2;
+		-ms-flex: .2;
+		-o-flex: .2;
+		flex: .2; 
+	    border-left: .02rem solid #efefef;
+	    border-right: .02rem solid #efefef;
+
+	}
+	.ThreeBox .seat.space td{
+ 
+	    border-left: .02rem solid #efefef;
+	    border-right: .02rem solid #efefef;
+	}
+
+	.ThreeBox .seat tr{
+
+		text-align: center;
+	}
+	.ThreeBox .seat tr td{
+		text-align: center;
+		background-color: #fff;
+		font-size: 12px;
+		padding: .4rem 0;
+		border: .02rem solid #efefef;
+
+	}
+	 .seat.menkou tr td,.ThreeBox .seat.space tr td{
+		border: none;
+	}
+	.ThreeBox .seat tr td.women{
+		background-color: #FF64B0;
+
+	}
+	.ThreeBox .seat tr td.man{
+		background-color: #00BFFE;
+		/*color: #fff;*/
+
+	}
+	.ThreeBox .seat tr td.man p{
+		/*color: #fff;*/
+	}
+	.ThreeBox .seat tr td span{
+		text-align: center;
+		    line-height: 1.5;
+
+
+	}
+	.ThreeBox .seat tr td span.red{
+		color: #fff;
+	}
+
+	.ThreeBox .seat tr td p{
+		text-align: center;
+		    line-height: 1.5;
+	}
+
+	/*讲坛*/
+	.jiangtai{
+		width: 100%;
+		clear: both;    
+
+	}
+	.jiangtai .left{
+		width: 4%;
+		float: left;
+		background-color: #1ABC9C;
+	    height: 50px;
+
+	}
+	.jiangtai .right{
+		width: 96%;
+		text-align: center;
+	    float: right;
+	    color: #fff; 
+	    padding-top: 10px;
+
+	}
+	.jiangtai .right span{
+
+	    height: 40px;
+	    line-height: 40px;
+	    background: #3879D9;
+	    display: inline-block;
+	    padding: 0 30px;
+
+	}
+
+
+
+
+  </style>
+
+</head>
+ <body id="body" class="clearfix">
+
+	 	<div id="leftBox" style="">
+	 		<span class="men">门</span>
+	 		<span> 口 </span>
+
+ 		</div>
+		<div id="rightBox"  >
+			 	<!-- <section class="ThreeBox" id="ThreeBox">
+  
+			 		<table class="seat">
+			 			<tr>
+			 				<td class="women">
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr class="man">
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 		</table>
+
+			 		<table class="seat">
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 		</table>
+
+			 		<table class="seat space">
+			 			<tr>
+			 				<td> &nbsp;
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td> &nbsp; 
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td> &nbsp; 
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td> &nbsp;
+			 				 </td>
+			 			</tr>
+			 		</table>
+
+					<table class="seat">
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 		</table>
+			 		<table class="seat">
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 			<tr>
+			 				<td>
+								<span>我的啥</span>
+								<p>王嘉敏（05）</p>
+			 				</td>
+			 			</tr>
+			 		</table>
+
+
+			 	</section>  -->
+ 		</div>
+
+ 	<section class="jiangtai">
+		<div class="left">
+
+		</div>
+		<div class="right">
+			<span>讲</span><span>坛</span> 
+
+		</div>
+ 	</section>
+
+
+
+</body>
+</html>
+<script type="text/javascript" src='../../../script/api.js'></script>
+<script type="text/javascript" src='../../../script/common.js'></script>
+<script type="text/javascript" src="../../../script/art/template-web.js" ></script>
+
+<script type="text/html" id="list">
+
+			 	<section class="ThreeBox" id="ThreeBox">
+  
+				{{each list as value i}}
+
+ 
+					<table class="seat">
+
+			 		 {{each value as item k}}
+
+
+			 		 	{{if item.name}}
+
+					 			<tr onclick="PunishingAwards('{{item.x}}','{{item.y}}','{{item.name}}')">
+					 				<td class="{{if item.sex==0}} women {{else if item.sex==1}} man {{/if}}">
+										<span class="{{if item.duties!='无'}}red{{/if}}">{{if item.duties=='无'}}无职务{{else}} {{ item.duties}}{{/if}}</span>
+										<p>{{item.name}}</p>
+					 				</td>
+					 			</tr> 
+
+			 			{{else}}
+
+						<tr>
+			 				<td >
+								<span> &nbsp;空 </span>
+								<p> &nbsp;座</p>
+			 				</td>
+			 			</tr>
+
+
+
+			 			{{/if}}
+
+
+			 			
+					 {{/each}}
+
+			 		</table>  
+
+
+			 		{{if i%2==1 && (i != list.length-1)}}
+ 
+					<table class="seat space">
+				 			<tr>
+				 				<td> &nbsp;
+				 				</td>
+				 			</tr>
+				 			<tr>
+				 				<td> &nbsp; 
+				 				</td>
+				 			</tr>
+				 			<tr>
+				 				<td> &nbsp; 
+				 				</td>
+				 			</tr>
+				 			<tr>
+				 				<td> &nbsp;
+				 				 </td>
+				 			</tr>
+				 		</table>
+
+
+			 		{{/if}}
+ 
+			 {{/each}}
+
+ 
+
+
+			 		
+
+					 
+
+			 	</section> 
+
+		 
+
+</script>
+
+
+<script type="text/javascript">
+
+
+  		apiready = function(){
+  			
+  			loadCommonJs();
+
+  			checkIphoneX();
+ 
+  			intiData();
+  
+		}
+
+		addHeight = function () {
+ 
+			var height = $api.dom('#rightBox').offsetHeight;
+
+
+			$api.dom('#leftBox').style.height = (height+'px');
+
+		}
+
+		checkIphoneX = function () {
+			var safeArea = api.safeArea;
+			var left = safeArea.left
+			var right = safeArea.right
+			var top = safeArea.top
+			var bottom = safeArea.bottom
+			$api.dom('#body').style.paddingLeft = left + 'px';
+
+
+		}
+
+		PunishingAwards = function (x,y,name) {
+
+				
+			var dialogBox = api.require('dialogBox');
+				dialogBox.alert({
+				    texts: {
+				        title: '对以下学生进行操作',
+				        content: name,
+				        leftBtnTitle: '惩罚',
+				        rightBtnTitle: '奖励'
+				    },
+				    styles: {
+				        bg: '#fff',
+				        w: 300,
+				        title: {
+				            marginT: 20,
+				            icon: 'widget://icon/common/hand.png',
+				            iconSize: 40,
+				            titleSize: 14,
+				            titleColor: '#000'
+				        },
+				        content: {
+				            color: '#f66',
+				            size: 16
+				        },
+				        left: {
+				            marginB: 7,
+				            marginL: 20,
+				            w: 130,
+				            h: 35,
+				            corner: 2,
+				            bg: '#ccc',
+				             color: '#fff',
+				            size: 14
+				        },
+				        right: {
+				            marginB: 7,
+				            marginL: 10,
+				            w: 130,
+				            h: 35,
+				            corner: 2,
+				            bg: '#e51c23',
+				            color: '#fff',
+				            size: 14
+				        }
+				    },
+				    tapClose :true
+				}, function(ret) {
+
+
+	            	var dialogBox = api.require('dialogBox');
+	                dialogBox.close({
+	                    dialogName: 'alert'
+	                });
+
+					switch(ret.eventType){
+						case 'left' : PunishingSelect(0);break;
+						case 'right' : AwardsSelect(1);break;
+					}
+  
+
+
+					 
+
+				});
+
+
+			
+		}
+
+		PunishingSelect = function () {
+
+
+			 var UIMultiSelector = api.require('UIMultiSelector');
+			 UIMultiSelector.open({
+			     rect: {
+			         h: api.winHeight/2
+			     },
+			     text: {
+			         title: '选择惩罚内容',
+			         leftBtn: '取消',
+			         rightBtn: '确认',
+			         selectAll: 'ALL'
+			     },
+			     max: 0,
+			     singleSelection: true,
+			     styles: {
+			         mask: 'rgba(0,0,0,.2)',
+			         title: {
+			             bg: '#fff',
+			             color: '#333',
+			             size: 15,
+			             h: 44
+			         },
+			         leftButton: {
+			             w: 80,
+			             h: 35,
+			             marginT: 5,
+			             marginL: 15,
+			             color: '#333',
+			             size: 14,
+			             bg: '#f7f7f7'
+
+			         },
+			         rightButton: {
+			             w: 80,
+			             h: 35,
+			             marginT: 5,
+			             marginR: 15,
+			             color: '#fff',
+			             size: 14,
+			             bg: '#459AE2'
+			         },
+			         item: {
+			             h: 35,
+			             bg: '#fff',
+			             bgActive: '#459AE2',
+			             bgHighlight: '#459AE2',
+			             color: '#333',
+			             active: '#fff',
+			             highlight: 'rgb(255,255,0)',
+			             size: 14,
+			             lineColor: '#efefef',
+			             textAlign: 'left'
+			         } 
+			     },
+			     animation: true,
+			     items: [{
+			         text: 'Monday',
+			         status: 'normal'
+			     }, {
+			         text: 'Tuesday',
+			         status: 'normal'
+			     } ]
+			 }, function(ret, err) {
+
+
+			 	if(ret.eventType==='clickItem'){
+
+			 		var items = ret.items;
+  
+
+
+			     	
+			     }
+
+			     if(ret.eventType==='clickRight'){
+			 		var items = ret.items;
+
+					closeUISelect(); 
+			 		 
+
+
+			     }
+
+			      if(ret.eventType==='clickLeft'){
+			 		var items = ret.items;
+ 
+					closeUISelect(); 
+			 		 
+
+
+			     }
+
+			     
+			 });
+
+
+			
+		}
+
+		
+		AwardsSelect = function () {
+			 
+			 var UIMultiSelector = api.require('UIMultiSelector');
+			 UIMultiSelector.open({
+			     rect: {
+			         h: api.winHeight/2
+			     },
+			     text: {
+			         title: '选择奖励内容',
+			         leftBtn: '取消',
+			         rightBtn: '确认',
+			         selectAll: 'ALL'
+			     },
+			     max: 0,
+			     singleSelection: true,
+			     styles: {
+			         mask: 'rgba(0,0,0,.2)',
+			         title: {
+			             bg: '#fff',
+			             color: '#333',
+			             size: 15,
+			             h: 44
+			         },
+			         leftButton: {
+			             w: 80,
+			             h: 35,
+			             marginT: 5,
+			             marginL: 15,
+			             color: '#333',
+			             size: 14,
+			             bg: '#f7f7f7'
+
+			         },
+			         rightButton: {
+			             w: 80,
+			             h: 35,
+			             marginT: 5,
+			             marginR: 15,
+			             color: '#fff',
+			             size: 14,
+			             bg: '#459AE2'
+			         },
+			         item: {
+			             h: 35,
+			             bg: '#fff',
+			             bgActive: '#459AE2',
+			             bgHighlight: '#459AE2',
+			             color: '#333',
+			             active: '#fff',
+			             highlight: 'rgb(255,255,0)',
+			             size: 14,
+			             lineColor: '#efefef',
+			             textAlign: 'left'
+			         } 
+			     },
+			     animation: true,
+			     items: [{
+			         text: 'Monday',
+			         status: 'normal'
+			     }, {
+			         text: 'Tuesday',
+			         status: 'normal'
+			     } ]
+			 }, function(ret, err) {
+
+
+			 	if(ret.eventType==='clickItem'){
+
+			 		var items = ret.items;
+   
+			     	
+			     }
+
+			     if(ret.eventType==='clickRight'){
+			 		var items = ret.items;
+
+					closeUISelect(); 
+			 		 
+
+
+			     }
+			       if(ret.eventType==='clickLeft'){
+			 		var items = ret.items;
+
+					closeUISelect(); 
+			 		 
+
+
+			     }
+
+			     
+			 });
+
+
+		}
+		closeUISelect= function () {
+			var UIMultiSelector = api.require('UIMultiSelector');
+			UIMultiSelector.hide();
+			UIMultiSelector.close();
+		}
+
+		intiData = function () {
+
+			api.readFile({
+			    path: 'widget://res/class.json'
+			}, function(ret, err) {
+			    if (ret.status) {
+			         var data = JSON.parse(ret.data);
+
+			         var newdata = [];
+			         var colLength = [0]; //每一列所拥有的数据
+
+			         var colNum = 4;
+
+ 
+
+			         for(var i = 0 ; i < data.length ; i++){
+
+
+			         	colLength.push(data[i].length)
+ 
+
+			         	for(var j = 0 ; j < data[i].length ; j++){
+
+
+
+			         		newdata.push(data[i][j]);
+
+ 
+
+			         	}
+
+			         }
+
+			         newdata = xySort(newdata);
+
+			         var xyArray = []
+
+			         for(var k = 0 ; k < colLength.length ; k++){
+
+
+			         	 var end = 0;
+			         	 var start = 0;
+
+			         	if(!colLength[k]) continue;
+
+
+						for(var m = 0 ; m < k ; m++){
+
+			         		start += colLength[m]
+			         	}
+
+
+			         	for(var n = 0 ; n <= k ; n++){
+ 
+			         		end += colLength[n];
+
+			         	}  
+
+			         	  
+		         		var colArr = newdata.slice(start,end);
+
+			         	if(colArr.length===0)continue;
+
+ 
+			         		xyArray.push(colArr) //切割数组
+
+			         }
+
+  
+
+			        var data = {
+			        	 list : xyArray
+			        }
+
+			         var html =template('list',data);
+			         $api.dom('#rightBox').innerHTML = html;
+  					 addHeight();
+
+
+			         
+
+
+ 				 
+
+			    } else {
+
+
+			    }
+			});
+
+
+		}
+
+ 
+function SetSortRule(p1, p2) { 
+		if (p1.x> p2.x) { 
+
+			return true; 
+
+		} else if (p1.x == p2.x) { 
+
+		return (p1.y > p2.y);
+
+		 } else {
+
+		  return false; 
+		} 
+} 
+
+
+xySort = function (arry) {
+ 
+ 
+		   var len = arry.length; 
+		   for (var i = 0; i< len - 1; i++) {
+			    for (var j=0 ; j < len - 1 - i; j++) {
+					 if (SetSortRule(arry[j], arry[j + 1])) { 
+
+				 			var tmp=arry[j];
+				 			 arry[j]=arry[j + 1];
+				 			 arry[j + 1]=tmp; 
+
+					} 
+				} 
+			} 
+
+
+		return arry; 
+ 
+
+ }
+    </script>

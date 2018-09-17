@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>语音转文字</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css" />
+    <style type="text/css"> 
+      #textarea{
+        font-size: .6rem;
+      }
+      #clickCircle{ 
+        margin-top: 1rem;
+      }
+    </style>
+</head>
+ <body>
+    <ul class="aui-list aui-form-list">
+
+        <li class="aui-list-item">
+          <div class="aui-list-item-inner">
+              
+              <div class="aui-list-item-input">
+                  <textarea placeholder="Textarea" id="textarea"></textarea>
+              </div>
+
+          </div>
+        </li>
+    </ul>
+<div class="aui-btn aui-btn-danger aui-btn-block aui-btn-sm" id="clickCircle" ontouchstart="recognizeStart()" ontouchend="recognizeStop()" >点击识别</div>
+
+</body>
+</html>
+<script type="text/javascript" src='../../../script/api.js'></script>
+<script type="text/javascript" src='../../../script/demo/xunfei.js'></script>
+<script type="text/javascript">
+  dom = function (selector) {
+    return document.querySelector(selector);
+  }
+</script>
+
+<script  charset="utf-8">
+
+ 
+  var swClick = true;
+  
+    apiready = function () {
+
+         // $api.fixStatusBar($api.dom('#headerBar'))
+
+         // headerH = $api.dom('#headerBar').offsetHeight;
+
+         initXunfei();
+         addEventVoice();
+ 
+    }
+
+    
+
+    addEventVoice = function () {
+
+         voiceRecognizer.addEventListener({
+            name: 'recognizeResult',
+            realTime:true
+        },function(ret){
+
+          if(ret.recognizeResult.isLast){
+
+                recognizeStop();
+
+          }else{
+
+             if(ret.recognizeResult.result){
+
+                dom('#textarea').value = ret.recognizeResult.result;
+
+             }
+          }
+
+         
+
+        });
+
+    }
+
+    //开始录入语音
+    recognizeStart = function () {
+
+      recognizeConfig(function () {
+         
+         voiceRecognizer.recognizeStart(function(ret) {
+            if (ret.status) {
+
+            } else {
+                api.alert({ msg: "开始失败"});
+            }
+        });
+
+      })
+
+
+    }
+    recognizeStop = function () {
+
+      voiceRecognizer.recognizeStop();
+
+    }
+
+
+     
+    // 配置语音合成参数 文字传语音
+    recognizeConfig = function (callback) {
+ 
+         voiceRecognizer.recognizeConfig({
+            config: {
+                vadbos: '5000',       
+                vadeos: '5000',        
+                timeout: '30000',     
+                netTimeout: '20000', 
+                rate: '16000',         
+                dot: true
+            }
+        }, function(ret) {
+            if (ret.status) {
+               callback(ret)//配置成功
+            } else{
+
+              api.alert({
+                  title: '配置失败', 
+              });
+
+            }
+        });
+
+    }
+
+
+
+    
+    isReading = function () {
+
+      dom('#readInput').style.display ='none'
+      dom('#readInput1').style.display ='block'
+
+ 
+
+    }
+    isParse  = function () {
+
+      dom('#readInput1').style.display ='none'
+      dom('#readInput').style.display ='block'
+ 
+
+    }
+
+    
+
+
+
+
+
+
+</script>

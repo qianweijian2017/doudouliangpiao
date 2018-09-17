@@ -1,0 +1,223 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>阿里云存储</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css" />
+    <style type="text/css"> 
+      #textarea{
+        font-size: .6rem;
+      }
+      #clickCircle{ 
+        margin-top: 1rem;
+      }
+      *{
+      	font-size: .6rem;
+      }
+    </style>
+</head>
+ <body>
+ 	<p>已连接的蓝牙设备<span id="bindBlueBooth" class="aui-red"></span></p>
+   <div class="aui-content-padded">
+
+ 
+ 	 <p>搜索蓝牙设备</p>
+   	<div class="aui-btn aui-btn-posPrinter aui-btn-block" onclick="getBluetoothPrinters()">获取蓝牙打印机列表</div>
+
+	<p>打印小票</p>
+   	<div class="aui-btn aui-btn-posPrinter aui-btn-block" onclick="printer()">打印小票</div>
+ 
+ 
+ 
+
+
+ 		
+ </div>
+ <div class="aui-content-padded">
+
+ <ul class="aui-list aui-media-list" id="listBox">
+ </ul>
+       
+           
+             
+           
+ 		
+ </div>
+
+
+</body>
+</html>
+<script type="text/javascript" src='../../../script/api.js'></script> 
+
+<script type="text/html" id="list">
+	
+{{each list as value}}
+		 <li class="aui-list-item aui-list-item-arrow" onclick="bindBlueBooth('{{value.address}}')">
+		    <div class="aui-media-list-item-inner">
+		        <div class="aui-list-item-inner">
+		            <div class="aui-list-item-text">
+		                <div class="aui-list-item-title">{{value.name}}</div>
+		                <div class="aui-list-item-right"> {{value.isBonded ? '已绑定': '未绑定'}}</div>
+		            </div>
+		            <div class="aui-list-item-text aui-ellipsis-2">
+		            	{{value.address}
+		                
+		            </div>
+		            	}
+		        </div>
+		    </div>
+		</li>
+
+{{/each}}
+
+
+</script>
+<script type="text/javascript" src="../../../script/art/template-web.js" ></script>
+
+<script type="text/javascript">
+
+ 
+  		apiready = function(){
+ 
+			  
+
+		}
+
+		printer = function () {
+
+			var orderInfo;
+					orderInfo = "<CA>测试打印</CA><BR>";
+					orderInfo += "名称　　　　　 单价  数量 金额<BR>";
+					orderInfo += "--------------------------------<BR>";
+					orderInfo += "番　　　　　　 1.0    1   1.0<BR>";
+					orderInfo += "番茄　　　　　 10.0   10  10.0<BR>";
+					orderInfo += "番茄炒　　　　 10.0   100 100.0<BR>";
+					orderInfo += "番茄炒粉　　　 100.0  100 100.0<BR>";
+					orderInfo += "番茄炒粉粉　　 1000.0 1   100.0<BR>";
+					orderInfo += "番茄炒粉粉粉粉 100.0  100 100.0<BR>";
+					orderInfo += "番茄炒粉粉粉粉 15.0   1   15.0<BR>";
+					orderInfo += "备注：快点送到<BR>";
+					orderInfo += "--------------------------------<BR>";
+					orderInfo += "合计：xx.0元<BR>";
+					orderInfo += "送货地点：xxxxxxxxxxxxxxxxx<BR>";
+					orderInfo += "联系电话：138000000000<BR>";
+					orderInfo += "订餐时间：2011-01-06 19:30:10<BR>";
+					orderInfo += "<QR>(300)http://www.baidu.com</QR><BR>";
+					orderInfo += " <CUT>";
+
+					var printModule = api.require('posPrinter');
+					var param = 
+					{ 
+					    taskList: 
+					    [
+					        { 
+					            printerAddr: address, 
+					            content: orderInfo, 
+					            keepAlive:true,       //蓝牙打印机，建议把keepAlive设为true
+					            copyNum: 2 
+					        },
+					        { 
+					            printerAddr: '192.168.1.10', 
+					            content: orderInfo, 
+					            copyNum: 2 
+					        }
+					    ] 
+					};
+					printModule.printOnSpecifiedPrinters(param);
+
+
+		}
+
+		bindBlueBooth = function  (address){
+
+			window.address = address;
+ 
+
+			 api.showProgress({
+		            style: 'default',
+		            animationType: 'fade',
+		            title: '正在绑定...',
+		            text: '请稍等...',
+		            modal: true
+		        });
+
+           	var posPrinter = api.require('posPrinter');
+
+		        posPrinter.createBondToPrinter({
+		            address:address
+		        } , function(ret,err)
+		          {
+
+		              if(err){
+
+		                  alert(JSON.stringify(err));
+
+		           		} else if(ret && ret.result == "ok"){
+
+		           		   api.hideProgress();
+
+
+		           			checkBlue();
+
+		                  	alert("绑定成功");
+
+		              }
+		          });
+			
+		}
+
+		checkBlue = function () {
+
+			$api.dom('#bindBlueBooth',address)
+
+		}
+
+
+
+		getBluetoothPrinters = function () {
+
+			var printModule = api.require('posPrinter');
+			var param = {
+			    'status': 'all'
+			    // 'status': 'bonded'
+
+			};
+
+
+			 api.showProgress({
+		            style: 'default',
+		            animationType: 'fade',
+		            title: '正在搜索...',
+		            text: '请稍等...',
+		            modal: true
+		        });
+
+			printModule.getBluetoothPrinters(param, function (ret, err) {
+
+				api.hideProgress();
+
+				if(ret.length > 0){
+
+					alert(JSON.stringify(ret))
+
+
+					var data = {
+						 list : ret
+					} 
+
+					var html  = template('list',data);
+					$api.html($api.dom('#listBox'),html)
+
+
+				} 
+			});
+
+		}
+
+	  
+ 
+</script>
+ 
+ 

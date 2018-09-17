@@ -1,0 +1,345 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>班级展示</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+
+   <style type="text/css">
+   body{
+   	overflow-x: hidden;
+   	font-family: '微软雅黑';
+   	-webkit-box-sizing: border-box;
+   	-moz-box-sizing: border-box;
+   	box-sizing: border-box;
+   	max-width: 100vw;
+   	padding-bottom: 40px; 
+    }
+   table{
+   	border-collapse: collapse;
+   }
+   table,tr,td,th,tbody{ 
+   	border-collapse: collapse;
+   	display: block;
+   	width: 100%;
+   }
+   tbody{
+   	height: 100%;
+   }
+   table tbody tr{
+	   	display: -webkit-flex;
+	   	display: -moz-flex;
+	   	display: -ms-flex;
+	   	display: -o-flex;
+	   	display: flex;
+	   	width: 100%;
+   }
+   table tbody tr td,table tbody tr th{
+	   	-webkit-flex: 1;
+	   	-moz-flex: 1;
+	   	-ms-flex: 1;
+	   	-o-flex: 1;
+   		padding: .4rem 0 ;
+	   	flex: 1;
+	   	text-align: center;
+   }
+   table tbody tr td{
+	   	font-size: 12px;
+   }
+  table tbody tr th{
+	   	font-size: 13px;
+
+  }
+   table tbody tr td{
+   		line-height: 1.5;
+      display: -webkit-flex;
+      display: -moz-flex;
+      display: -ms-flex;
+      display: -o-flex;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+   }
+   table tbody tr td.red{
+   		color: #f33;
+   }
+   table tbody tr:nth-child(odd){
+   		background-color: #F9FAFC;
+   }
+    table tbody tr:nth-child(even){
+   		background-color: #fff;
+   }
+     table tbody tr:first-child{
+   		background-color: #efefef;
+   }
+     .mykecheng{
+     	width: 100%;
+     } 
+    table tbody tr.before, table tbody tr.before td{
+        color: #999;
+
+    }
+    table tbody tr.after, table tbody tr.after td{
+
+    }
+   table tbody tr.current, table tbody tr.current td{
+      /*  background-color: #e51c23;
+        color: #fff;*/
+   }
+   #noData{
+    display: none;
+    margin-top: 50px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+   }
+  </style>
+
+</head>
+ <body id="body" class="clearfix">
+
+  <div id="noData">
+  暂无数据
+  </div>
+
+ 	 <table class="mykecheng" id="mykecheng">
+<!--  	 	<tr>
+			<th>序号</th>
+			<th>星期</th>
+			<th>时间</th>
+			<th>班级</th>
+			<th>状态</th> 
+ 	 	</tr> -->
+  
+
+ 	 </table>
+
+</body>
+</html>
+<script type="text/javascript" src='../../script/api.js'></script>
+<script type="text/javascript" src='../../script/common.js'></script>
+<script type="text/javascript" src="../../script/art/template-web.js" ></script>
+<!--   xueke_mingcheng : week_date[i].xueke_mingcheng,
+jiaoshi_id : week_date[i].jiaoshi_id,
+jiaoshi_mingcheng : week_date[i].jiaoshi_mingcheng,
+banji_id : week_date[i].banji_id,  
+banji_mingcheng : week_date[i].banji_mingcheng,  
+
+ -->
+ <script type="text/html" id="courseScript">
+    
+     <tr>
+        <th>序号</th>
+        <th>星期</th>
+        <th>时间</th>
+        <th>班级</th>
+        <th>状态</th> 
+    </tr>
+
+  {{each list value index}}
+
+  <tr class=""><th colspan="5"></th></tr>
+
+    {{each value item key}}
+     
+       <tr class="{{if index == item.week_day}}themeBg{{else if index < item.week_day}} before {{else}}{{/if}}" >
+          <td>{{item.sort}}</td>
+          <td >{{item.week}}</td>
+          <td >{{item.jie}}({{item.startTime}}-{{item.endTime}})</td>
+          <td >{{nianji_mingcheng}}{{item.banji_mingcheng}}</td>
+          <td >{{if index == item.week_day}}授课中{{else if index < item.week_day}} 已授课 {{else}}待授课{{/if}}</th> 
+      </tr>
+
+      {{/each}}
+
+  {{/each}}
+
+</script>
+ <script type="text/javascript">
+
+		apiready = function(){
+		    loadCommonJs();
+
+        initCourse();
+		}
+
+   initCourse = function () {
+
+      var jiaoshi_id = $api.getStorage('user').id;
+      jiaoshi_id = 32
+
+          ajax({
+            aApi : 'Gzkebiao/getOneJiaoshiKebiao',
+            params:{
+                jiaoshi_id :   jiaoshi_id
+            }
+          },function (data) {
+
+            if(data.data.length===0){
+
+                   $api.dom('#noData').style.display ='block';
+                   $api.dom('#mykecheng').style.display ='none';
+                   return;
+            }
+
+ 
+              if(data.code==1){
+
+                var resData = data.data;
+
+                // 处理数据
+                var kebiao_json =  resData.kebiao_json;
+
+                var shiduan_detail = resData.shiduan_detail;
+ 
+                var week_day = Number(resData.week_day);
+
+                week_day = week_day == 0 ? 6 : ( week_day-1 );
+ 
+                var list = [];
+  
+                //数组倒置
+
+                kebiao_json = kebiao_json.arrayReverse(); 
+ 
+                //数组倒置end
+
+                var sort = 0;
+
+                for(var j = 0 ; j < kebiao_json.length ; j++){
+
+                        var week_date = kebiao_json[j]; //当天课程
+                        var newdate = []; //用来存当天的课程，有可能 没有
+
+                        for(var i = 0 ; i < week_date.length ; i++){
+
+
+                          if(week_date[i].xueke_mingcheng){ 
+
+                            sort++ 
+                                newdate.push({
+                                    currentIndex : j,
+                                    xueke_id : week_date[i].xueke_id,
+                                    xueke_mingcheng : week_date[i].xueke_mingcheng,
+                                    jiaoshi_id : week_date[i].jiaoshi_id,
+                                    jiaoshi_mingcheng : week_date[i].jiaoshi_mingcheng,
+                                    banji_id : week_date[i].banji_id,  
+                                    banji_mingcheng : week_date[i].banji_mingcheng,  
+                                    jie : getJie(i), //获取到当前是第几节,
+                                    startTime : getStartTime(shiduan_detail,i), //获取到当前是第几节,
+                                    endTime : getEndTime(shiduan_detail,i), //获取到当前是第几节,
+                                    week : getWeek(j), //获取到 是周几
+                                    week_day : week_day,
+                                    sort : sort
+
+                                }) 
+                          }
+
+
+
+
+                        }
+
+ 
+
+                         list.push(newdate);
+ 
+                }
+
+ 
+
+               
+
+
+ 
+
+  
+                var data = {
+                   list : list,
+                   nianji_mingcheng :resData.nianji_mingcheng 
+                };
+
+
+
+
+
+                var html = template('courseScript',data);
+
+
+                $api.dom('#mykecheng').innerHTML = html;
+
+
+
+
+
+              }else{
+
+              }
+
+
+
+
+
+
+          })
+      
+    }
+
+
+      getJie = function (i) {
+
+          i = Number(i);
+
+          var jieText = '';
+
+          switch(i){
+            case 0:jieText = '第一节';break;
+            case 1:jieText = '第二节';break;
+            case 2:jieText = '第三节';break;
+            case 3:jieText = '第四节';break;
+            case 4:jieText = '第五节';break;
+            case 5:jieText = '第六节';break;
+            case 6:jieText = '第七节';break;
+            case 7:jieText = '第八节';break;
+            case 8:jieText = '第九节';break;
+            case 9:jieText = '第十节';break;
+            case 10:jieText = '第十一节';break; 
+          }
+          return jieText;
+        
+      }
+
+      getStartTime = function (shiduan,index) {
+
+        return shiduan[index].start_time.replace(':00','');
+
+
+        
+      }
+       getEndTime = function (shiduan,index) {
+
+        return shiduan[index].end_time.replace(':00','');
+        
+        
+      }
+
+      getWeek = function (j) {
+        j = Number(j)
+         var weekText = '周';
+
+          switch(j){
+            case 0:weekText += '一';break;
+            case 1:weekText += '二';break;
+            case 2:weekText += '三';break;
+            case 3:weekText += '四';break;
+            case 4:weekText += '五';break;
+            case 5:weekText += '六';break;
+            case 6:weekText += '七';break; 
+          }
+
+          return weekText;
+      }
+		    
+ </script>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" /> 
+    <link rel="stylesheet" type="text/css" href="../../script/awesome/css/font-awesome.css" /> 
+  <style type="text/css"> 
+  html,body{
+    background-color: #fff;
+  }
+  .centerBox{
+    background-color: #fff;
+    margin-top: 60px;
+    text-align: center;
+  }
+    .building{
+      font-size: 60px;
+      color:#009688 !important
+    }
+    p.text{
+      font-size: 16px;
+      text-align: center;
+
+    }
+
+ </style>
+</head>
+<body>
+   
+      
+ <section class="centerBox">
+
+    <i class="iconfont icon-fabu building"></i>
+    <p class="text" id="text">发送成功</p>
+
+ </section>
+
+
+ </body>
+</html>
+<script type="text/javascript" src='../../script/api.js'></script>
+<script type="text/javascript" src='../../script/common.js'></script>
+
+<script  charset="utf-8">
+
+  var header ,headerH ,title,name,url;
+  var oper ='send';
+      apiready = function () {
+
+        oper = api.pageParam.params.send ; 
+
+        closeNewSendWin();
+          
+    }
+
+    textTip = function (text) {
+
+      $api.dom('#text').innerHTML = text;
+      
+    }
+
+    closeNewSendWin  = function () {
+
+      switch(oper){
+        case 'send': textTip('发送成功');break;
+        case 'save': textTip('保存成功');break;
+      }
+
+ 
+    }
+ 
+
+
+
+
+</script>

@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>班级展示</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css"/>
+ <style type="text/css">
+		 body{
+		 	background-color: #fff;
+		 }
+		.aui-content-padded .aui-btn{
+			width: 48%;
+			float: left;
+		}
+		.aui-btn{
+			height: auto;
+			margin-bottom: 10px;
+		}
+		.aui-btn h4{
+			    color: #333;
+			    font-size: 16px;
+		}
+		.aui-content-padded .aui-btn:nth-child(odd){
+			float: left;
+		}
+		.aui-content-padded .aui-btn:nth-child(even){
+			float: right;
+		}
+
+	  
+</style>
+</head>
+ <body id="body" class="clearfix">
+
+	  <section class="aui-content-padded" id="classlist">
+      
+	<!--   <div class="aui-btn aui-btn-danger aui-col-xs-5 aui-btn-outlined aui-btn-sm">
+	       <h4>高一7班</h4>
+	       <h5>任教：化学</h5>
+
+	   </div> -->
+    </section>
+
+
+
+</body>
+</html>
+<script type="text/javascript" src='../../script/api.js'></script>
+<script type="text/javascript" src='../../script/common.js'></script>
+<script type="text/javascript" src="../../script/art/template-web.js" ></script>
+
+<script type="text/html" id="classScript">
+
+	{{each list value index}}
+			
+			{{each value.banjiTextArr item idx}}
+
+			<div class="aui-btn aui-btn-danger aui-col-xs-5 aui-btn-outlined aui-btn-sm" onclick="openMyClass('{{index}}','{{idx}}')">
+		       <h4>{{item}}</h4>
+		       <h5>任教课程：{{value.xueke_mingcheng}}</h5>
+
+		   </div> 
+
+		   {{/each}}
+
+	 {{/each}}
+
+</script> 
+
+
+
+<script type="text/javascript">
+
+
+  		apiready = function(){
+
+ 
+  			loadCommonJs();
+
+  			initData();
+  
+  
+  
+		}
+		initData = function () {
+
+			var gangwei = $api.getStorage('user').gangwei;
+
+			for(var j = 0 ;j < gangwei.length ; j++){
+
+
+
+				 gangwei[j].banjiTextArr = gangwei[j].banji_mingcheng_str.split(',');
+				 gangwei[j].banjiIdArr = gangwei[j].banji_id_str.split(',');
+
+			}
+
+
+
+			var data = {
+				list : gangwei
+			};
+
+			var html = template('classScript',data);
+
+			$api.dom('#classlist').innerHTML = html;
+
+
+
+		}
+
+		
+		openMyClass = function (gangweiIndex,banjiIndex) {
+
+			var gangwei = $api.getStorage('user').gangwei;
+
+			var gangweiIndex = Number(gangweiIndex);
+
+			var xuexiao_id = gangwei[gangweiIndex].xuexiao_id;
+
+		    var banji_id  = gangwei[gangweiIndex].banji_id_str.split(',')[banjiIndex];
+
+		    var banji_text  = gangwei[gangweiIndex].banji_mingcheng_str.split(',')[banjiIndex];
+
+	   api.setScreenOrientation({  orientation: 'landscape_left' });
+ 
+
+ 
+
+		   api.openWin({
+		          name : banji_text,
+		          title : banji_text,
+		          slidBackEnabled :  true,
+		          url: 'widget://html/common/win.html',
+		          pageParam:  {
+			          	title : banji_text,
+			          	name : banji_text,
+			          	url : 'widget://html/frame1/myclass.html',
+			          	params:{ 
+					          	xuexiao_id : xuexiao_id,
+					          	banji_id : banji_id
+			          	}
+		          }
+		      });
+
+
+		}
+</script>
+ 

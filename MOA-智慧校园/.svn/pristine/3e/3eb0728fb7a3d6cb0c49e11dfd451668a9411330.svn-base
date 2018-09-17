@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css"/> 
+   <style type="text/css">  
+    .aui-list-item .aui-list-item-inner .aui-list-item-title .new{
+      background-color: #f66;
+      color: #fff;
+      padding: 2px 3px;
+      line-height: 1;
+      border-radius: 3px;
+      margin-left: 5px;
+      font-size: 11px;
+    }
+    .aui-list-item .aui-list-item-inner .aui-list-item-title{
+      color: #333;
+      font-size: 14px;
+    }
+    .aui-list .aui-list-item-text{
+      font-size: 13px;
+    }
+    .aui-media-list .aui-list-item-inner{
+      padding-bottom: .2rem;
+    }
+    .aui-danger{
+      width: 100%;
+      clear: both;
+      display: block;
+    }
+    .aui-danger   .aui-danger-item{
+          float: right;
+          margin-right: 15px;
+          font-size: 13px;
+    } 
+  </style>
+ </head>
+<body> 
+
+  <section class="baoxiuBox clearfix" id="baoxiuBox" v-cloak>
+
+        <ul class="aui-list aui-media-list">
+              <li class="aui-list-item aui-list-item-arrow" v-for='(key,item) in messList' onclick="openBaoxiu('{{item.yuanshi}}')">
+                      <div class="aui-media-list-item-inner">
+                          
+                          <div class="aui-list-item-inner">
+                              <div class="aui-list-item-text">
+                                  <h3 class="aui-text-default">{{item.fangjian_mingcheng }}</h3>
+
+                                  <div class="aui-list-item-right aui-text-primary" v-if='item.status==0'>状态：未受理</div>
+
+                                  <div class="aui-list-item-right aui-text-danger" v-if='item.status==1'>状态：受理中</div>
+
+                                  <div class="aui-list-item-right aui-text-danger" v-if='item.status==2'>状态：已完工</div>
+
+                              </div>
+                              <p style="font-size:12px; ">报修时间：{{item.create_time}}</p>
+                              <div class="">
+                                  <em class="aui-text-primary aui-pull-left" style="font-size:13px; ">报修详情:</em>
+                                  <p style="clear:both;font-size:13px;"  > {{item.baoxiu_neirong | filterContent}}</p>
+                              </div>
+                          </div>
+                      </div>
+                      
+                  </li>
+
+                  
+           </ul>
+
+        <div class="dataTip" v-if='noData'>暂无新内容</div> 
+        <div class="dataTip" v-if='end'>内容全部加载完成</div> 
+        <div class="dataTip" v-if='loadding'>内容加载中</div> 
+
+  </section>
+
+ 
+
+       
+</body>
+
+<script type="text/javascript" src='../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../script/common.js'></script>
+<script type="text/javascript" src='../../../script/zepto/zepto.min.js'></script>
+
+<script type="text/javascript" src="../../../script/vue/vue.js"></script>
+<script type="text/javascript" src="../../../script/vue/vue-resource.js"></script>
+
+<script type="text/javascript">
+      apiready = function(){
+
+        loadCommonJs()
+
+        addEventBaoxiu();
+ 
+
+           initMess();
+
+           initRefresh(function () {
+ 
+                 vm.clickTab();
+
+           })
+
+
+      }
+
+      addEventBaoxiu = function  (){
+        api.addEventListener({
+            name: 'refreshBaoxiu'
+        }, function(ret, err) {
+             location.reload();
+        });
+      }
+     
+
+     initMess = function () {
+ 
+
+     window.vm = new Vue({
+          el:'#baoxiuBox',
+          data:{
+            loadding      : true,
+            end           : false,
+            noData        : false,
+            onClass       : ['on'],
+            currentPage   : 1,
+            catId         : 0,
+            messList      : [],
+            tips          : '内容',
+            tabItem       :[{
+              name : '邮件'
+            },{
+              name : '通知'
+            }],
+            postSw        : true,
+            indexApi      : getServerUrl() + 'index/checkJiaoshiLogin',
+            newGoodsAPI   : '',
+            userRank      : 1,
+            limit         : 6,
+            user          : {},
+            maxMess       :[],
+
+            // userRank      : "{$user_rank}" ? "{$user_rank}" :0,
+            bFirstPost    : true,
+            indexShow     : true,  
+            isTip          :true
+          },
+          methods:{
+              clickTab:function (index){
+
+               
+                showProgress('加载中')
+
+                location.reload();
+
+ 
+                
+
+
+
+              },
+              closeTips:function () {
+                    $api.setStorage('messTip',this.tips);
+
+                    this.tips = false;
+
+              },
+              setTips : function (tips) {
+
+                if($api.getStorage('messTip') == tips){
+
+                    this.tips = false;
+
+                }else{
+                    this.tips = tips;
+
+                }
+
+
+              },
+              OpenMail:function (index) {
+
+                var mail = this.messList[index];
+ 
+                 api.openWin({
+                    name: '通知',
+                    url: 'widget://html/common/win.html',
+                    delay:0,
+                    bgColor:'#fff',
+                    pageParam: {
+                        title: '通知详情',
+                        name: '通知详情',
+                        // url: 'widget://html/demo/index.html',
+                        url: 'widget://html/frame0/schoolMess/messDetail.html',
+                        // shareArticle : true,
+                        params : mail
+                     }
+                });
+         
+
+                    
+              },
+               
+              dealMessList:function () {
+
+                var  _this = this; 
+
+                ajax({
+                   aApi : 'Cgbaoxiu/getJiaoshiBaoxiu',
+                   params : {
+                        jiaoshi_id : $api.getStorage('user').id,
+                        page : this.currentPage  
+                   }
+                },function (data) { 
+            
+  
+                  hideProgress();
+                  hideRefresh();
+
+ 
+                  if(data.code==1){
+
+
+                    if(data.data.length === 0 && _this.currentPage ==1){
+
+                       _this.end = false;
+                       _this.noData = true;
+                       _this.loadding = false;
+                       return; 
+
+                    }
+//                         {
+//     "id": "4",
+//     "send_time": "2018-08-13 21:50:49",
+//     "read": "1",
+//     "msg_guanlian_id": "1",
+//     "read_mingcheng": "读取人2",
+//     "send_mingcheng": "发送人2",
+//     "read_time": "2018-08-13 21:51:12",
+//     "msg_leixing_id": "1",
+//     "msg_leixing_mingcheng": "测试",
+//     "send_id": "1",
+//     "msg_title": "标题2",
+//     "read_id": "2"
+// }
+ 
+
+                      if(data.data.length === 0){
+ 
+                           _this.postSw = false;
+
+                           _this.end = true;
+                           return;
+                      }
+ 
+                          var data = data.data;
+  
+                      
+
+                         for(var j = 0 ; j < data.length;  j++){
+
+                               _this.messList.push({
+                                    id    : data[j].id,
+                                    xiaoqu_id   : data[j].xiaoqu_id,
+                                    xuenian_id  : data[j].xuenian_id,
+                                    jiaoshi_id  : data[j].jiaoshi_id,
+                                    jiaoshi_mingcheng   : data[j].jiaoshi_mingcheng,
+                                    fangjian_id   : data[j].fangjian_id,
+                                    fangjian_mingcheng   : data[j].fangjian_mingcheng,
+                                    baoxiu_neirong  : data[j].baoxiu_neirong,
+                                    wenjian_id_str  : data[j].wenjian_id_str,
+                                    wenjian_url_str   : data[j].wenjian_url_str,
+                                    create_time   : data[j].create_time,
+                                    shouli_time  : data[j].shouli_time,
+                                    shouli_ren : data[j].shouli_ren,
+                                    status  : data[j].status,
+                                    yuanshi:JSON.stringify(data[j])
+                             })
+
+                         }
+ 
+ 
+
+                         _this.end = true;
+                         _this.loadding = false;
+                         _this.postSw = false;
+
+
+
+
+                          if(_this.bFirstPost){
+                            _this.bFirstPost = false;
+                            _this.bindScroll();
+                          }
+ 
+
+
+                  }else{
+
+
+                    toast(data.msg)
+
+
+                  }
+
+
+
+                  
+                });
+
+                    
+
+ 
+ 
+  
+
+                  
+                
+              },
+
+              getData:function (bFirstPost) {
+
+                this.bFirstPost = bFirstPost;
+
+                this.loadding = true;
+
+                var _this = this;
+
+
+
+                var timestamp = Date.parse(new Date())/1000;
+
+            
+
+                    // alert(JSON.stringify(sign));
+
+ 
+                this.dealMessList();
+                  
+
+
+             } ,
+              
+             emptyData:function () {
+
+                  this.currentPage  = 1; 
+
+                  this.messList  = [ ]; 
+
+ 
+
+             },
+
+             bindScroll:function () {
+               var _this = this;
+
+
+      $(window).scroll(function () {
+
+           if( ( $(window).height() +  $(window).scrollTop() + 600 )  >
+               $(document).height() && _this.postSw ){
+
+
+                      _this.postSw = false;
+                      _this.currentPage++;
+                      _this.loadding = true;
+                      _this.getData(false);
+
+           }
+
+
+
+      });
+
+
+
+
+             } ,
+             initFilter:function () {
+
+                Vue.filter('filterContent', function (value) {
+
+                     if (!value) return ''
+                    value = value.toString().substr(0,28)
+                    return value
+                  })
+
+                Vue.filter('filterTitle', function (value) {
+
+                     if (!value) return ''
+                    value = value.toString().substr(0,25)
+                    return value
+                  })
+
+
+              }
+            
+          },
+          
+          created:function () {
+ 
+
+            this.initFilter();
+               //同步返回结果：
+
+             var  user =  $api.getStorage('user') || false;
+
+
+            this.user =  user
+
+            this.getData(true);
+
+            
+
+
+
+
+
+             //获取新品推荐
+             // this.getNewGoods();
+          }
+    });
+
+
+
+
+    }    
+  
+</script>
+  
+ 

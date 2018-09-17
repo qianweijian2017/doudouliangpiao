@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css"/> 
+    
+ </head>
+<body> 
+   
+    <section class="messBox" id="messBox">
+
+       
+      <ul class="aui-list aui-media-list" id="messList">
+
+
+        <li class="aui-list-item clearfix" v-for='(key,item) in fileList' @click="openFile(key)"> 
+
+                <div class="aui-media-list-item-inner">
+                    
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title">{{item.mingcheng | filterTitle}} </div>
+                            <div class="aui-list-item-right">{{item.houzhui}}</div>
+                        </div>
+                      <!--   <div class="aui-list-item-text clamp1">
+                            {{item.content | filterContent}}
+                        </div> -->
+                    </div>
+                </div>
+                <div class="aui-danger" style="padding-top:0">
+                    
+                    <div class="aui-danger-item">{{item.time}}</div>
+
+                </div>
+            </li>
+ 
+
+
+
+        </ul>
+
+        <div class="dataTip" v-if='noData'>暂无新通知</div> 
+        <div class="dataTip" v-if='end'>内容全部加载完成</div> 
+        <div class="dataTip" v-if='loadding'>内容加载中</div> 
+  
+    </section>
+
+       
+</body>
+
+<script type="text/javascript" src='../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../script/common.js'></script>
+<script type="text/javascript" src='../../../script/zepto/zepto.min.js'></script>
+
+<script type="text/javascript" src="../../../script/vue/vue.js"></script>
+<script type="text/javascript" src="../../../script/vue/vue-resource.js"></script>
+
+<script type="text/javascript">
+      apiready = function(){
+
+        loadCommonJs()
+ 
+
+           initMess();
+
+           initRefresh(function () {
+ 
+                 vm.clickTab();
+
+           })
+
+
+      }
+
+     initMess = function () {
+ 
+
+     window.vm = new Vue({
+          el:'#messBox',
+          data:{
+            loadding      : true,
+            end           : false,
+            noData        : false,
+            onClass       : ['on'],
+            currentPage   : 1,
+            catId         : 0,
+            fileList      : [],
+            tips          : '内容',
+            tabItem       :[{
+              name : '邮件'
+            },{
+              name : '通知'
+            }],
+            postSw        : true,
+            indexApi      : getServerUrl() + 'index/checkJiaoshiLogin',
+            newGoodsAPI   : '',
+            userRank      : 1,
+            limit         : 6,
+            user          : {}, 
+
+            // userRank      : "{$user_rank}" ? "{$user_rank}" :0,
+            bFirstPost    : true,
+            indexShow     : true,  
+            isTip          :true
+          },
+          methods:{
+              clickTab:function (index){ 
+               
+                showProgress('加载中')
+
+                location.reload();
+                
+              },
+              closeTips:function () {
+                    $api.setStorage('messTip',this.tips);
+
+                    this.tips = false;
+
+              },
+              setTips : function (tips) {
+
+                if($api.getStorage('messTip') == tips){
+
+                    this.tips = false;
+
+                }else{
+                    this.tips = tips;
+
+                }
+
+
+              },
+              openFile:function (index) {
+
+                var file = this.fileList[index];
+
+                
+ 
+                //  api.openWin({
+                //     name: '通知',
+                //     url: 'widget://html/common/win.html',
+                //     delay:0,
+                //     bgColor:'#fff',
+                //     pageParam: {
+                //         title: '通知详情',
+                //         name: '通知详情',
+                //         // url: 'widget://html/demo/index.html',
+                //         url: 'widget://html/frame0/schoolMess/messDetail.html',
+                //         shareArticle : true,
+                //         params : file
+                //      }
+                // });
+         
+
+                    
+              },
+               
+              dealMessList:function () {
+
+                var  _this = this; 
+
+                ajax({
+                   aApi : 'Bgwenjian/getWenjian',
+                   params : {
+                        jiaoshi_id : $api.getStorage('user').id,
+                        page : this.currentPage  
+                   }
+                },function (data) {
+
+                  log(data,true)
+               
+                  hideProgress();
+                  hideRefresh();
+ 
+ 
+                  if(data.code==1){
+
+
+                    if(data.data.length === 0 && _this.currentPage ==1){
+
+                       _this.end = false;
+                       _this.noData = true;
+                       _this.loadding = false;
+                       return; 
+
+                    } 
+                      if(data.data.length === 0){
+ 
+                           _this.postSw = false;
+
+                           _this.end = true;
+
+                           return;
+                      }
+ 
+                          var data = data.data;
+   
+                         for(var j = 0 ; j < data.length;  j++){
+
+                               _this.fileList.push({
+                                      houzhui   : data[j].houzhui,
+                                      url       : data[j].url,
+                                      time      : data[j].time,
+                                      id        : data[j].id,
+                                      mingcheng : data[j].mingcheng,
+                                      user_id   : data[j].user_id,
+                                      xuexiao_id : data[j].xuexiao_id
+                              })
+
+                         }
+ 
+  
+                         _this.end = false;
+                         _this.loadding = true;
+                         _this.postSw = true;
+
+
+                          if(_this.bFirstPost){
+                            _this.bFirstPost = false;
+                            _this.bindScroll();
+                          }
+ 
+
+
+                  }else{
+
+
+                    toast(data.msg)
+
+
+                  }
+
+
+
+                  
+                });
+
+                    
+
+ 
+ 
+  
+
+                  
+                
+              },
+
+              getData:function (bFirstPost) {
+
+                this.bFirstPost = bFirstPost;
+
+                this.loadding = true;
+
+                var _this = this;
+
+                $api.dom('#messBox').style.display = 'block'
+
+
+                var timestamp = Date.parse(new Date())/1000;
+
+            
+
+                    // alert(JSON.stringify(sign));
+
+ 
+                this.dealMessList();
+                  
+
+
+             } ,
+              
+             emptyData:function () {
+
+                  this.currentPage  = 1; 
+
+                  this.fileList  = [ ]; 
+
+ 
+
+             },
+
+             bindScroll:function () {
+               var _this = this;
+
+
+      $(window).scroll(function () {
+
+           if( ( $(window).height() +  $(window).scrollTop() + 600 )  >
+               $(document).height() && _this.postSw ){
+
+
+                      _this.postSw = false;
+                      _this.currentPage++;
+                      _this.loadding = true;
+                      _this.getData(false);
+
+           }
+
+
+
+      });
+
+
+
+
+             } ,
+             initFilter:function () {
+
+                Vue.filter('filterContent', function (value) {
+
+                     if (!value) return ''
+                    value = value.toString().substr(0,28)
+                    return value
+                  })
+
+                Vue.filter('filterTitle', function (value) {
+
+                     if (!value) return ''
+                    value = value.toString().substr(0,25)
+                    return value
+                  })
+
+
+              }
+            
+          },
+          
+          created:function () {
+ 
+
+            this.initFilter();
+               //同步返回结果：
+
+             var  user =  $api.getStorage('user') || false;
+
+
+            this.user =  user
+
+            this.getData(true);
+
+            
+
+
+
+
+
+             //获取新品推荐
+             // this.getNewGoods();
+          }
+    });
+
+
+
+
+    }    
+  
+</script>
+  
+ 

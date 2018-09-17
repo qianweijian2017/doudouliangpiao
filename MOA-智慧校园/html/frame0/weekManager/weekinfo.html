@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css"/> 
+   <style type="text/css">  
+   html,body{
+    background-color: #fff;
+   }
+   .comTitleTip{
+    text-indent: 15px;
+    padding-top: 10px;
+   }
+   .comTitleTip i{
+    font-size: 12px;
+   }
+   .weekBox{
+    background-color: #fff;
+    
+
+   }
+   .weekBox .ulItem{
+    background-color: #fff;
+    margin-top: 5px;
+
+   }
+   .weekBox .ulItem li{
+      float: left;
+      clear: both;
+      width: 100%;
+      padding: 5px 0 ;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      text-indent: 15px;
+   }
+ 
+ 
+    .weekBox .ulItem li .title{
+      font-size: 14px;
+      color: #333;
+      line-height: 1.8;
+      padding: 8px 0;
+      border-bottom: 1px solid #efefef;
+      border-top: 1px solid #efefef;
+      font-weight: 600;
+   }
+    .weekBox .ulItem li .click .title, 
+    .weekBox .ulItem li .click i,
+    .weekBox .ulItem li .click span{
+      color: #03a9f4 ;
+
+   }
+    .weekBox .ulItem li .title i{
+       font-size: 11px;
+       color: #333;
+       margin-top: 3px;
+       margin-right: 16px;
+       transform-origin: 50% 50%;
+
+   }
+   
+    .weekBox .ulItem li .title span{
+       font-size: 13px;  
+   }
+    .weekBox .ulItem li .info {
+      height: 0;
+      overflow: hidden; 
+      padding: 0;
+
+   }
+   
+  .weekBox .ulItem li .info p{
+    line-height: 1.9;
+    color: #333;
+    text-indent: 0;
+    padding: 0 15px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    
+   }
+
+   @keyframes noheight {
+        0% {
+            height: 0px;
+            opacity: 0;
+        }
+
+        100% {
+            height: auto;
+            opacity: 1;
+        }
+    }
+ @keyframes addheight {
+        0% {
+            height: 120px; 
+        }
+
+        100% {
+           height: 0px; 
+        }
+   } 
+
+  .noheight {
+      animation: noheight .2s linear 0s forwards;
+  }
+  .addheight{
+      animation: addheight .2s linear 0s forwards;
+  }
+       
+    
+  
+    </style>
+ </head>
+<body> 
+  
+    <div  class="noInfo" id="noInfo">暂无</div>
+   
+    <section class="weekBox" id="weekBox">
+      
+        <!--   <header class="comTitleTip">
+              <i class="iconfont icon-queren"></i>
+              当前是第 <span>5</span> 周,共有11条周程信息
+
+          </header>
+           
+          <ul id="ulItem" class="ulItem clearfix" >
+              <li> 
+                   <div class="title" tapmode>
+                    我的标题我的标题
+                    <i class="aui-iconfont aui-icon-top aui-pull-right"></i>
+                       <span class="aui-pull-right">德育处</span>
+
+                   </div>
+                   <div class="info">
+                      <p>时间: 刚刚好.国国升级 4月5日星期一 07:30 - 07:55</p>
+                      <p>地点: 各班课室</p>
+                      <p>人员: </p>
+                      <p>备注: </p> 
+                   </div>
+              </li>
+ 
+
+
+           </ul>
+ -->
+      
+    </section> 
+
+</body>
+
+<script type="text/javascript" src='../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../script/common.js'></script>
+<script type="text/javascript" src='../../../script/art/template-web.js'></script>
+<script type="text/javascript" src='../../../script/zepto/zepto.min.js'></script> 
+
+<script type="text/html" id="weekScript" >
+
+        <header class="comTitleTip">
+              <i class="iconfont icon-queren"></i>
+              当前是第 <span>{{zhoucheng_mingcheng}}</span> 周,共有 {{list.length}} 条周程信息
+
+          </header>
+
+           
+              <ul id="ulItem" class="ulItem clearfix" >
+
+                    {{each list value index}}
+
+                            <li > 
+                                 <div class="title" data-zhoucheng_id='{{value.zhoucheng_id}}' data-id='{{value.id}}' tapmode >
+                                  {{value.mingcheng}}
+                                  <i class="aui-iconfont aui-icon-top aui-pull-right"></i>
+                                     <span class="aui-pull-right">教务处</span>
+
+                                 </div>
+                                 <div class="info">
+                                    <p>时间: {{value.date}}</p>
+                                    <p>地点: {{value.didian}}</p>
+                                    <p>人员: {{value.renyuan_mingcheng_str}} </p>
+                                    <p>备注: {{value.beizhu}} </p> 
+                                 </div>
+                            </li>
+                    {{/each}}
+                
+               </ul>
+   
+</script> 
+
+
+<script type="text/javascript">
+      apiready = function(){
+
+        loadCommonJs() 
+  
+        initWeek();
+ 
+
+      }
+      initAnimate = function () {
+ 
+        $('#ulItem li .title').on('click',function () {
+
+ 
+          if($(this).next().hasClass('noheight')){
+           
+
+              $(this).next().removeClass('noheight').addClass('addheight')
+
+              $(this).removeClass('click')
+
+              $(this).children('i').removeClass('aui-icon-down').addClass('aui-icon-top')
+
+          }else{
+
+              $(this).children('i').removeClass('aui-icon-top').addClass('aui-icon-down')
+
+              $(this).addClass('click')
+
+              $(this).next().removeClass('addheight').addClass('noheight') 
+
+
+          }
+        })
+      }
+      checkNull = function (data) {
+     
+        
+        if(!data.data){
+
+           $api.dom('#noInfo').style.display ='block';
+           $api.dom('#weekBox').style.display ='none';
+
+           return false;
+
+        }
+        return true;
+
+
+        
+      }
+
+      initWeek = function () { 
+ 
+
+            ajax({
+              aApi : 'Bgzhoucheng/getZhouchengRenwu',
+              params:{  
+                  xiaoqu_id : $api.getStorage('user').xiaoqu_id
+              }
+            },function (data) {
+              
+              if(!checkNull(data))return;
+               
+            
+
+              if(data.code==1){
+
+                    var resData = {
+                        list : data.data ,
+                        zhoucheng_mingcheng : data.zhoucheng_mingcheng
+                    }
+ 
+                   var html = template('weekScript',resData);
+
+                   $api.dom('#weekBox').innerHTML = html;
+
+                   initAnimate(); 
+ 
+
+              }else{
+
+                    toast(data.msg);
+ 
+
+              }
+
+            })
+
+        
+      }
+
+     
+  
+</script>
+  
+ 

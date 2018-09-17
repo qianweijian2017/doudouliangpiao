@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>阿里云存储</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css" />
+    <style type="text/css"> 
+      #textarea{
+        font-size: .6rem;
+      }
+      #clickCircle{ 
+        margin-top: 1rem;
+      }
+      *{
+      	font-size: .6rem;
+      }
+    </style>
+</head>
+ <body>
+   <div class="aui-content-padded">
+  
+  <div name="" onclick="oepnfile()">选择文件选择文件</div>
+ 
+  <p>上传文件</p>
+   	<div class="aui-btn aui-btn-success aui-btn-block" onclick="upFile()">上传文件</div>
+	<p>下载文件</p>
+   	<div class="aui-btn aui-btn-success aui-btn-block" onclick="downloadAliOss()">下载文件</div>
+	<p>删除文件</p>
+
+ 
+   	<div class="aui-btn aui-btn-success aui-btn-block" onclick="deleteAliOss()">删除文件</div>
+ 		
+ </div>
+
+
+  <div class="aui-content-padded">
+
+	<p id="name"></p>
+	<p id="path"></p>
+	<p id="size"></p>
+  
+ </div>
+
+</body>
+</html>
+<script type="text/javascript" src='../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../script/common.js'></script> 
+<script type="text/javascript" src='../../../script/demo/alioss.js'></script> 
+
+ <script type="text/javascript">
+
+  var buketName  = null;
+		apiready = function(){
+
+      loadCommonJs();
+
+		  initAliOss();
+ 
+		}
+
+    oepnfile = function () {
+      
+      api.getPicture({
+          sourceType: 'library',
+          mediaValue: 'pic',
+          destinationType: 'url',
+          quality: 50,
+          targetWidth:750, 
+      }, function(ret, err) {
+          if (ret) {
+            if(ret.data){
+ 
+
+              uploadAliOss(ret.data,function (data) {
+
+                log('path')
+                log(data,true)
+                
+              });
+
+            }
+          } else {
+              // alert(JSON.stringify(err));
+          }
+      });
+    }
+
+   
+
+    upFile = function () {
+
+     
+      // uploadAli(file);
+
+      
+    }
+
+    uploadAli = function (file) {
+
+// 通过域名、bucketname拼
+
+         var fileSplit  = file.split('/');
+
+         var filePullName = fileSplit[ fileSplit.length - 1 ] ;
+
+         var ext  = filePullName.split('.')[1] ;
+
+         var filename  = filePullName.split('.')[0] ;
+
+         var objectKey =  filename + '_' + Date.parse(new Date())/1000 + Math.floor(Math.random()*200) + '.'+ ext;
+
+         var aliyunOSS = api.require('aliyunOSS');
+
+         log(objectKey) 
+   
+            aliyunOSS.upload({
+                file :file,
+                bucketName : 'liangcai-product-south' ,
+                objectKey :  objectKey ,
+                uploadType :1,
+            }, function(ret, err) {
+
+                if(ret){
+
+                    if(ret.oper==='complete'){
+
+                      log(ret,true)
+
+
+                    }
+
+                }
+                else{
+                      log(err,true)
+
+                }
+
+            });
+     
+     
+
+ 
+
+    }
+
+   
+		    
+ </script>
+ 

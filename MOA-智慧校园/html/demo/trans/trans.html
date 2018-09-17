@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>阿里云存储</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css" />
+    <style type="text/css"> 
+      #textarea{
+        font-size: .6rem;
+      }
+      #clickCircle{ 
+        margin-top: 1rem;
+      }
+      .aui-btn.aui-btn-block{
+      	font-size: .6rem;
+      }
+    </style>
+</head>
+ <body>
+   <div class="aui-content-padded">
+ 
+ 
+ 	 <p>将xml文件或数据解析成JSON对象</p>
+   	<div class="aui-btn aui-btn-success aui-btn-block" onclick="xmlToJson()">将xml文件或数据解析成JSON对象</div>
+
+	<p>将 base64 字符串保存为图片</p>
+   	<div class="aui-btn aui-btn-success aui-btn-block" onclick="base64ToImg()">将 base64 字符串保存为图片</div>
+
+	<p>将图片转换为 base64 字符串</p>
+
+ 
+   	<div class="aui-btn aui-btn-success aui-btn-block" onclick="decodeImgToBase64()">将图片转换为 base64 字符串(暂仅支持 png、jpg 格式的图片)</div>
+ 		
+ </div>
+
+
+
+
+  <div class="aui-content-padded">
+
+	<p id="text"></p> 
+  
+  </div>
+
+</body>
+</html>
+<script type="text/javascript" src='../../../script/api.js'></script> 
+
+<script type="text/javascript">
+
+	var aliyunOSS = null;
+	var bucketName
+	var objectKey
+	var sprocess
+
+
+
+  		apiready = function(){
+
+			initAliOss();
+
+ 
+
+		}
+
+		xmlToJson = function () {
+
+			var trans = api.require('trans');
+			trans.parse({
+			    path: 'widget://res/key.xml'
+			}, function(ret, err) {
+			    if (ret) {
+			        alert(JSON.stringify(ret));
+			    } else {
+			        alert(JSON.stringify(err));
+			    }
+			});
+
+		}
+
+		base64ToImg = function () {
+
+				 var trans = api.require('trans');
+
+					api.getPicture({
+					    sourceType: 'camera',
+					    encodingType: 'jpg',
+					    mediaValue: 'pic',
+					    destinationType: 'base64', 
+					    allowEdit: true,
+					    quality: 50,
+					    targetWidth: 100,
+					    targetHeight: 100,
+					    saveToPhotoAlbum: false
+					}, function(ret, err) {
+					    if (ret) {
+
+					    	var barse64 = ret.base64Data;// destinationType 为'base64' 时生效
+
+
+								trans.saveImage({
+								    base64Str: barse64,
+								    imgPath:"fs://img/",
+								    imgName:Date.parse(new Date())/1000 + ".png"
+								}, function(ret, err) {
+								    if (ret.status) {
+								        alert(JSON.stringify(ret));
+								    } else {
+								        alert(JSON.stringify(err));
+								    }
+								});
+
+
+
+					    } else {
+
+					        alert(JSON.stringify(err));
+
+					    }
+					});
+
+		}
+
+		decodeImgToBase64 = function () {
+
+			  		var trans = api.require('trans');
+
+					api.getPicture({
+					    sourceType: 'camera',
+					    encodingType: 'jpg',
+					    mediaValue: 'pic',
+					    destinationType: 'url', 
+					    allowEdit: true,
+					    quality: 50,
+					    targetWidth: 100,
+					    targetHeight: 100,
+					    saveToPhotoAlbum: false
+					}, function(ret, err) {
+					    if (ret) {
+
+					    	var imgPath = ret.data;
+					 
+					    	var barse64 = ret.base64Data;// destinationType 为'base64' 时生效
+  
+					      	  trans.decodeImgToBase64({
+								    imgPath: imgPath
+								}, function(ret, err) {
+								    if (ret.status) {
+
+								         $api.text($api.dom('#text'),ret.base64Str);
+
+								    } else {
+								        alert(JSON.stringify(err));
+								    }
+								});
+
+
+
+
+ 			 
+
+					    } else {
+
+					        alert(JSON.stringify(err));
+
+					    }
+					});
+
+
+
+			  
+
+			
+		}
+		  
+ 
+</script>
+ 
+ 

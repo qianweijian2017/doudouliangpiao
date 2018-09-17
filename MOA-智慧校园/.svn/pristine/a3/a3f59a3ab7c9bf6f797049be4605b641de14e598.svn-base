@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css"/>
+   <style type="text/css">
+     .headerTip{
+     	    margin: 0;
+		    padding: 0;
+		    list-style: none;
+		    display: block;
+		    -webkit-box-sizing: border-box;
+		    box-sizing: border-box;
+		    color: #666;
+		    line-height: 1;
+		    padding: 0.4rem;
+		    font-size: 0.6rem;
+     }
+     .headerTip i{
+     	color: #f33;
+     }
+     .aui-list  .aui-form-list  {
+     	font-size: 14px;
+     }
+     .sendBox{
+      padding-bottom: 30px;
+     }
+     .textareaBox{
+     	width: 100%;
+     	height: 200px;
+     	border:1px solid #efefef;
+     	    position: relative;
+     	    margin-bottom: 10px;
+     }
+      .textareaBox  textarea{
+      	    font-size: 14px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;    padding: 0 .5em;
+    box-sizing: border-box;
+    display: block;height: 120px;
+      }
+
+     .textRow{
+     	    padding-left: 0.75rem;
+     	    padding-right: 0.75rem;border-bottom: 1px solid #dddddd;
+     }
+
+     .aui-list .aui-list-item-label, .textRow h3,.aui-list input,.textareaBox textarea{
+
+   				 font-size: 14px;
+
+     }
+     .textRow h3{
+    color: #212121;
+    line-height: 2rem;
+     }
+
+     /*上传附件*/
+
+     .fileBox{
+
+     }
+      .fileBox li{
+        width: 32%;
+
+      	height: 100px;
+        line-height: 70px;
+      	border:1px solid #efefef;
+		    text-align: center;
+        float: left;
+
+      	font-size: 50px;
+        margin-right: 1%;
+
+
+      }
+       .fileBox li i{
+
+
+       }
+      .fileBox li.file{
+      	color: #e51c23;
+
+			  border-radius: 5px;
+        margin-bottom: 5px;
+     }
+      .fileBox li.file .imgBox{
+
+        line-height: 100px;
+        overflow: hidden;
+        height: 0;
+        padding-bottom: 100%;
+        overflow: hidden;
+        position: relative;
+
+     }
+      .fileBox li.file .imgBox .imgclose{
+          position: absolute;
+          right: 0;
+          top: 0;
+          background-color: #efefef;
+          color: #000;
+          font-size: 12px;
+          z-index: 12;
+          height: 20px;
+          line-height: 20px;
+          width: 20px;
+          border-bottom-left-radius: 10px;
+
+     }
+      .fileBox li.file .upimg{
+            width: 100%;
+          position: absolute;
+          transform: translateY(-50%);
+          border:none;
+           position: absolute;
+           left: 0;
+           top: 50%;
+      }
+      .fileBox li.add{
+
+      	color: #999;
+
+     }
+
+
+    .filelist{
+      clear: both;
+      padding: 10px 0;
+    }
+     .filelist p{
+     	line-height: 2;
+     	font-size: 14px;
+     	color: #e51c23;
+     }
+     .pushObject span{
+        font-size: 13px;
+     }
+
+  </style>
+ </head>
+<body class="clearfix">
+  <div class="winmodal"></div>
+
+  <section class="sendBox clearfix" id="sendBox"  v-cloak>
+   <div class="headerTip">
+     	<i class="aui-iconfont aui-icon-danger"></i>
+                请如实填写报修信息，并保存发送！
+    </div>
+    <ul class="aui-list aui-form-list">
+              
+              <li class="aui-list-item">
+                <div class="aui-list-item-inner" >
+                    <div class="aui-list-item-label">
+                         报修位置
+                    </div>
+                    <div class="aui-list-item-input"   >
+                        <div placeholder="报修位置"  class="pushObject" >
+
+                              <input v-model='fangjian_mingcheng' id="baoxiudizhi"  placeholder="选择报修位置" />
+
+                        </div>
+                    </div>
+                     <div class="aui-pull-right" style="margin-right: 15px;"  @click="openPosition();" >
+<i class="iconfont icon-lianxirenkaobei" style="font-size: 16px;color: #e51c23;"></i>
+                    </div>
+                </div>
+            </li>
+  
+            <li  class="textRow">
+                <div >
+                    <h3>报修内容</h3>
+                    <div class="textareaBox">
+                        <textarea placeholder="请输入详细报修内容" v-model='content'></textarea>
+                    </div>
+                </div>
+            </li>
+
+           <li  class="textRow">
+
+                <div>
+                    <h3>上传图片详情 (  文件个数:{{pathArr.length}},  进度:{{fileProgress}}% )</h3>
+
+                    <ul class="fileBox">
+
+                						<li class="file" v-for='(item,key) in pathArr'>
+<div class="imgBox">
+
+                                    <i class="aui-iconfont aui-icon-close imgclose" @click='remove(item.path)'></i>
+
+                                               <img  :src="item.https"  class="upimg" @error="removeImg(key)"  v-if="item.type=='img'" @click="showBigPic($event)">
+                                    </div>
+
+                						</li>
+
+                						<li class="add" @click="addFile()">
+                                <i class="iconfont icon-jia1"></i>
+                						</li>
+
+                    </ul>
+
+                </div>
+
+                <div class="filelist">
+        					<p v-for='(key,item) in pathArr' >{{item.name}}</p>
+                </div>
+
+            </li>
+
+        </ul>
+
+</section>
+
+
+</body>
+
+<script type="text/javascript" src='../../../script/api.js'></script>
+<script type="text/javascript" src='../../../script/common.js'></script>
+<script type="text/javascript" src='../../../script/demo/alioss.js'></script>
+<script type="text/javascript" src="../../../script/vue/vue2.js"></script> 
+
+
+
+<script type="text/javascript">
+var fileArr = null;
+      apiready = function(){
+
+
+
+        loadCommonJs();
+
+        addEventAppendBaoxiuDizhi();
+
+        addEventUploadProgress();
+
+        initVue();
+
+        addEventModal();
+
+        initAliOss();
+
+
+      }
+      transPath = function (pathArr,callback) {
+
+          var UIAlbumBrowser = api.require('UIAlbumBrowser');
+
+
+          (function loopTrans(i)   {
+
+                if(i === pathArr.length){
+
+                  callback(pathArr);
+
+                  return;
+                }
+
+                  UIAlbumBrowser.transPath({
+                        path: pathArr[i].path
+                    }, function(ret, err) {
+
+                          if(ret.path){
+ 
+                            pathArr[i].path = ret.path;
+ 
+
+                          }
+
+                         loopTrans(++i)
+
+
+                    });
+
+
+
+          }(0))
+
+
+      }
+
+
+      sendMail = function () {
+
+          alert(api.winName)
+
+
+      }
+
+      removeImg = function (key) {
+      
+          try{
+
+           vm.removeImg(key)
+
+          }catch(e){
+
+          }
+      }
+      addEventUploadProgress = function () {
+
+        api.addEventListener({
+            name: 'uploadProgress'
+        }, function(ret, err) {
+            if (ret.value) {
+
+              var extra = ret.value;
+ 
+                  if(extra.progress ){
+  
+                        var progressParams = {   
+                          fileProgress  : extra.progress
+                        }
+
+                       vm.updateUploadProgress(progressParams);
+  
+
+                    }
+   
+
+ 
+ 
+
+            }  
+        });
+
+
+        api.addEventListener({
+            name: 'uploadDone'
+        }, function(ret, err) {
+
+           var doneData = ret.value;
+           log(doneData,true)
+           // return;
+  
+            if (doneData) {
+
+                var pathArr = vm.pathArr || [];
+ 
+                 for(var i = 0 ; i < pathArr.length ;i++){
+
+                      pathArr[i].https = doneData.aliObjectPath[i].url 
+                      pathArr[i].mingcheng = doneData.aliObjectPath[i].mingcheng
+                      pathArr[i].houzhui = doneData.aliObjectPath[i].houzhui
+
+                 }
+
+                vm.updatePathArr(pathArr);
+  
+                          // var checkImgLength = function () {
+  
+                          //     if(doneData.aliObjectPath.length ===  vm.pathArr.length){
+
+                                
+
+ 
+                          //            vm.updatePathArr(pathArr);
+ 
+  
+
+                          //      }else{
+
+                          //            setTimeout(function () {
+ 
+                          //                   checkImgLength();
+         
+                          //             },300)
+
+                          //      }
+
+
+                            
+                          // }
+
+                           
+
+            } else {
+
+                // alert(JSON.stringify(err));
+
+            }
+        });
+      }
+
+
+        addEventModal = function () {
+          api.addEventListener({
+              name: 'cover'
+          }, function(ret, err) {
+            $api.dom('.winmodal').style.display = 'block'
+          });
+
+           api.addEventListener({
+                  name: 'closecover'
+              }, function(ret, err) {
+                $api.dom('.winmodal').style.display = 'none'
+              });
+        }
+
+
+
+      updateName = function () {
+    
+
+           vm.updateName()  ;
+
+      }
+      addEventAppendBaoxiuDizhi = function () {
+
+        api.addEventListener({
+            name: 'appendBaoxiuText'
+        }, function(ret, err) {
+
+                  var louquText = $api.getStorage('louquText');
+                  var loucengText = $api.getStorage('loucengText');
+                  var fangjianText = $api.getStorage('fangjianText');
+
+                  if( louquText &&  loucengText && fangjianText){
+ 
+                      vm.fangjian_mingcheng = louquText + ' ' + loucengText + ' ' + fangjianText;
+ 
+
+                  }
+        });
+
+       
+        
+      }
+
+      initVue = function () {
+
+
+     window.vm = new Vue({
+          el:'#sendBox',
+          data:{
+            pathArr : [],
+            sendJson:[],
+            fangjian_mingcheng:'',
+            title : '',
+            content :'', 
+            end_time:'',
+            currentFileIndex: 0,
+            allFileCount : 0,
+            fileProgress :0
+          },
+          methods:{
+
+            
+            removeImg : function (index) {
+ 
+                    if( index >= 0 ){
+ 
+
+                          var pathArr = this.pathArr;
+
+                          pathArr.splice(index, 1);
+
+                          this.pathArr = pathArr; 
+ 
+
+
+                    }
+
+            },
+            showBigPic : function (event) {
+
+              showBigPic(event.currentTarget);
+
+              
+            },
+             updatePathArr : function (pathArr) {
+           
+
+                  this.pathArr = [];
+
+                  setTimeout(function () {
+                    
+                     this.pathArr = pathArr;
+ 
+
+                  }.bind(this),100)
+
+
+            },
+             updateUploadProgress:function (extra) {
+                   this.currentFileIndex= extra.currentFileIndex
+                   this.allFileCount = this.pathArr.length;
+                   this.fileProgress = extra.fileProgress
+            },
+             addFile :function () {
+
+                  var _this = this;
+
+                 // var button = ['文件','拍照','图片'];
+                 var buttons = ['拍照','图片'];
+
+                  api.actionSheet({
+                      title: '请选择文件类型',
+                      cancelTitle: '取消',
+                      buttons : buttons
+                  }, function(ret, err) {
+                      if (ret) {
+                         var index  = ret.buttonIndex;
+                          switch(index){
+                            // case 1 : _this.openFileBrowser();break;
+                            case 1 : _this.openPaiZhao();break;
+                            case 2 : _this.openPicture();break;
+                          }
+                      } else {
+
+                      }
+                  });
+
+
+
+             },
+              doDealPic:function (list) {
+
+                        var newPath = this.pathArr || [];
+
+                          for(var i = 0 ; i < list.length;i++){
+
+                                    this.appendFile({
+                                            path : list[i].path,
+                                            thumbPath : list[i].thumbPath
+                                    })
+
+                                     newPath.push({
+                                            path : list[i].path,
+                                            thumbPath : list[i].thumbPath
+                                    });
+
+                          }
+                          
+ 
+
+                       transPath(newPath,function (newPathArr) {
+
+                           uploadAliOss(newPathArr,function (serverFile) {
+
+                                   fileArr = serverFile;
+
+                            });
+
+                      });
+
+
+                
+              },
+             openPaiZhao:function () {
+              var _this = this;
+
+               
+                  api.getPicture({
+                      sourceType: 'camera',
+                      encodingType: 'jpg',
+                      mediaValue: 'pic',
+                      destinationType: 'url',
+                      allowEdit: true,
+                      quality: 50, 
+                      saveToPhotoAlbum: true
+                  }, function(ret, err) {
+
+                      if (ret) {
+
+                        var path =  ret.data;
+ 
+                  
+                       download(path,function (newpath) {
+
+                             var list = [{
+                              path :newpath ,
+                              thumbPath : newpath
+                            }];
+                            
+     
+                            _this.doDealPic(list);
+                          
+                        })
+
+
+
+                      } else {
+
+                      }
+                  });
+             },
+             openCamare:function () {
+
+              var _this = this;
+
+                api.getPicture({
+                    sourceType: 'camera',
+                    mediaValue: 'pic',
+                    destinationType: 'url',
+                    quality: 50,
+                    targetWidth: 750,
+                }, function(ret, err) {
+                    if (ret) {
+
+                      if(ret.data){
+
+                            var path = ret.data;
+                            _this.appendFile(path);
+
+                      }
+
+
+                    } else {
+
+                        // alert(JSON.stringify(err));
+                    }
+                });
+
+             },
+             remove:function (path) {
+
+              var _this = this;
+
+              confirm('确认删除吗?',function (data) {
+
+                  if(data){
+
+                          showProgress('删除中')
+
+                            var newPathArr = [];
+                            var pathArr = _this.pathArr;
+
+                            for(var i = 0  ; i < pathArr.length ;i++ ){
+
+                                if(pathArr[i].path == path){
+                                    continue;
+                                }
+
+                                newPathArr.push(pathArr[i]);
+
+                            }
+
+                             if(path.match('http')!=null){
+
+                                console.log(path)
+ 
+                                deleteAliOss(path)
+                            }
+
+                            _this.pathArr = newPathArr;
+
+
+                            hideProgress();
+
+                    }
+
+
+              })
+
+
+
+             },
+              
+              appendFile:function (options) {
+                        
+                      var path = options.path;
+                      var thumbPath = options.thumbPath;
+
+
+                        if(!thumbPath)return;
+
+                        var urlArr = thumbPath.split('/');
+
+                        var name = urlArr[urlArr.length-1];
+
+                        var ext  = name.split('.')[1];
+
+                        ext = ext.toLowerCase();
+
+
+                         switch(ext){
+                           case 'png' : type = 'img';break;
+                           case 'jpg' : type = 'img';break;
+                           case 'jpeg' : type = 'img';break;
+                           case 'docx' : type = 'word';break;
+                           case 'doc' : type = 'word';break;
+                           case 'xls' : type = 'excel';break;
+                           case 'xlsx' : type = 'excel';break;
+                           case 'txt' : type = 'txt';break;
+                           default : type = 'notype';break;
+                         }
+
+
+                         var pathArr = [] ;
+
+                         if(api.pageParam.params.isEdit){
+ 
+
+                                name = name.split('_v_')[0] + '.' + ext;
+                         }
+
+
+                         pathArr.push({
+                              thumbPath : thumbPath,
+                              path : path,
+                              name : name,
+                              ext : ext,
+                              type : type
+                         })
+
+                         if(this.pathArr){
+
+                            this.pathArr = this.pathArr.concat(pathArr);
+ 
+
+                         }else{
+
+                            this.pathArr = pathArr;
+
+
+                         }
+
+
+                   transPath(pathArr,function (newPathArr) {
+
+                         uploadAliOss(pathArr,function (data) {
+
+                                 fileArr = data;
+
+       
+                           });
+
+                    });
+
+                     
+                    
+
+
+
+              },
+             
+                openPicture : function () {
+
+                    var _this = this;
+
+                    var UIAlbumBrowser = api.require('UIAlbumBrowser');
+                    UIAlbumBrowser.open({
+                        max: 9,
+                        styles: {
+                            bg: '#fff',
+                            mark: {
+                                icon: '',
+                                position: 'bottom_left',
+                                size: 20
+                            },
+                            nav: {
+                                bg: '#e51c23',
+                                titleColor: '#fff',
+                                titleSize: 14,
+                                cancelColor: '#fff',
+                                cancelSize: 14,
+                                finishColor: '#333',
+                                finishSize: 14
+                            }
+                        },
+                        rotation: true
+                    }, function(ret) {
+                        if (ret) {
+
+                            if(ret.eventType ==='confirm'){
+
+                              var list = ret.list ;
+
+                              _this.doDealPic(list);
+
+                               
+
+                            }
+
+                               // var path = ret.data;
+
+
+                        }
+                    });
+
+                },
+                openPosition : function () {
+
+                  var contactHeight = 550;
+
+                    api.sendEvent({
+                        name: 'cover'
+                    });
+
+                  $api.setStorage('canclicktab',1)
+ 
+                   api.openFrame({
+                        name: 'flower',
+                        url: 'widget://html/frame0/affairsRepair/contact/contactWin.html',
+                        rect: {
+                            x: 0,
+                            y: api.winHeight - contactHeight  - api.safeArea.bottom,
+                            w: api.winWidth,
+                            h: contactHeight + api.safeArea.bottom
+                        },
+                        pageParam: {
+                            contactHeight : contactHeight,
+                             winName : api.winName
+                        },
+                        scrollEnabled:false,
+                        animation:{
+                        subType : 'from_bottom',
+                        duration:300
+                      }
+                    });
+
+
+
+
+
+
+                },
+                ifEdit:function () {
+
+                    if(!api.pageParam.params.isEdit)return; // 编辑报修
+                    var info = api.pageParam.params.info;
+ 
+
+                    var pathArr = [];
+
+                    var picArr = info.picArr || [];
+
+
+                    if(picArr.length > 0){ 
+
+                            for(var i = 0 ; i < picArr.length ; i++){
+
+                                this.appendFile({
+                                   path : picArr[i],
+                                   thumbPath : picArr[i]
+                                })
+
+                            }
+
+
+                    }
+
+
+                    log(pathArr,true)
+
+
+                    this.fangjian_mingcheng = info.fangjian_mingcheng;
+
+                    this.content = info.baoxiu_neirong;
+
+                    $api.setStorage('fangjian_id',info.fangjian_id);
+
+  
+
+
+
+
+                }
+
+
+
+          },
+
+          created:function () {
+
+            this.ifEdit()
+
+
+              $api.dom('#sendBox').style.display = 'block'
+             //获取新品推荐
+             // this.getNewGoods();
+          }
+    });
+
+
+ }
+
+     //点击保存时
+
+      sendBaoxiu = function () {
+
+      //   if(!vm.title){
+      //   toast('请输入标题')
+      //   return;
+      // }
+       if(!vm.content){
+        toast('请输入内容')
+        return;
+      }
+       
+         confirm('提示','确认提交报修信息?',function (data) {
+
+          if(!data)return;  
+         
+      // $api.rmStorage('temSendMailInfo');
+
+
+
+                doSend();
+
+           
+ 
+
+
+       })
+
+       
+ 
+
+    }
+    closewin = function () {
+
+          api.closeWin();
+      
+    }
+
+    doEdit = function(urlArr) {
+
+        ajax({
+             aApi :   'Cgbaoxiu/setBaoxiu'  ,
+             params:{
+                baoxiu_id :  api.pageParam.params.info.id ,  
+                fangjian_id : $api.getStorage('fangjian_id'),
+                fangjian_mingcheng: vm.fangjian_mingcheng ,
+                baoxiu_neirong : vm.content,
+                wenjian_url_str :   urlArr.join(",")  
+
+             }
+           },function (data) { 
+
+                if(data.code ==1){
+                     
+                  setTimeout(function () {
+  
+                       openBaoxiu(JSON.stringify(api.pageParam.params.info));
+
+
+                  },1300)
+
+ 
+                     toast(data.msg)
+
+
+                }else{
+
+                     toast(data.msg)
+
+                }
+           })
+
+
+    }
+
+    doSend = function () {
+
+
+       showProgress('发送中');
+ 
+       var urlArr = []
+
+         if(fileArr){
+
+            for(var j = 0 ; j < fileArr.length ;j++ ){
+
+                  urlArr.push( fileArr[j].url )
+
+
+            }
+
+         } 
+
+
+
+        if( api.pageParam.params.isEdit){
+
+               doEdit(urlArr)
+
+               return;
+        }
+
+
+ 
+            ajax({
+             aApi : 'Cgbaoxiu/addBaoxiu',
+             params:{ 
+                xuenian_id : $api.getStorage('user').xuenian_id,
+                xiaoqu_id : $api.getStorage('user').xiaoqu_id,
+                jiaoshi_id : $api.getStorage('user').id,
+                jiaoshi_mingcheng : $api.getStorage('user').mingcheng,
+                fangjian_id : $api.getStorage('fangjian_id'),
+                fangjian_mingcheng: vm.fangjian_mingcheng ,
+                baoxiu_neirong : vm.content,
+                wenjian_url_str :   urlArr.join(",")  
+
+             }
+           },function (data) {
+ 
+
+                if(data.code ==1){
+
+                       sendSuccess({
+                        oper : 'send'
+                       }); 
+                      
+  
+                    setTimeout(function () {
+                      api.sendEvent({
+                          name: 'refreshBaoxiu',
+                          extra: { 
+                          }
+                      });
+                      
+                    },300)
+
+
+                }else{
+
+                     toast(data.msg)
+
+                }
+           })
+
+    }
+
+     
+   
+
+
+
+    
+ 
+
+
+
+
+
+</script>

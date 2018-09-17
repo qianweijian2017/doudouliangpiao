@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>权限</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css"/> 
+  <style type="text/css"> 
+    .themeBorder{
+
+      background:none;
+    }
+    .themeBorder:active, .themeBorder:hover{
+      background-color: #e51c23;
+      color: #fff;
+    }
+
+ </style>
+</head>
+<body>
+ 
+  <section class="selectRow" id="selectRow">
+   
+
+  </section>
+
+ 
+ </body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/art/template-web.js"></script>
+
+<script type="text/html" id="adminScript">
+    {{each list value index}}
+    <div class="aui-content-padded aui-padded-b-0 " onclick="openRoot({{index}})">
+        <div class="aui-btn aui-btn-block themeBorder" tapmode=""  >{{value.xingming}}({{value.mingcheng}})</div>
+    </div>
+    {{/each}}
+
+
+</script>
+
+<script type="text/javascript">
+    apiready = function(){ 
+
+           loadCommonJs();
+
+           initAdminList(); 
+
+    }
+
+    initAdminList = function () {
+
+      var admin = $api.getStorage('admin');
+
+      var data = {
+        list : admin
+      }
+
+
+      var html = template('adminScript',data);
+ 
+      $api.dom('#selectRow').innerHTML = html;
+
+
+ 
+    }
+
+    openRoot = function (index) {
+    
+          $api.setStorage('user', $api.getStorage('admin')[index] );
+
+          var user = $api.getStorage('user') || {};
+       
+          user.juese_cache_str =  user.app_quanxian_id_str;
+          
+          showProgress('登录中..')
+
+          
+          api.sendEvent({
+              name: 'reloaduser',
+              extra: {
+                  user: user,  
+              }
+          });
+
+          setTimeout(function(){ 
+ 
+               api.closeToWin({
+                    name : 'root'
+               });
+               api.closeWin();
+                
+              hideProgress();
+
+           },1000)
+          
+   
+
+
+          
+    }
+         
+</script>
+  

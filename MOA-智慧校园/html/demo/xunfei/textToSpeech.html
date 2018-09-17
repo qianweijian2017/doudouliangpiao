@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>文字转语音</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css" />
+ <style type="text/css">  
+    #textarea{
+        font-size: .6rem;
+      }
+</style>
+</head>
+ <body>
+    <ul class="aui-list aui-form-list">
+
+        <li class="aui-list-item">
+          <div class="aui-list-item-inner">
+              
+              <div class="aui-list-item-input">
+                  <textarea placeholder="Textarea" id="inputBox"></textarea>
+              </div>
+          </div>
+        </li>
+    </ul>
+<div class="aui-btn aui-btn-danger aui-btn-block aui-btn-sm" onclick="readStart()">点击识别</div>
+
+</body>
+</html>
+<script type="text/javascript" src='../../../script/api.js'></script>
+  <script type="text/javascript" src='../../../script/demo/xunfei.js'></script>
+<script type="text/javascript">
+  dom = function (selector) {
+    return document.querySelector(selector);
+  }
+</script>
+
+<script  charset="utf-8">
+
+ 
+  var swClick = true;
+  
+    apiready = function () {
+
+         // $api.fixStatusBar($api.dom('#headerBar'))
+
+         // headerH = $api.dom('#headerBar').offsetHeight;
+
+         initXunfei();
+         addEventVoice();
+ 
+    }
+
+    
+
+    addEventVoice = function () {
+
+        
+
+    }
+
+
+     
+    // 配置语音合成参数 文字传语音
+    readConfig = function (callback) {
+ 
+     
+          voiceRecognizer.readConfig({
+              config:{
+                 speed: '50',        
+                  volume: '50',         
+                  pitch: '50',         
+                  rate: '16000',        
+                  voice: 'xiaoyan' 
+              }
+          }, function(ret) {
+
+              callback(ret)
+
+
+ 
+          });
+
+    }
+
+
+
+    readStart = function () {
+ 
+       var text = document.querySelector('#inputBox').value;
+        
+        readConfig(function () {
+
+                voiceRecognizer.startRead({
+                   audioFileName: new Date() + '.wav',//若不传则不保存
+                   readString: text
+                });
+      })
+
+
+
+
+    }
+    
+    isReading = function () {
+
+      dom('#readInput').style.display ='none'
+      dom('#readInput1').style.display ='block'
+
+ 
+
+    }
+    isParse  = function () {
+
+      dom('#readInput1').style.display ='none'
+      dom('#readInput').style.display ='block'
+ 
+
+    }
+
+       
+    beginRead = function () {
+
+      var text = document.querySelector('#inputBox').value;
+      if(!text.trim()){
+         api.toast({
+             msg: '请输入要识别文字'
+         });
+        return; 
+      }
+
+      if(!swClick)return;
+      swClick = false;
+
+
+
+          readStart(text,function () {
+  
+               swClick = true
+
+            
+          })
+
+          setTimeout(function () {
+              isReading();
+              swClick = true
+            
+          },4000)
+
+      
+
+      
+    }
+    
+
+
+
+
+
+
+</script>

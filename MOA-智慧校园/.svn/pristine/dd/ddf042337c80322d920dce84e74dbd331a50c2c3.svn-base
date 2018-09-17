@@ -1,0 +1,600 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>APP</title>
+    <link rel="stylesheet" type="text/css" href="../css/aui.css" />
+    <style type="text/css">
+    .aui-input-addon.aui-iconfont {
+        font-size: 20px !important;
+    }
+    .aui-input-row {
+        width: 100% !important;
+    }
+    </style>
+</head>
+<body>
+    <div class="aui-content" style="padding-top: 20px;">
+        <div class="aui-form aui-card">
+            <div class="aui-input-row">
+                <i class="aui-input-addon aui-iconfont aui-icon-people aui-text-info"></i>
+                <input type="number" id="userTel" class="aui-input" placeholder="请输入电话号码"/>
+            </div>
+
+            <div class="aui-input-row">
+                <i class="aui-input-addon aui-iconfont aui-icon-lock aui-text-warning"></i>
+                <input type="password" id="password" class="aui-input" placeholder="请输入密码"/>
+                <i class="aui-input-addon aui-iconfont aui-icon-attention aui-text-default" onclick="showPassword();" id="showpass-btn"></i>
+            </div>
+            <div class="aui-input-row">
+                <i class="aui-input-addon aui-iconfont aui-icon-people aui-text-info"></i>
+                <input type="number" id="companyHaoma" class="aui-input" placeholder="请输入7位公司代码"/>
+            </div>
+            <div class="aui-btn-row">
+                <div class="aui-btn aui-btn-block aui-btn-danger" id="loginBtn" onclick="login()">确认并登陆</div>
+            </div>
+        </div>
+        <div id="ceshiBox" class="aui-hidden">
+            <div class="aui-card" id="ceshiUser" style="padding:5px;">
+                <div class="aui-btn aui-btn-info" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(0)">老板</div>
+                <div class="aui-btn aui-btn-success" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(1)">经理1</div>
+                <div class="aui-btn aui-btn-success" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(2)">经理2</div>
+                <div class="aui-btn aui-btn-danger" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(3)">技师1</div>
+                <div class="aui-btn aui-btn-danger" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(4)">技师2</div>
+                <div class="aui-btn aui-btn-primary" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(5)">清洁</div>
+                <div class="aui-btn aui-btn-primary" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(6)">配送</div>
+                <div class="aui-btn aui-btn-warning" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(7)">前台</div>
+                <div class="aui-btn aui-btn-warning" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(8)">钟房</div>
+                <div class="aui-btn aui-btn-warning" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="userLogin(9)">其他</div>
+            </div>
+            <div class="aui-card" id="ceshiShebei" style="padding:5px;">
+                <div class="aui-btn aui-btn-info" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="shebeiLogin(3)">前台设备</div>
+                <div class="aui-btn aui-btn-success" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="shebeiLogin(0)">钟房设备</div>
+                <div class="aui-btn aui-btn-primary" style="margin-top:4px;margin-bottom: 4px;" tapmode onclick="shebeiLogin(1)">配送设备</div>
+            </div>
+            <div class="aui-card">
+                <div class="aui-col-xs-6 aui-bg-info" style="height: 60px;color: #fff;line-height:60px;text-align: center;" tapmode onclick="openTestWin()">系统调试</div>
+                <div class="aui-col-xs-6 aui-bg-danger" style="height: 60px;color: #fff;line-height:60px;text-align: center;" tapmode onclick="closeCeshi()">退出演示</div>
+            </div>
+        </div>
+        <div id="adBox">
+            <p style="margin:30px;text-align: center;font-size: 20px;color: red">欢迎使用新沐足行业管理软件！</p>
+        </div>
+    </div>
+    <div class="aui-toast" style="display:none" id="default">
+        <i class="aui-iconfont aui-icon-check"></i>
+        <div class="aui-toast-content">系统配置中</div>
+    </div>
+</body>
+<script type="text/javascript" src="../script/api.js" ></script>
+<script type="text/javascript" src="../script/mis.js"></script>
+<script type="text/javascript">
+var isinerval,times,shebeiId,userTel,userPassword,companyHaoma,loginType;
+var loginCheck = 1;
+var loginType = 0;
+var shebeiTypeId = 9;
+var uiMode;
+var hasCeshi = 0;
+var hasClick = 0;
+var ceshiCompanyHaoma = '';
+var jishiNum = 0;
+var jishiObj;
+if($api.getStorage('hasCeshi')){
+    hasCeshi = parseInt($api.getStorage('hasCeshi'))
+    ceshiCompanyHaoma = $api.getStorage('ceshiCompanyHaoma');
+}else{
+    hasCeshi = 0;
+}
+function closeCeshi(){
+    if(hasClick == 1){
+        alert('登录中，请勿重复操作！');
+        return false;
+    }
+    api.confirm({
+        msg: '确认退出测试吗？',
+        buttons: ['确定', '取消']
+    }, function(ret, err) {
+        if (ret) {
+            if(ret.buttonIndex == 1){
+                hasCeshi = 0;
+                $api.setStorage('hasCeshi',0);
+                $api.setStorage('ceshiCompanyHaoma','');
+                buildCeshiBox();
+            }
+        }
+    });
+}
+function buildCeshiBox(){
+    if(hasCeshi == 1){
+        $api.val($api.byId('companyHaoma'), '');
+        $api.val($api.byId('userTel'),'');
+        $api.val($api.byId('password'), '');
+        $api.removeCls($api.byId('ceshiBox'), 'aui-hidden');
+        $api.addCls($api.byId('adBox'), 'aui-hidden');
+    }else{
+        $api.removeCls($api.byId('adBox'), 'aui-hidden');
+        $api.addCls($api.byId('ceshiBox'), 'aui-hidden');
+    }
+}
+function showDefault(){
+    $api.css($api.byId("default"),"display:block");
+    setTimeout(function(){
+        $api.css($api.byId("default"),"display:none");
+    },2000)
+}
+function openTestWin(){
+    if(hasClick == 1){
+        alert('登录中，请勿重复操作！');
+        return false;
+    }
+    api.confirm({
+        msg: '确认要进入系统调试界面吗？',
+        buttons: ['确定', '取消']
+    }, function(ret, err) {
+        if (ret) {
+            if(ret.buttonIndex == 1){
+                api.openWin({
+                    name: 'systemTest',
+                    url: './test_win.html',
+                    pageParam: {
+                        companyHaoma: ceshiCompanyHaoma
+                    }
+                });
+            }
+        }
+    });
+}
+function shebeiLogin(index){
+    if(hasClick == 1){
+        alert('登录中，请勿重复操作！');
+        return false;
+    }
+    if(uiMode == 'phone'){
+        api.confirm({
+            msg: '此行功能请使用平板演示，手机演示效果不佳，你确定仍然使用手机进行演示吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if (ret) {
+                if(ret.buttonIndex == 1){
+                    shebeiDemo(index);
+                }
+            }
+        });
+    }else{
+        shebeiDemo(index);
+    }
+}
+function shebeiDemo(index){
+    shebeiTypeId = index;
+    var typeName;
+    if(index == 0){
+        typeName = '钟房设备';
+    }
+    if(index == 1){
+        typeName = '配送设备';
+    }
+    if(index == 3){
+        typeName = '前台设备';
+    }
+    loginType = 1;
+    $api.val($api.byId('userTel'),'0000000');
+    $api.val($api.byId('password'),'0000000');
+    $api.val($api.byId('companyHaoma'),ceshiCompanyHaoma);
+    $api.html($api.byId('loginBtn'), typeName+'登陆');
+}
+function userLogin(index){
+    if(hasClick == 1){
+        alert('登录中，请勿重复操作！');
+        return false;
+    }
+    if(uiMode != 'phone'){
+        api.confirm({
+            msg: '此行功能请使用手机演示，平板演示效果不佳，你确定仍然使用平板进行演示吗？',
+            buttons: ['确定', '取消']
+        }, function(ret, err) {
+            if (ret) {
+                if(ret.buttonIndex == 1){
+                    userDemo(index);
+                }
+            }
+        });
+    }else{
+        userDemo(index);
+    }
+}
+function userDemo(index){
+    var testUserArr = [
+        {
+            tel:'18088888888',
+            password:'123456',
+            name:'老板'
+        },{
+            tel:'18000001001',
+            password:'123456',
+            name:'经理1'
+        },{
+            tel:'18000001002',
+            password:'123456',
+            name:'经理2'
+        },{
+            tel:'18000000001',
+            password:'123456',
+            name:'技师1'
+        },{
+            tel:'18000002001',
+            password:'123456',
+            name:'技师2'
+        },{
+            tel:'18030003001',
+            password:'123456',
+            name:'清洁人员'
+        },{
+            tel:'18020002001',
+            password:'123456',
+            name:'配送人员'
+        },{
+            tel:'18010001001',
+            password:'123456',
+            name:'前台人员'
+        },{
+            tel:'18099990001',
+            password:'123456',
+            name:'钟房人员'
+        },{
+            tel:'18011110001',
+            password:'123456',
+            name:'其他人员'
+        }
+    ]
+    var loginTel = testUserArr[index].tel;
+    var loginPassword = testUserArr[index].password;
+    companyHaoma = ceshiCompanyHaoma;
+    var typeName = testUserArr[index].name;
+    loginType = 1;
+    userTel = $api.val($api.byId('userTel'),loginTel);
+    userPassword = $api.val($api.byId('password'),loginPassword);
+    companyHaoma = $api.val($api.byId('companyHaoma'),companyHaoma);
+    $api.html($api.byId('loginBtn'), typeName+'登陆');
+}
+function getCeshiInfo(){
+    if(userTel == ''){
+        alert('请输入你的手机号码！');
+        return false;
+    }
+    if(userTel.length != 11){
+        alert('你输入的手机号码不是11位');
+        return false
+    }
+    if(userPassword == ''){
+        alert('你还没有输入密码');
+        return false;
+    }
+    api.ajax({
+        url: getCeshiUrl,
+        method: 'post',
+        data: {
+            values: {
+                tel: userTel
+            }
+        }
+    }, function(ret, err) {
+        if (ret) {
+            if(ret.has == 1){
+                $api.setStorage('ceshiCompanyHaoma',ret.haoma);
+                $api.setStorage('companySystemIp', 'http://'+ret.server_ip+'/');
+                $api.setStorage('companySystemUrl', 'http://'+ret.server_url+'/');
+                $api.setStorage('hasCeshi',1);
+                //alert('http://'+ret.server_url+'/-' +'http://'+ret.server_ip+'/' )
+                hasCeshi = 1;
+                ceshiCompanyHaoma = ret.haoma;
+                buildCeshiBox();
+            }
+        } else {
+            api.toast({
+                msg: '网络错误'
+            });
+        }
+    });
+}
+function login(){
+    if(hasClick == 1){
+        alert('执行中，请勿重复操作！');
+        return false;
+    }
+    userTel = $api.val($api.byId('userTel'));
+    userPassword = $api.val($api.byId('password'));
+    companyHaoma = $api.val($api.byId('companyHaoma'));
+    if(userPassword == 'xinmuzu' && companyHaoma == '0000000'){
+        getCeshiInfo();
+    }else{
+        if(userTel == '0000000' && userPassword == '0000000'){
+            if(hasCeshi == 0){
+                if(uiMode == 'phone'){
+                    alert('只能在平板上进行操作！');
+                    return false;
+                }else{
+                    gotoHouqin();
+                }
+            }else{
+                gotoHouqin();
+            }
+        }else{
+            gotoUser();
+        }
+    }
+}
+function gotoHouqin(){
+    if(hasClick == 1){
+        alert('执行中，请勿重复操作！');
+        return false;
+    }
+    if(hasCeshi == 1){
+        if(companyHaoma != ceshiCompanyHaoma){
+            alert('你不能修改你的测试公司代码，必须为“'+ceshiCompanyHaoma+'”');
+            return false;
+        }
+    }
+    hasClick = 1;
+    changeBtn();
+    api.ajax({
+        url: getKehuUrl,
+        method: 'post',
+        data: {
+            values: {
+                kehu_haoma:companyHaoma
+            }
+        }
+    },function(ret, err){
+        hasClick = 0;
+        if(ret){
+            if(ret.has == 0){
+                resetBtn();
+                alert('找不到该公司代码，请重新输入');
+                return false;
+            }else{
+                $api.html($api.byId('loginBtn'), '登陆成功');
+                $api.removeCls($api.byId('loginBtn'), 'aui-btn-info');
+                $api.addCls($api.byId('loginBtn'), 'aui-btn-success');
+
+                var companyId = ret.data.id;
+                $api.setStorage('companyId', companyId);
+                var companyName = ret.data.kehu_name;
+                ipUrl = 'http://'+ret.data.server_ip+'/';
+                serverUrl = 'http://' + ret.data.server_url + '/';
+                $api.setStorage('companySystemIp', ipUrl);
+                $api.setStorage('companySystemUrl', serverUrl);
+                api.openWin({
+                    name: 'configHouqin',
+                    url: '../houqin/index.html',
+                    slidBackEnabled:false,
+                    bounces: false,
+                    pageParam: {
+                        company_haoma: companyHaoma,
+                        company_id:companyId,
+                        company_name:companyName,
+                        loginType:loginType,
+                        shebeiTypeId:shebeiTypeId
+                    },
+                });
+            }
+        } else {
+             resetBtn();
+            api.toast({
+                msg: '网络错误',
+                duration: 2000,
+                location: 'bottom'
+            });
+        }
+    });
+}
+function gotoUser(){
+    if(hasClick == 1){
+        alert('执行中，请勿重复操作！');
+        return false;
+    }
+    if(hasCeshi == 1){
+        if(companyHaoma != ceshiCompanyHaoma){
+            alert('你不能修改你的测试公司代码，必须为“'+ceshiCompanyHaoma+'”');
+            return false;
+        }
+    }
+    if(userTel == ''){
+        alert('你没有输入电话号码');
+        return false;
+    }
+    if(userTel.length != 11){
+        alert('你输入的手机号码不是11位');
+        return false
+    }
+    if(userPassword == ''){
+        alert('你还没有输入密码');
+        return false;
+    }
+    getCompanySystemIp();
+}
+function addTime(){
+    jishiNum ++;
+    //alert(jishiNum)
+    $api.html($api.byId('loginBtn'), '登陆中...('+jishiNum+'秒)');
+    if(jishiNum == 5){
+        jishiNum = 0;
+        hasClick = 0;
+        resetBtn();
+    }
+}
+function changeBtn(){
+    $api.html($api.byId('loginBtn'), '检测中...('+jishiNum+'秒)');
+    jishiObj = setInterval("addTime()",1000);
+    $api.removeCls($api.byId('loginBtn'), 'aui-btn-danger');
+    $api.addCls($api.byId('loginBtn'), 'aui-btn-info');
+}
+function resetBtn(){
+    clearInterval(jishiObj);
+    $api.html($api.byId('loginBtn'), '确认并登陆');
+    $api.removeCls($api.byId('loginBtn'), 'aui-btn-info');
+    $api.addCls($api.byId('loginBtn'), 'aui-btn-danger');
+}
+function getCompanySystemIp(fn){
+    hasClick = 1;
+    changeBtn();
+    api.ajax({
+        url: getKehuUrl,
+        method: 'post',
+        data: {
+            values: {
+                kehu_haoma:companyHaoma
+            }
+        }
+    },function(ret, err){
+        hasClick = 0;
+        if (ret){
+            if(ret.has == 0){
+                resetBtn();
+                alert('找不到该公司代码，请重新输入');
+                return false;
+            }else{
+                ipUrl = 'http://'+ret.data.server_ip+'/';
+                serverUrl = 'http://' + ret.data.server_url + '/';
+                //alert(ipUrl + '-' + serverUrl)
+                $api.setStorage('companySystemIp', ipUrl);
+                $api.setStorage('companySystemUrl', serverUrl);
+                //return false;
+                setTimeout("sendAndCheck()",200)
+            }
+        }else{
+            api.toast({
+                msg: '网络错误'
+            });
+        }
+    });
+}
+function sendAndCheck(){
+    hasClick = 1;
+    appUrl = $api.getStorage('companySystemUrl');
+    api.ajax({
+        url: appUrl+'Get/checkUser',
+        method: 'post',
+        data: {
+            values: {
+                user_tel: userTel,
+                real_password:userPassword,
+                company_haoma:companyHaoma,
+                shebei_id:shebeiId,
+                login_type:loginType
+            }
+        }
+    },function(ret, err){
+        hasClick = 0;
+        if (ret){
+            if(ret.status == '6'){
+                var cacheData = ret.cache_data;
+                var userTypeId = ret.user_type;
+                var userTouxiangName = ret.user_data.user_img_url;
+                if(userTouxiangName == ''){
+                    var userTouxiangUrl = './image/jingli.png';
+                }else{
+                    var userTouxiangUrl = ossTouxiangPath +  userTouxiangName;
+                }
+                $api.setStorage('userTouxiangUrl', userTouxiangUrl);
+                $api.setStorage('shebeiType', '9');
+                $api.setStorage('companyHaoma', companyHaoma);
+                $api.setStorage('userTel', userTel);
+                $api.setStorage('userPassword', ret.user_data.user_password);
+                if(userTypeId == 9){
+                    $api.setStorage('userId', ret.user_data.id);
+                    $api.setStorage('jishiId', ret.user_data.jishi_id);
+                    $api.setStorage('userName', ret.user_data.user_name);
+                    $api.setStorage('jishiType', ret.user_data.jishi_type);
+                    $api.setStorage('jishiPaihao', ret.user_data.jishi_paihao);
+                }else{
+                    $api.setStorage('userId', ret.user_data.id);
+                    $api.setStorage('jishiId', 0);
+                    $api.setStorage('userName', ret.user_data.user_name);
+                }
+                $api.setStorage('shebeiId', shebeiId);
+                setCache(userTypeId,cacheData);
+            }else{
+                resetBtn();
+                api.toast({
+                    msg: ret.msg,
+                    duration: 2000,
+                    location: 'bottom'
+                });
+            }
+        }else{
+            resetBtn();
+            api.toast({
+                msg: '网络错误'
+            });
+        }
+
+    });
+}
+function setCache(userTypeId,cacheData){
+    $api.html($api.byId('loginBtn'), '登陆成功');
+    $api.removeCls($api.byId('loginBtn'), 'aui-btn-info');
+    $api.addCls($api.byId('loginBtn'), 'aui-btn-success');
+
+    var jumpUrl = userTypeJson[userTypeId].typeUrl;
+    var openWinName = jumpUrl + '_win';
+    var openUrl = '../' + jumpUrl + '/index.html';
+    var cacheJishi = JSON.parse(cacheData.cache_jishi);
+    var cacheRoom = JSON.parse(cacheData.cache_room);
+    var cacheService = JSON.parse(cacheData.cache_service);
+    var cacheBanci = JSON.parse(cacheData.cache_banci);
+    var cacheChongzhi = JSON.parse(cacheData.cache_chongzhi);
+    var cacheCompany = JSON.parse(cacheData.cache_company);
+    var cacheMianfei = JSON.parse(cacheData.cache_mianfei);
+    var cacheShoufei = JSON.parse(cacheData.cache_shoufei);
+    var cacheCheckStr = cacheData.cache_check_str;
+    var cachePeitao = JSON.parse(cacheData.cache_peitao);
+    if($api.getStorage('cacheCheckStr') != cacheCheckStr){
+        $api.setStorage('cacheCheckStr', cacheCheckStr);
+        $api.setStorage('cachePeitao', cachePeitao);
+        $api.setStorage('cacheJishi', cacheJishi);
+        $api.setStorage('cacheRoom', cacheRoom);
+        $api.setStorage('cacheService', cacheService);
+        $api.setStorage('cacheBanci', cacheBanci);
+        $api.setStorage('cacheCompany', cacheCompany);
+        $api.setStorage('cacheChongzhi', cacheChongzhi);
+        $api.setStorage('cacheMianfei', cacheMianfei);
+        $api.setStorage('cacheShoufei', cacheShoufei);
+    }
+    $api.setStorage('companyId', cacheCompany.id);
+    $api.setStorage('userType', userTypeId);
+    $api.setStorage('userTypeName', userTypeJson[userTypeId].typeName);
+    $api.setStorage('userTypeUrl', userTypeJson[userTypeId].typeUrl);
+    $api.setStorage('hasLogin', '1');
+    //alert(JSON.stringify(cacheData));
+    alert('登陆成功，系统记录了你的设备并重启配置程序');
+    setTimeout("reboot()",200);
+}
+function reboot(){
+    api.rebootApp();
+}
+function showPassword(){
+    $api.attr($api.byId('password'),'type','text');
+    $api.removeCls($api.byId('showpass-btn'),'aui-icon-attention');
+    $api.addCls($api.byId('showpass-btn'),'aui-icon-attentionfill');
+    $api.attr($api.byId('showpass-btn'),'onclick','hidePassword();');
+    api.parseTapmode();
+}
+function hidePassword(){
+    $api.attr($api.byId('password'),'type','password');
+    $api.removeCls($api.byId('showpass-btn'),'aui-icon-attentionfill');
+    $api.addCls($api.byId('showpass-btn'),'aui-icon-attention');
+    $api.attr($api.byId('showpass-btn'),'onclick','showPassword();');
+    api.parseTapmode();
+}
+apiready = function () {
+    uiMode = api.uiMode;
+    api.parseTapmode();
+    shebeiId = api.deviceId;
+    buildCeshiBox()
+    // $api.val($api.byId('userTel'),'18000000001');
+    // $api.val($api.byId('password'),'123456');
+    // $api.val($api.byId('companyHaoma'),'0200001');
+}
+</script>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>基本信息</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/login.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css"/>
+  <style type="text/css"> 
+  
+  .baseBox{
+    margin-top: 10px;
+  }
+  .baseBox .aui-list li.aui-list-item .aui-list-item-inner{
+        font-size: 13px;
+  }
+  .baseBox .aui-list li.aui-list-item .aui-list-item-inner .rightText{
+    color: #666;
+    min-width: 100px;
+    text-align: right;
+
+  }
+  .aui-list .aui-list-item-inner{
+    min-height: 2.5rem;
+  }
+
+  .aui-list{
+    background-image:none;
+  }
+  .textarea,textarea[readonly]{
+    font-size: 13px;
+    color: #666!important;
+
+  }
+
+ </style>
+</head>
+<body>
+
+  <section class="baseBox" id="baseBox">
+ 
+
+      
+ 
+  </section>
+
+
+ </body>
+</html>
+<script type="text/javascript" src="../../script/api.js"></script>
+<script type="text/javascript" src="../../script/common.js"></script>
+<script type="text/javascript" src="../../script/art/template-web.js"></script>
+
+<script type="text/html" id="baseScript">
+
+         <ul class="aui-list aui-list-in">
+              <li class="aui-list-item">
+                  
+                  <div class="aui-list-item-inner" onclick="updateName()" >
+                      姓名
+                      <span class="aui-pull-right rightText" id="updateName">{{mingcheng}}</span>
+                  </div>
+              </li>
+        </ul>
+
+
+          <ul class="aui-list aui-list-in">
+              <li class="aui-list-item">
+                  
+                  <div class="aui-list-item-inner" onclick="updatePhone()">
+                      手机号码
+                      <span class="aui-pull-right rightText" >{{tel}}</span>
+                  </div>
+              </li>
+          </ul>
+
+
+          <ul class="aui-list aui-list-in">
+           
+              <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        简介
+                    </div>
+                    <div class="aui-list-item-input" onclick="updateJianjie('{{jianjie}}');">
+                        <textarea placeholder="简介为空"  readonly=""   class="textarea"  id="jianjie">{{jianjie}}</textarea>
+                    </div>
+                </div>
+            </li>
+          </ul>
+
+
+
+      <ul class="aui-list aui-list-in" >
+              <li class="aui-list-item">
+                  
+                  <div class="aui-list-item-inner aui-list-item-arrow"  onclick="sheetSex();" >
+                      性别
+                      <span class="aui-pull-right rightText"id="updateSex">{{sex==0 ? '男':'女'}}</span>
+                  </div>
+              </li>
+        </ul>
+
+
+          <ul class="aui-list aui-list-in">
+              <li class="aui-list-item">
+                  
+                  <div class="aui-list-item-inner aui-list-item-arrow" onclick="updateBirthday();" >
+                      生日
+                      <span class="aui-pull-right rightText" >{{birthday}}</span>
+                  </div>
+              </li>
+          </ul>
+
+
+          <ul class="aui-list aui-list-in">
+              <li class="aui-list-item">
+                  
+                  <div class="aui-list-item-inner aui-list-item-arrow" onclick="updateQQ({{qq}})">
+                      QQ
+                      <span class="aui-pull-right rightText" >{{qq}}</span>
+                  </div>
+              </li>
+          </ul>
+
+ 
+    
+
+</script>
+
+<script type="text/javascript">
+    apiready = function(){
+
+
+        loadCommonJs();  
+ 
+        initBaseInfo();
+ 
+  
+    }
+
+    initBaseInfo = function () {
+
+      var user = $api.getStorage('user') || {};
+ 
+      var html = template('baseScript',user);
+
+      $api.dom('#baseBox').innerHTML = html;
+      
+    }
+    updateName = function () {
+      
+    }
+    sheetSex = function () {
+
+        api.actionSheet({
+            title: '选择性别',
+            cancelTitle: '取消',
+            buttons: ['男','女']
+        }, function(ret, err) {
+            if (ret) {
+
+               var index = ret.buttonIndex;
+
+               switch(index){
+                case 1: doUpdate({ sex : 0 });break;
+                case 2: doUpdate({ sex : 1 });break;
+               }
+            } else {
+                // alert(JSON.stringify(err));
+            }
+        });
+    }
+
+
+     updateJianjie = function (text) {
+ 
+      api.prompt({
+          title: '修改简介',  
+          text:text,
+          buttons: ['确定', '取消']
+      }, function(ret, err) {
+          if (ret) {
+
+             var index = ret.buttonIndex;
+
+             if(text===ret.text)return;
+
+
+             switch(index){
+
+              case 1 : doUpdate({ jianjie :  ret.text } );break;
+
+             }
+
+          } else {
+              // alert(JSON.stringify(err));
+          }
+      });
+
+
+      
+     }
+
+     updatePhone = function () {
+       
+     }
+
+
+    updateQQ = function (QQ) {
+
+      api.prompt({
+          title: '输入您要修改的QQ号', 
+          type :'number',
+          text:QQ,
+          buttons: ['确定', '取消']
+      }, function(ret, err) {
+          if (ret) {
+
+             var index = ret.buttonIndex;
+
+             switch(index){
+
+              case 1 : doUpdate({ qq :  ret.text } );break;
+             }
+
+          } else {
+              // alert(JSON.stringify(err));
+          }
+      });
+ 
+    }
+
+    updateBirthday = function () {
+
+      api.openPicker({
+          type: 'date', 
+          title: '选择生日'
+      }, function(ret, err) {
+          if (ret) {
+
+
+              var birthday = ret.year + '-' + ret.month + '-' + ret.day 
+
+              doUpdate({ birthday : birthday});
+
+
+
+          } else {
+              // alert(JSON.stringify(err));
+          }
+      });
+
+    }
+  
+
+   
+    doUpdate = function (params) {
+ 
+          params.jiaoshi_id =$api.getStorage('user').id
+  
+          ajax({
+            aApi : 'Wdxinxi/editJiaoshi',
+            params:params
+          },function (data) {
+
+
+              if(data.code==1){
+
+                toast(data.msg);
+
+                updateUser();
+
+
+              }else{
+
+                toast(data.msg);
+
+              }
+          })
+
+
+
+      
+
+        
+    }
+
+   updateUser  = function () {
+
+      var user = $api.getStorage('user') || {};
+        
+
+      ajax({
+        aApi :　'index/getJiaoshi',
+        params:{
+           jiaoshi_id : $api.getStorage('user').id
+        }
+      },function (data) {
+ 
+          if(data.code==1){
+
+ 
+                $api.setStorage('user',data.data); 
+ 
+
+                api.setPrefs({   key: 'user',   value: data.data   });
+
+                 // toast(data.msg)
+
+
+                 initBaseInfo();
+
+          }else{
+
+            toast(data.msg)
+
+          }
+
+
+
+
+      })
+
+    }
+
+</script>
+ 

@@ -1,0 +1,75 @@
+    
+    {"newfile":[{ 
+        "name": "camera", 
+        "title":"camera",
+        "url" : "widget://res/file/",
+        "icon":"https://www.baidu.com/s?wd=jquery&ie=utf-8&rsv_cq=audio+%E9%A2%9C%E8%89%B2&rsv_dl=0_right_recommends_merge_28335&euri=1020297",
+        "iconclass":  "fa fa-film",
+        "id": 1
+    },
+    { 
+        "name": "html",
+        "title":"html",
+        "url" : "widget://res/file/html.html",
+        "icon":"",
+        "iconclass":  "fa fa-firefox",
+        "id": 2
+    },
+    { 
+        "name": "txt",
+        "title":"txt",
+        "url" : "widget://res/file/txt.txt",
+        "icon":"",
+        "iconclass": "fa fa-file-text",
+        "id": 3
+    },
+    { 
+        "name": "pdf",
+        "title":"pdf",
+        "url" : "widget://res/file/pdf.pdf",
+        "icon":"",
+        "iconclass":  "fa fa-file-pdf-o",
+        "id": 4
+    },
+    { 
+        "name": "word",
+        "title":"word",
+        "url" : "widget://res/file/doc.docx",
+        "icon":"",
+        "iconclass":  "fa fa-file-word-o",
+        "id": 5
+    },
+    { 
+        "name": "excel",
+        "title":"excel",
+        "url" : "widget://res/file/excel.xlsx",
+        "icon":"",
+        "iconclass":  "fa fa-file-excel-o",
+        "id": 6
+    }],
+    "allfile":[{ 
+        "name": "image", 
+        "title":"image",
+        "url" : "widget://res/file/img.jpg",
+        "icon":"",
+        "iconclass":  "fa fa-file-image-o",
+        "id": 1
+    },
+    { 
+        "name": "zip",
+        "title":"zip",
+        "url" : "widget://res/file/",
+        "icon":"",
+        "iconclass":  "fa fa-file-archive-o",
+        "id": 2
+    },
+    { 
+        "name": "audio",
+        "title":"audio",
+        "url" : "widget://res/file/",
+        "icon":"",
+        "iconclass":  "fa fa-file-audio-o",
+        "id": 3
+    }]
+}
+ 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<security> 
+	<!-- 讯飞配置 -->
+	<item name="xunfeiIosAppid" value="5b5eb254"/> 
+	<item name="xunfeiAndroidAppid" value="5b5eb247"/> 
+	<!-- 讯飞配置 end-->
+
+	<!-- 阿里云存储 aliyunOSS 配置 -->
+	<!-- 对象存储的OSSEndpoint -->
+
+	<item name="aliyunOSSEndpoint" value="https://oss-cn-shenzhen.aliyuncs.com"/> 
+
+	<item name="aliyunOSSBucketUrl" value="https://liangcai-product-south.oss-cn-shenzhen.aliyuncs.com"/> 
+
+	<item name="aliyunOSSBucketName" value="liangcai-product-south"/> 
+
+
+	<!-- 对象存储的AccessKeyId -->
+	<item name="aliyunOSSAccessKeyId" value="LTAIDBaFz6vAas1b"/> 
+	<!-- 对象存储的KeySecret -->
+	<item name="aliyunOSSAccessKeySecret" value="yrjg2SKFtLg1pkL6O04g0wnbez6i8u"/> 
+	<!-- Bucket名 -->
+	<!-- 文件夹名 -->  
+
+	<!-- 下载图片时对图片的处理，仅当下载的是图片时生效 -->
+
+	<item name="aliyunOSSDownloadImage" value="image/resize,m_fixed,w_300,h_300"/> 
+
+	<!-- 阿里云存储 aliyunOSS 配置 end-->
+	
+	<!-- 极光推送请在config.xml配置 -->  
+ 
+
+</security>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../css/workMail.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../script/aui/css/aui.css"/> 
+  <style type="text/css"> 
+    
+ </style>
+ </head>
+<body> 
+   
+    <section class="messBox clearfix" id="messBox"  v-cloak>
+  
+      <ul class="messUl clearfix" id="messList" >
+ 
+           <li class="wrapper" v-for='(item,key) in messList'  > 
+
+                 <div class="container clearfix" @click="OpenMail(key,$event)"  ontouchstart="return touchstartF(event,this);" ontouchmove="return touchmoveF(event,this);"> 
+ 
+                              <div class="textBox clearfix">
+                                   <div class="titleText">{{item.title | filterTitle}} <span class="new" v-if='item.has_read==0'>New</span></div>
+                                    <div class="sender" >发件人：{{item.send_mingcheng}}</div>
+                              </div> 
+                                 <div class="fujianRow clamp1" v-if='item.wenjian.length > 0'>
+                                   附件： {{item.wenjian[0].mingcheng}} ...
+                                </div>   
+                                <div class="fujianRow clamp1" v-if='item.wenjian.length==0'>
+                                   附件： 无
+                                </div>
+
+                           <div class="time" style="padding-top:0">
+
+                               {{item.time}}  
+
+                          </div>
+
+                  </div>
+
+                 <div class="delete" >
+
+                     <div class="btnOper rightMore" @click="toMore(key,$event);"> 
+                          <!-- <i class="iconfont icon-shanchu"></i> -->
+
+                          <span>更多</span>
+                      </div>
+ 
+                      <div class="btnOper" @click="toDelete($event,item.id);">
+ 
+                          <!-- <i class="iconfont icon-shanchu"></i> -->
+
+                          <span>删除</span>
+                      </div>
+
+                  </div>
+
+            </li> 
+
+        </ul>
+
+        <div class="dataTip" v-if='noData'>暂无新邮件</div> 
+        <div class="dataTip" v-if='end'>内容全部加载完成</div> 
+        <div class="dataTip" v-if='loadding'>内容加载中</div> 
+  
+    </section>
+
+       
+</body>
+
+<script type="text/javascript" src='../../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../../script/common.js'></script> 
+<script type="text/javascript" src='../../../../script/base/loadmore.js'></script> 
+<script type="text/javascript" src="../../../../script/vue/vue2.js"></script> 
+<script type="text/javascript" src='../../../../script/frame0/workmail.js'></script>
+
+<script type="text/javascript">
+      apiready = function(){
+
+           loadCommonJs()
+  
+           initMess({ 
+               type : 'shoujianxiang',
+               email_type : 0, 
+               delApi : 'Bgyoujian/delEmailRead'
+           }); 
+
+           initRefresh(function () {
+  
+                location.reload(); 
+
+           })
+
+
+      }
+ 
+</script>
+  

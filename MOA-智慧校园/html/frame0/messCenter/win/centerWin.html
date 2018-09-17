@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title> 拼享汇</title>
+    <meta name="description" content="">
+    <meta name="keywords" content=""> 
+    <link rel="stylesheet" type="text/css" href="../../../../css/api.css"/>  
+    <link rel="stylesheet" type="text/css" href="../../../../css/headTab.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../script/aui/css/aui.css"/> 
+ 
+    </head>
+  <body class="clearfix"  >
+
+  <section class="list form-list" id="header"  >
+       <div class="tablist" id="tab">
+          <div class="tabItem active" onclick="tab(0)" tapmode>未读消息</div> 
+          <div class="tabItem" onclick="tab(1)" tapmode>个人消息</div> 
+          <div class="tabItem" onclick="tab(2)" tapmode>系统消息</div> 
+      </div>
+   </section>
+ 
+  
+  </body>
+<script type="text/javascript" src='../../../../script/api.js'></script>   
+<script type="text/javascript" src='../../../../script/common.js'></script>   
+  
+ 
+<script type="text/javascript">
+    
+    var headerH ,footerH  ,indexData    ;
+   
+    apiready = function(){
+
+        loadCommonJs();
+        
+        api.parseTapmode();  
+
+        headerH = api.pageParam.params.headerH
+
+        footerH = api.pageParam.params.footerH 
+
+ 
+        loadFrameGroup();
+
+        
+ 
+  } 
+
+  
+   
+  loadFrameGroup = function () {
+
+       var y = headerH +  $api.dom('#tab').offsetHeight  + 7;
+      
+        api.openFrameGroup({
+            name: 'messcenter',
+            rect: {
+                 x: 0, 
+                 y: y, 
+                 w: api.winWidth,
+                 h: api.winHeight - y  
+            },
+            index : 0,
+            preload:1,
+            scrollEnabled: false,
+            frames: [{
+                name: 'weidu', 
+                url: './weidu.html',
+                pageParam: {
+                    name: 'value'
+                },
+                 bounces:true,
+                 bgColor: '#fff',
+                 hScrollBarEnabled:false, 
+                 allowEdit:true
+
+            } ,{
+                name: 'geren', 
+                url: './geren.html',
+                pageParam: {
+                    name: 'value'
+                },
+                 bounces:true,
+                 bgColor: '#fff',
+                 hScrollBarEnabled:false,
+                 allowEdit:true
+
+            } ,{
+                name: 'xitong', 
+                url: './xitong.html',
+                pageParam: {
+                    name: 'value'
+                },
+                 bounces:false,
+                 bgColor: '#fff',
+                 hScrollBarEnabled:false,
+                 allowEdit:true
+
+            }  ],
+            bgColor:'rgba(0,0,0,0)', 
+        }, function(ret, err) {
+
+            showWeidu(ret.index);
+ 
+            changeClass(ret.index)
+
+             
+
+   
+        });
+  }
+   
+  window.changeClass = function(index){
+
+      var tabs = $api.domAll('#tab .tabItem');
+
+    for(var i = 0 ; i < tabs.length ; i++ ){
+        if(i === index){
+          $api.addCls(tabs[i],'active')
+        }else{
+          $api.removeCls(tabs[i],'active')
+
+        }
+    }
+
+  }
+  tab = function(index){
+
+
+    changeClass(index)
+
+    api.setFrameGroupIndex({
+        name: 'messcenter',
+        index: index,
+        scroll: true
+    });
+
+  }
+  showWeidu  = function(index) {
+    
+    if(index===0){
+
+      api.sendEvent({
+          name: 'noRead',
+          extra: {
+              isWeidu: true,  
+              frameName: 'weidu'
+          }
+      });
+    }else{
+
+     
+
+        api.sendEvent({
+            name: 'noRead',
+            extra: {
+                isWeidu: false,  
+                frameName: 'weidu'
+
+            }
+        });
+
+
+    }
+  }
+ </script>
+ 
+
+ 
+
+
+</html>

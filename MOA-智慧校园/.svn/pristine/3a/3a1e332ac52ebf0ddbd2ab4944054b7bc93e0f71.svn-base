@@ -1,0 +1,109 @@
+.menuBox{
+
+}
+
+
+.border-right:after{
+	content: '';
+	display: block;
+	position: absolute;
+	width: 1px;
+	background-color: #efefef;
+	height: 100%;
+	right: 0;
+	top: 0;
+
+
+}
+.border-left:after{
+	content: '';
+	display: block;
+	position: absolute;
+	width: 1px;
+	height: 100%;
+	background-color: #efefef;
+ 	left: 0;
+	top: 0;
+}
+.border-top:before{
+	content: '';
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	background-color: #efefef;
+	left: 0;
+	top: 0;
+}
+.border-bottom:before{
+	content: '';
+	display: block;
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	background-color: #efefef;
+	left: 0;
+	bottom: 0;
+
+}
+.menuBox{
+	background-color: #fff;
+}
+
+.menuBox .ulMenu{
+	border:1px solid #ddd;
+}
+.menuBox .ulMenu .liItem{
+	 width: 33.3%;
+	 padding-bottom: 20px;
+	 padding-top: 16px;
+	 float: left; 
+	 position: relative;
+	 text-align: center;
+	   
+	 
+}
+
+.menuBox .ulMenu .liItem i{
+	font-size: 30px;
+	line-height: 1; 
+	/*color: #e51c23;*/
+}
+.menuBox .ulMenu .liItem img{
+	width: 30px;
+	height: 30px;
+	margin: auto;
+	display: block;
+	margin-top: 7px;
+	
+}
+.menuBox .ulMenu .liItem .number{
+	 position: absolute; 
+	 right: 15px;
+	 top: 5px; 
+	 border-radius: 50%; 
+	 color: #fff;
+	 font-size: 11px;
+	 background-color: #ff2600;
+	 display: -webkit-flex;
+	 display: -moz-flex;
+	 display: -ms-flex;
+	 display: -o-flex;
+	 display: flex;
+	 min-width: 15px;
+	 min-height: 15px;
+	 align-items: center;
+	 justify-content: center;
+	 line-height: 1;
+	 padding: 1px;
+
+}
+.menuBox .ulMenu .liItem .menuText{
+	text-align: center;
+	font-size: 12px;
+	margin-top: 7px;
+	color: #333;
+	
+}
+
+ 

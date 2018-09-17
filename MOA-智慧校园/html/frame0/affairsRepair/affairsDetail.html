@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css"/>
+   <style type="text/css">
+     .headerTip{
+     	    margin: 0;
+		    padding: 0;
+		    list-style: none;
+		    display: block;
+		    -webkit-box-sizing: border-box;
+		    box-sizing: border-box;
+		    color: #666;
+		    line-height: 1;
+		    padding: 0.4rem;
+		    font-size: 0.6rem;
+     }
+     .headerTip i{
+     	color: #f33;
+     }
+     .aui-list  .aui-form-list  {
+     	font-size: 14px;
+     }
+     .sendBox{
+      padding-bottom: 30px;
+     }
+     .textareaBox{
+     	width: 100%;
+     	height: 200px;
+     	border:1px solid #efefef;
+     	    position: relative;
+     	    margin-bottom: 10px;
+     }
+      .textareaBox  textarea{
+      	    font-size: 14px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;    padding: 0 .5em;
+    box-sizing: border-box;
+    display: block;height: 120px;
+      }
+
+     .textRow{
+     	    padding-left: 0.75rem;
+     	    padding-right: 0.75rem;border-bottom: 1px solid #dddddd;
+     }
+
+     .aui-list .aui-list-item-label, .textRow h3,.aui-list input,.textareaBox textarea{
+
+   				 font-size: 14px;
+
+     }
+     .textRow h3{
+    color: #212121;
+    line-height: 2rem;
+     }
+
+     /*上传附件*/
+
+     .fileBox{
+
+     }
+      .fileBox li{
+        width: 32%;
+
+      	height: 100px;
+        line-height: 70px;
+      	border:1px solid #efefef;
+		    text-align: center;
+        float: left;
+
+      	font-size: 50px;
+        margin-right: 1%;
+
+
+      }
+       .fileBox li i{
+
+
+       }
+      .fileBox li.file{
+      	color: #e51c23;
+
+			  border-radius: 5px;
+        margin-bottom: 5px;
+     }
+      .fileBox li.file .imgBox{
+
+        line-height: 100px;
+        overflow: hidden;
+        height: 0;
+        padding-bottom: 100%;
+        overflow: hidden;
+        position: relative;
+
+     }
+      .fileBox li.file .imgBox .imgclose{
+          position: absolute;
+          right: 0;
+          top: 0;
+          background-color: #efefef;
+          color: #000;
+          font-size: 12px;
+          z-index: 12;
+          height: 20px;
+          line-height: 20px;
+          width: 20px;
+          border-bottom-left-radius: 10px;
+
+     }
+      .fileBox li.file .upimg{
+            width: 100%;
+          position: absolute;
+          transform: translateY(-50%);
+          border:none;
+           position: absolute;
+           left: 0;
+           top: 50%;
+      }
+      .fileBox li.add{
+
+      	color: #999;
+
+     }
+
+
+    .filelist{
+      clear: both;
+      padding: 10px 0;
+    }
+     .filelist p{
+     	line-height: 2;
+     	font-size: 14px;
+     	color: #e51c23;
+     }
+     .pushObject span{
+        font-size: 13px;
+     }
+
+    .shoulizhong{
+          font-size: 12px;
+    width: 100px;
+    }
+    .aui-list-item-input{
+
+    }
+    .aui-list .aui-list-item-label{
+      width: auto;
+      min-width: 4.2rem;
+    }
+    input[readonly]{
+      color: #333!important;
+    }
+  .fz14{
+    text-indent: 0;
+  }
+  </style>
+ </head>
+<body class="clearfix"> 
+
+  <section class="sendBox clearfix" id="baoxiuBox"  >
+ 
+    
+
+</section>
+
+
+</body>
+
+<script type="text/javascript" src='../../../script/api.js'></script>
+<script type="text/javascript" src='../../../script/common.js'></script>
+<script type="text/javascript" src='../../../script/art/template-web.js'></script>
+
+<script type="text/html" id="baoxiuScript">
+
+<ul class="aui-list aui-form-list">
+
+
+           {{if fangjian_mingcheng}}
+
+                    <li class="aui-list-item">
+                        <div class="aui-list-item-inner" >
+                            <div class="aui-list-item-label">
+                                报修位置
+                            </div>
+                            <div class="aui-list-item-input"   >
+                                <div  class="pushObject" >
+
+                                      <span  id="baoxiudizhi">{{fangjian_mingcheng}}</span>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </li>
+
+              {{/if}}
+
+      {{if create_time}}
+
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        提交时间
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" readonly="" value="{{create_time}}"  >
+                    </div>
+                     <div class="aui-pull-right" style="margin-right: 15px;"  >
+                      &nbsp;&nbsp;
+                    </div>
+                </div>
+            </li> 
+
+      {{/if}}
+
+
+        <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        状态
+                    </div>
+                    <div class="aui-list-item-input">
+ 
+                      {{if status == 0}}
+                          <div class="aui-list-item-right aui-text-primary fz14"  >未受理</div>
+
+                          {{else if status==1}}
+
+                          <div class="aui-list-item-right aui-text-danger fz14" v-if='status==1'>受理中</div>
+                          {{else}}
+
+                          <div class="aui-list-item-right aui-text-danger fz14" v-if='status==2'>已完工</div>
+
+                      {{/if}}
+
+                    </div>
+ 
+
+                </div>
+            </li>
+
+      {{if baoxiu_order}}
+
+          <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        报修订单
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" readonly="" value="#{{baoxiu_order}}"  >
+                    </div>
+
+                    <div class="aui-pull-right aui-text-danger aui-margin-r-10 shoulizhong"   ></div>
+
+                </div>
+            </li>
+      {{/if}}
+
+       {{if shouli_time}}
+
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        受理时间
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" readonly="" value="{{shouli_time}}"  >
+                    </div>
+                     <div class="aui-pull-right" style="margin-right: 15px;"  >
+                      &nbsp;&nbsp;
+                    </div>
+                </div>
+            </li> 
+      {{/if}}
+
+        {{if shouli_ren}}
+
+
+            <li class="aui-list-item">
+                <div class="aui-list-item-inner">
+                    <div class="aui-list-item-label">
+                        受理人
+                    </div>
+                    <div class="aui-list-item-input">
+                        <input type="text" readonly="" value="{{shouli_ren}}"  >
+                    </div>
+                     <div class="aui-pull-right" style="margin-right: 15px;"  >
+                      &nbsp;&nbsp;
+                    </div>
+                </div>
+            </li> 
+      {{/if}}
+
+   
+
+
+            <li  class="textRow">
+                <div  >
+                    <h3>报修内容:</h3>
+                    <div class="textareaBox">
+                        <textarea placeholder=""  readonly="">{{baoxiu_neirong}}</textarea>
+                    </div>
+                </div>
+            </li>
+
+           <li  class="textRow">
+
+                <div>
+                    <h3>图片详情</h3>
+
+                    <ul class="fileBox clearfix">
+
+                      {{each picArr pic i}}
+
+                            <li class="file"  >
+                                <div class="imgBox">
+
+
+                                <img src="{{pic}}" class="upimg"  onclick="showBigPic(this)"     >
+
+                                    </div>
+
+                            </li>
+                    {{/each}}
+
+
+                    </ul>
+
+                </div>
+
+
+
+            </li>
+
+        </ul>
+
+</script>
+
+<script type="text/javascript">
+
+      apiready = function(){
+
+
+
+        loadCommonJs();
+
+        loadDetail();
+
+        api.execScript({
+            name: '我要报修',
+            frameName: '我要报修',
+            script: 'closewin();'
+        });
+
+        // addEventAppendBaoxiuDizhi();
+
+
+
+      }
+      
+      loadDetail = function () {
+        
+          var info = api.pageParam.params.info;
+          
+
+          var picArr = info.wenjian_url_str.split(",");
+
+          info.picArr = picArr;
+
+          var html = template('baoxiuScript',info)
+
+          $api.dom('#baoxiuBox').innerHTML = html;
+
+
+      }
+      editBaoxiu = function() {
+         
+            api.openWin({
+              name:'我要报修',
+              url: 'widget://html/common/win.html',
+              title : '我要报修',
+              slidBackEnabled:false,
+              pageParam: {
+                  title: '我要报修',
+                  url:'widget://html/frame0/affairsRepair/sendAffairs.html',
+                  name :'我要报修',
+                  baoxiu:true,
+                  params:{
+                      info  : api.pageParam.params.info,
+                      isEdit : true
+                  }
+              }
+          });
+      }
+    
+
+ 
+
+
+
+</script>

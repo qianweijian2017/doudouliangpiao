@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>底部导航</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" />
+
+  <style media="screen">
+    .winHeader {
+      background-color: #e51c23;
+      font-size: 14px;
+    }
+   #edit{
+      display: none ;
+    }
+   #save,#sendmail{
+      display: none ;
+    }
+    #sendmail{
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <header class="aui-bar aui-bar-nav winHeader theme theme0 "  id="headerBar">
+
+       <a class="aui-pull-left" onclick="closeWin()">
+           <span class="aui-iconfont aui-icon-left"></span>
+       </a>
+
+       <div class="aui-title" id="title"></div>
+
+    <div id="rightBox">
+        <a class="aui-pull-right rightbtn" id="edit" onclick="oper(this,1)">
+             <span class="aui-iconfont aui-icon-edit"></span>
+         </a>
+         <a class="aui-pull-right rightbtn" id="save" onclick="oper(this,0)">
+            <span class="aui-iconfont aui-icon-correct"></span>
+         </a>
+           <a class="aui-pull-right rightbtn" id="sendmail" onclick="oper(this,0)">
+            <span class="sendmail">发送</span>
+         </a>
+     </div>
+
+   </header>
+
+
+
+ </body>
+</html>
+<script type="text/javascript" src='../../script/api.js'></script>
+
+<script  charset="utf-8">
+
+  var header ,headerH ,title,name,url;
+      apiready = function () {
+
+         $api.fixStatusBar($api.dom('#headerBar'))
+
+         headerH = $api.dom('#headerBar').offsetHeight  ;
+
+         innerParams();
+ 
+
+         addEventBack();
+
+
+         openWin();
+
+         checkBtn();
+
+    }
+    addEventBack = function () {
+        api.addEventListener({
+          name: 'keyback'
+      }, function(ret, err) {
+          historyBack();
+      });
+    }
+
+    historyBack = function () {
+       api.historyBack({
+            frameName: api.pageParam.title
+        }, function(ret, err) {
+          
+            if (!ret.status) {
+
+                api.closeWin();
+
+            }
+
+        });
+    }
+
+    
+    closeWin = function () {
+
+      api.setScreenOrientation({  orientation: 'portrait_up' });
+      api.closeWin();
+
+    }
+    checkBtn = function () {
+
+      if(api.pageParam.edit){
+
+       $api.dom('#edit').style.display = 'block';
+
+      }
+
+       if(api.pageParam.save){
+
+          $api.dom('#save').style.display = 'block';
+       
+      }
+       if(api.pageParam.sendmail){
+
+          $api.dom('#sendmail').style.display = 'block';
+
+      }
+
+
+    }
+
+    oper = function ($this,hideindex) {
+
+        $this.style.display = 'none'
+
+         var hideDom = document.querySelectorAll('#rightBox .rightbtn');
+
+         hideDom[hideindex].style.display = 'block'
+
+         if(hideindex==1){ //点击编辑时
+
+           var methods = api.pageParam.methods+'();';
+
+            api.execScript({
+                name: api.winName,
+                frameName: api.pageParam.title,
+                script: methods
+            });
+
+
+         }
+
+
+    }
+
+
+
+
+    reUps  =  function () {
+
+       api.execScript({
+            name: api.winName,
+            frameName: api.pageParam.title ,
+            script: 'reUp();'
+        });
+
+    }
+    changeWinTitle = function (title) {
+
+        $api.dom('#title').innerHTML = title;
+
+
+    }
+    openWin = function(){
+
+
+      api.openFrame({
+          name: api.pageParam.title,
+          url: api.pageParam.url,
+          allowEdit:true,
+
+          rect: {
+              x: 0,
+              y: headerH,
+              w: api.winWidth,
+              h: api.winHeight - headerH
+          },
+          bounces : api.pageParam.nobounces === true ? false : true,
+          pageParam: {
+              params: api.pageParam.params,
+              headerH : headerH
+          }
+      });
+
+
+    }
+    innerParams = function(){
+      $api.dom('#title').innerHTML = api.pageParam.title
+
+
+    }
+
+
+
+
+
+
+</script>

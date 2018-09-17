@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知详情</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../css/schoolAndMail.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css"/> 
+   
+ </head>
+<body class="body"> 
+
+  <div id="messBox">
+
+<!-- 
+  <section class="headerBox clearfix">
+
+        <header class="title aui-pull-left">
+      标题四 H4标题四 H4标题四 H4标题四 H4标题四 H4
+
+        </header>
+
+        <section class="righTime">
+            <p class="rightSend">发布人：冯杰</p>
+            <p class="rightSend">部门：校长室</p>
+            <p class="rightSend">时间：08/15 21:23</p>
+        </section>
+  
+  </section>
+
+
+  <section class="content">
+    <p>
+      内容内容内容内内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容
+    </p>
+  </section> 
+  <section class="file">
+        <ul class="aui-list aui-list-in">
+           
+            <li class="aui-list-item" onclick="downFile()">
+                <div class="aui-list-item-inner"> 
+
+                    <div class="aui-list-item-title" >
+
+                      <i class="iconfont icon-tanhao filecon"  ></i>
+                          <span class="text">
+                          附件：dotdotdotdotdot
+                         </span>
+                    </div>
+                    <div class="aui-list-item-right">
+                        <div class="aui-dot" style="position:relative;top:0; right:0"></div>
+                    </div>
+                </div>
+            </li>
+              
+          </ul>
+
+           <ul class="aui-list aui-list-in aui-margin-t-10">
+           
+             
+              <li class="aui-list-item userOper"  >
+
+
+ 
+                <div class="aui-pull-left comCol rowleft" id="loved" onclick="love(this,true)" style="display: none;">
+
+                   <i class="iconfont icon-love1"  ></i> 
+
+                </div>
+
+                   <div class="aui-pull-left comCol rowleft" id="love" onclick="love(this,false)"> 
+                   <i class="iconfont icon-love"  ></i>
+                </div>
+
+                <div class="aui-pull-left comCol rowright">已阅<span class="aui-text-danger">1231</span> </div>
+            </li>
+          </ul>
+
+
+  </section>
+   -->
+  </div>
+ 
+ 
+</body>
+
+<script type="text/javascript" src='../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../script/common.js'></script> 
+<script type="text/javascript" src='../../../script/frame0/fileoper.js'></script> 
+
+<script type="text/javascript" src='../../../script/art/template-web.js'></script> 
+
+
+<script type="text/html" id="messScript">
+  
+
+  <section class="headerBox clearfix">
+
+        <header class="title aui-pull-left">
+     {{detail.title}}
+
+        </header>
+
+        <section class="righTime">
+            <p class="rightSend">发布人： {{detail.send_mingcheng}}</p>
+            <p class="rightSend">部门：校长室</p>
+            <p class="rightSend">时间：{{detail.time}}</p>
+        </section>
+  
+  </section>
+
+
+  <section class="content">
+    <p>
+         {{detail.neirong}}
+    </p>
+  </section> 
+
+  <section class="file">
+
+       <ul class="aui-list aui-list-in">
+          {{if  detail.wenjian.length > 0}}
+
+          <li class="aui-list-item"  >
+                    <div class="aui-list-item-inner"> 
+
+                        <div class="aui-list-item-title" >
+
+                          <i class="iconfont icon-tanhao filecon"  ></i>
+                              <span class="text">
+                               附件列表
+                             </span>
+                        </div>
+                        <div class="aui-list-item-right">
+                            <div class="aui-dot" style="position:relative;top:0; right:0"></div>
+                        </div>
+                    </div>
+                </li>
+
+            {{each detail.wenjian value index}}
+             
+                  <li class="aui-list-item" onclick="lookArticlefile('{{value.url}}','{{value.houzhui}}')">
+
+                      <div class="aui-list-item-inner"> 
+
+                          <div class="aui-list-item-title" >
+
+                            <i class="iconfont filecon"  ></i>
+                                <span class="text">
+                                  {{value.mingcheng}}.{{value.houzhui}}
+                               </span>
+                          </div>
+                          
+                      </div>
+                  </li>
+
+
+
+              {{/each}}
+
+
+            {{/if}}
+              
+          </ul>
+
+           <ul class="aui-list aui-list-in aui-margin-t-10">
+           
+             
+              <li class="aui-list-item userOper"  >
+
+
+ 
+                <div class="aui-pull-left comCol rowleft" id="loved" onclick="love(this,true)" style="display: none;">
+
+                   <i class="iconfont icon-love1"  ></i> 
+
+                </div>
+
+                   <div class="aui-pull-left comCol rowleft" id="love" onclick="love(this,false)"> 
+                   <i class="iconfont icon-love"  ></i>
+                </div>
+
+                <div class="aui-pull-left comCol rowright">已阅<span class="aui-text-danger">{{readCount}}</span> </div>
+            </li>
+          </ul>
+
+
+  </section>
+  
+</script>
+
+
+<script type="text/javascript">
+      apiready = function(){
+  
+          loadCommonJs()
+
+          showLoading(); 
+  
+          loadMess();
+
+
+  
+      }
+
+      doReaded = function (tongzhi_id) {
+ 
+          ajax({
+            aApi : 'Bgtongzhi/editTongzhiStatus',
+            params :{
+              tongzhi_id : tongzhi_id,
+              jiaoshi_id : $api.getStorage('user').id
+            }
+          },function (data) {
+
+            log(data,true)
+
+
+            hideLoading()
+
+              if(data.code==1){
+
+                      api.sendEvent({
+                          name: 'refreshIndex',
+                          extra: {
+                              valueName1: 'value1', 
+                              valueName2: 'value2'
+                          }
+                      });
+
+                        api.execScript({
+                            name: '学校通知',
+                            frameName: 'liebiao',
+                            script: 'location.reload();'
+                        });
+
+
+                  log('修改通知已读成功')
+
+
+              }else{
+                  log('修改通知已读失败')
+
+                // toast(data.msg)
+              }
+            
+          })
+      }
+
+      loadMess = function () {
+
+          ajax({
+             aApi : 'Bgtongzhi/getTongzhiDetail',
+             params:{
+              tongzhi_id : api.pageParam.params.gonggao_id
+             }
+          },function (data) { 
+ 
+
+            hideLoading()
+
+              if(data.code==1){
+
+               var detail = data.data;
+
+               var wenjian = detail.wenjian;
+
+                for(var i = 0 ; i < wenjian.length ;i ++){
+
+                    wenjian[i].mingcheng =  wenjian[i].mingcheng.split('_v_')[0]
+ 
+                }
+                detail.wenjian = wenjian;
+
+                var renyuan  = detail.renyuan;
+                var readCount  = 1;
+
+                for(var j = 0 ; j < renyuan.length ; j++){
+
+                    if(renyuan[j].has_read==1) ++readCount;
+
+
+                }
+  
+                  var tempData = { 
+                     detail : detail,
+                     readCount : readCount
+
+                  }; 
+                 checkRead(detail);
+
+
+                var html = template('messScript',tempData);
+
+                $api.dom('#messBox').innerHTML = html;
+
+
+
+                }else{
+
+                  toast(data.msg)
+
+                }
+          })
+
+            
+      }
+
+ checkRead = function (detail) {
+
+        var renyuan = detail.renyuan;
+        var user_id = $api.getStorage('user').id;
+
+        for(var i = 0 ; i < renyuan.length ; i++){
+          
+              if(renyuan[i].read_id == user_id){
+                doReaded(detail.id);
+                return;
+              }
+
+        }
+
+
+        
+      }
+
+
+
+      love = function ($this,isLove) {
+
+
+        if(isLove){   
+
+             $api.dom('#love').style.display = 'block'
+             $api.dom('#loved').style.display = 'none'
+        }else{ 
+
+             $api.dom('#love').style.display = 'none'
+             $api.dom('#loved').style.display = 'block'
+
+        }
+
+        var lovetext =  !isLove ? '收藏成功' : '取消收藏';
+
+        toast(lovetext)
+
+ 
+
+
+
+      }
+ 
+       shareArticle = function () {
+      
+    }
+
+  
+</script>
+  
+ 

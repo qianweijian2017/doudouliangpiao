@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>端API</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="../../script/awesome/css/font-awesome.min.css">
+
+    <style media="screen">
+      .menuBox .aui-col-xs-4{
+         border-top: .02rem solid #efefef;
+            border-right: .02rem solid #efefef;
+      }
+      .menuBox .aui-grid-label p:nth-child(2){
+        padding-bottom: .5rem
+
+      }
+
+      .wordHeader{
+        border-bottom: .02rem solid #efefef;
+        text-align: center; 
+        position: relative;
+        height: 100px;
+      }
+      .wordHeader .cbanner{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        z-index: 1;
+      }
+       .wordHeader h1{
+        z-index: 2;
+        position: relative;
+       }
+       #username{
+        padding-top: 10px;
+        padding-left: 10px;
+        color: #36A3F7;
+       }
+        
+       .banjiBox{ 
+
+       }
+       .banjiBox span{
+        padding: 0 5px;
+        background-color: #f33;
+        font-size: 13px;
+        color: #fff;
+        border-radius: 2px;
+       }
+       .fa.fa-graduation-cap{
+       	color: #e51c23;
+       }
+
+    </style>
+</head>
+<body>
+  
+
+  <section class="aui-grid aui-margin-b-15 menuBox" >
+     <div class="aui-row" id="menuBox">
+ 
+ 		<div class="aui-col-xs-4" onclick="openClass(1)">
+            <i class="fa fa-graduation-cap"></i>
+            <div class="aui-grid-label">
+                  一班
+            </div>
+       </div>
+       <div class="aui-col-xs-4">
+            <i class="fa fa-graduation-cap"></i>
+            <div class="aui-grid-label">
+                  二班
+            </div>
+       </div>
+        <div class="aui-col-xs-4">
+            <i class="fa fa-graduation-cap"></i>
+            <div class="aui-grid-label">
+                  二班
+            </div>
+       </div>
+        <div class="aui-col-xs-4">
+            <i class="fa fa-graduation-cap"></i>
+            <div class="aui-grid-label">
+                  二班
+            </div>
+       </div>
+
+
+
+     </div>
+
+  </section>
+
+</body>
+<script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript" src="../../script/common.js" ></script>
+<script type="text/javascript" src="../../script/art/template-web.js" ></script>
+
+ 
+<script type="text/html" id="menuScript">
+
+  
+</script>
+
+
+<script type="text/javascript">
+    apiready = function(){
+
+        loadCommonJs();
+
+        appendUser();
+
+    }
+    appendUser = function () {
+ 
+      
+        // "xiaoqu_id": "1",
+        // "xuenian_id": "2",
+        // "xuenian_mingcheng": "2018学年",
+        // "nianji_id": "49",
+        // "nianji_mingcheng": "初一",
+        // "banji_id_str": "76,77,78",
+        // "banji_mingcheng_str": "01班,02班,03班",
+        // "mingcheng": "邓彬",
+        // "sex": "0",
+        // "jianjie": null,
+        // "zhuangtai": "0",
+        // "juese_cache_str": "1",
+        // "zidingyi_cache_str": "2"
+
+    }
+ 
+    
+        
+  
+</script>
+</html>

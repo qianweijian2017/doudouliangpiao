@@ -1,0 +1,92 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../css/messCenter.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../script/aui/css/aui.css"/> 
+    
+ </head>
+<body> 
+   
+    <section class="messBox" id="messBox" v-cloak>
+
+      
+
+      <ul class="aui-list aui-media-list" id="messList">
+
+
+        <li class="aui-list-item clearfix" v-for='(item,key)  in messList' @click="OpenMail(key)"> 
+
+                <div class="aui-media-list-item-inner">
+                    
+                    <div class="aui-list-item-inner">
+                        <div class="aui-list-item-text">
+                            <div class="aui-list-item-title">{{item.msg_title | filterTitle}} </div>
+                            <div class="aui-list-item-right">{{item.send_mingcheng}}</div>
+                        </div>
+                      <!--   <div class="aui-list-item-text clamp1">
+                            {{item.content | filterContent}}
+                        </div> -->
+                    </div>
+                </div>
+                <div class="aui-danger" style="padding-top:0">
+                    
+                    <div class="aui-danger-item">{{item.send_time}}</div>
+
+                </div>
+            </li>
+ 
+
+
+
+        </ul>
+
+        <div class="dataTip" v-if='noData'>暂无新消息</div> 
+        <div class="dataTip" v-if='end'>内容全部加载完成</div> 
+        <div class="dataTip" v-if='loadding'>内容加载中</div> 
+ 
+    </section>
+
+       
+</body>
+
+<script type="text/javascript" src='../../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../../script/common.js'></script> 
+<script type="text/javascript" src='../../../../script/base/loadmore.js'></script>  
+<script type="text/javascript" src="../../../../script/vue/vue2.js"></script> 
+<script type="text/javascript" src="../../../../script/frame0/messCenter.js"></script>
+
+<script type="text/javascript">
+      apiready = function(){
+
+           loadCommonJs()
+ 
+           initMess({
+              url :'Bgxiaoxi/getMsg',
+              msg_type : 2,
+              type : 'geren'
+           });
+
+           initRefresh(function () {
+ 
+                 vm.clickTab();
+
+           })
+
+
+
+
+      }
+
+    
+  
+</script>
+  
+ 
+
+
+                   

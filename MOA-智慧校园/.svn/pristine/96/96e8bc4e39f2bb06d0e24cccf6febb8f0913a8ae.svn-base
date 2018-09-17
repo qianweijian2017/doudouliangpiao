@@ -1,0 +1,538 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>智慧校园</title>
+    <link rel="stylesheet" type="text/css" href="./css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="./script/aui/css/aui.css" />
+    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+    <style>
+        header{  }
+        header ul li {   line-height: 40px;height: 40px; text-align: center; display: none; color: #fff; position: relative;font-size: 14px;  }
+        header ul li.active{ display: block; }
+        #footer{  background-color: #fff; }
+        #footer ul li{  padding-top: 36px; padding-bottom: 4px;position: relative;background: url() no-repeat center 2px; background-size: auto 30px; text-align: center; }
+        #footer ul li .aui-badge{
+             position: absolute;
+             right: 2rem;
+             left: auto;
+             top: 2px;  
+             color: #fff;
+             font-size: 11px;
+             border-radius: 50%;
+             background-color: #ff2600;
+             display: -webkit-flex;
+             display: -moz-flex;
+             display: -ms-flex;
+             display: -o-flex;
+             display: flex;
+             min-width: 15px;
+             min-height: 15px;
+             align-items: center;
+             justify-content: center;
+             line-height: 1;
+             padding: 2px;
+             padding-top: 2px;
+        }
+        #footer ul li.active{ color:  #e51c23;   }
+        #footer ul li.active p{ color: #e51c23!important; }
+        #footer ul li i{
+          position: absolute;
+          top: 5px;
+          width: 40px;
+          left: 50%;
+          font-weight: 600;
+          margin-left: -20px;
+          font-size: 20px;
+
+         }
+        #footer ul li.active i{
+          display: block; 
+        }
+        #footer ul li:nth-child(1){ }
+        #footer ul li:nth-child(2){ }
+        #footer ul li:nth-child(3){ }
+        #footer ul li:nth-child(4){ }
+
+        .aui-badge{
+            top: 5px;
+            font-size: 0.8rem; 
+        }
+ 
+        /*#footer ul li:nth-child(1){ background-image: url(./image/bottombtn0101.png); }
+        #footer ul li:nth-child(2){ background-image: url(./image/bottombtn0201.png); }
+        #footer ul li:nth-child(3){ background-image: url(./image/bottombtn0301.png); }
+        #footer ul li:nth-child(4){ background-image: url(./image/bottombtn0401.png); }*/
+        /*#footer ul li:nth-child(1).active{ background-image: url(./image/bottombtn0102.png); }
+        #footer ul li:nth-child(2).active{ background-image: url(./image/bottombtn0202.png); }
+        #footer ul li:nth-child(3).active{ background-image: url(./image/bottombtn0302.png); }
+        #footer ul li:nth-child(4).active{ background-image: url(./image/bottombtn0402.png); }*/
+    </style>
+</head>
+<body>
+<div id="wrap" class="flex-wrap flex-vertical">
+    <header id="header" class="theme theme0 themeBg">
+        <ul>
+            <li class="border-b active" >智慧校园-学校办公</li>
+            <li class="border-b" >智慧校园-我的工作</li>
+            <li class="border-b" >智慧校园-个人档案</li>
+        </ul>
+    </header>
+    <div id="main" class="flex-con" style='overflow-y:scroll;'>
+
+    </div>
+    <div id="footer" class="border-t theme theme0">
+        <ul class="flex-wrap" >
+            <li tapmode="hover" onclick="randomSwitchBtn( this , 0);" class="flex-con active" >
+              <div class="aui-badge" id="all_notread_num" style="display: none;"></div>
+                <i class="aui-iconfont aui-icon-home"></i>
+
+                学校办公
+            </li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this , 1);" class="flex-con" >
+
+                 <i class="aui-iconfont aui-icon-pencil"></i>
+                 我的工作
+
+            </li>
+            <li tapmode="hover" onclick="randomSwitchBtn( this , 2);" class="flex-con" >
+
+                 <i class="aui-iconfont aui-icon-my"></i>
+                 我的
+             </li>
+
+        </ul>
+    </div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="script/api.js"></script>
+<script type="text/javascript" src="script/common.js"></script>
+<script type="text/javascript" src='script/demo/ajpush.js'></script>  
+ 
+
+
+<script type="text/javascript">
+
+     
+
+    var index = 0;
+    apiready = function () {
+  
+        loadCommonJs();
+
+         
+           
+
+        addEventUpdate(); 
+
+        initBase();
+
+        addEventCloseAlert();
+
+        addEventIndexBadge();
+
+        addEventRefreshIndex();
+
+        addEventAJPush();
+
+        addEventResume();
+
+        // openAdminWin();
+
+
+        addEventReloadUserData(); 
+ 
+
+ //        var mailArr = {"id":"100","title":"邮件标题1","send_id":"4","send_mingcheng":"范斌","status":"1","chengdu":"1","time":"2018-08-28 18:43:35","read_id":"4","has_read":"1","read_mingcheng":"范斌","wenjian":[{"id":"56","email_id":"100","url":"https://liangcai-product-south.oss-cn-shenzhen.aliyuncs.com/liangcai-product-south/zhihuixiaoyuan/appFile/2018-8-20/b378453c4419c28dc87b7d8573107c11_v_1534745544.jpg","mingcheng":"b378453c4419c28dc87b","houzhui":"jpg","time":"2018-08-28 18:43:35"}]}  
+ // api.openWin({
+ //          name: 'Re:'+ mailArr.title,
+ //          url: 'widget://html/common/win.html',
+ //          delay:150,
+ //          bgColor:'#fff',
+ //          pageParam: {
+ //             title: 'Re:'+ mailArr.title,
+ //             name: 'Re:'+ mailArr.title,
+ //              // url: 'widget://html/demo/index.html',
+ //             url: 'widget://html/frame0/workMail/replyMail.html',
+ //             sendmail:true,
+ //              params : {
+ //                isCaogao : true,
+ //                mail : mailArr
+ //              }
+ //           }
+ //      });
+ //  return;
+ 
+
+        // openDemo(); return;
+    
+
+
+        // addEventPush();return;
+ 
+
+        if(!$api.getStorage('user')){
+            goLogin();
+            return;
+
+        }
+
+
+        funIniGroup();
+
+    }
+
+    openAdminWin = function() {
+        
+       api.openWin({
+            name:'选择职位',
+            url: 'widget://html/common/win.html',
+            title : '选择职位',
+            pageParam: {
+                title: '选择职位',
+                url:'widget://html/template/selectWork.html',
+                name :'选择职位', 
+                params:{ 
+
+                }
+            }
+        });
+    }
+
+    addEventReloadUserData = function () {
+        api.addEventListener({
+            name: 'reloaduser'
+        }, function(ret, err) {
+  
+            if(ret.value){
+
+                  var user = ret.value.user;
+
+                  $api.setStorage('user',user);
+
+                    api.setPrefs({
+                        key: 'user',
+                        value: user
+                    });
+
+            }
+                api.execScript({
+                    name: 'root', 
+                    script: 'funIniGroup();'
+                });
+
+ 
+                api.execScript({
+                    name: 'root', 
+                    frameName:'frame0',
+                    script: 'location.reload();'
+                });
+
+                api.execScript({
+                    name: 'root',
+                    frameName: 'frame1',
+                    script: 'location.reload();'
+                });
+                 api.execScript({
+                    name: 'root',
+                    frameName: 'frame2',
+                    script: 'location.reload();'
+                });
+
+                addEventAJPush();
+  
+
+               
+        });
+    }
+
+ 
+
+    addEventRefreshIndex = function () {
+            
+        api.addEventListener({
+               name: 'refreshIndex'
+           }, function(ret, err) {  
+            
+                    api.execScript({
+                        name: 'root',
+                        frameName: 'frame0',
+                        script: 'refreshLocation();'
+                    });
+               
+           });   
+
+
+    }
+
+    addEventIndexBadge = function () {
+
+        api.addEventListener({
+            name: 'upateBadge'
+        }, function(ret, err) {  
+
+            if($api.getStorage('all_notread_num')){
+
+                   $api.dom('#all_notread_num').style.display ='block'
+
+                    $api.dom('#all_notread_num').innerHTML = $api.getStorage('all_notread_num') || ''
+            }else{
+                
+                $api.dom('#all_notread_num').style.display ='none'
+
+            }
+
+
+            
+        });
+    }
+
+    
+
+    openTimetable = function () {
+
+        api.openWin({
+            name: 'win',
+            url: 'widget://html/common/win.html',
+            delay:100,
+            bgColor:'#fff',
+            pageParam: {
+                title: '今日课程',
+                name: '今日课程',
+                // url: 'widget://html/demo/index.html',
+                url: 'widget://html/frame1/timetable.html',
+             }
+        });
+
+    }
+
+    openAdviser = function () {
+
+        api.openWin({
+            name: 'win',
+            url: 'widget://html/common/win.html',
+            delay:100,
+            bgColor:'#fff',
+            pageParam: {
+                title: 'demo',
+                name: 'demo',
+                // url: 'widget://html/demo/index.html',
+                url: 'widget://html/frame1/adviser.html',
+             }
+        });
+
+    }
+
+    checkAjax = function () {
+
+
+
+    }
+    initBase = function () {
+
+
+
+        $api.fixStatusBar($api.dom('#header'))
+        var footer = $api.byId('footer') ;
+        $api.fixTabBar(footer)
+
+
+    }
+
+     
+
+    addEventCloseAlert = function () {
+
+        var dialogBox = api.require('dialogBox');
+        dialogBox.close({
+            dialogName: 'alert'
+        });
+
+
+    }
+
+    openDemo = function () {
+        // alert(api.deviceId)
+        // return
+
+        api.openWin({
+            name: 'win',
+            url: 'widget://html/common/win.html',
+            delay:100,
+            bgColor:'#fff',
+            pageParam: {
+                title: 'demo',
+                name: 'demo',
+                // url: 'widget://html/demo/index.html',
+                url: 'widget://html/demo/index.html',
+             }
+        });
+
+
+
+
+    }
+
+
+    addEventResume = function () {
+
+         api.setAppIconBadge({   badge: 0  });
+
+        api.addEventListener({
+            name:'resume'
+        }, function(ret, err){     
+
+            api.setAppIconBadge({    badge: 0  });
+            
+
+        });
+    }
+ 
+
+    // 极光推送
+
+     addEventAJPush = function () { 
+ 
+
+      var user = 　$api.getStorage('user') || {};
+ 
+            JPushInit(function () {  
+
+                var bindParmas = {
+                  alias :　user.id,
+                  tags :　user.id
+                };
+         
+             bindAliasAndTags(bindParmas,function (statusCode) {
+                         
+
+                        setListener(function (pushObject) {
+                            // alert(pushObject,true)
+                         
+                            //扩展参数
+                            doSomeThing(pushObject);
+
+                            api.setAppIconBadge({
+                                badge: 1
+                            });
+
+                            
+                        })
+
+
+               
+             });
+  
+             
+
+
+       })
+ 
+ 
+
+    }
+
+    doSomeThing = function (pushObject) {
+
+        var type = pushObject.type;
+        var id = pushObject.id;
+
+        var mail = {
+             id : id
+        }
+
+
+        switch(type){
+            case 'email':openMailDetail(mail);break;
+            case 'tongzhi':openGongGaoDetail(id);break;
+        }
+        
+    }
+
+    
+
+    // 极光推送end
+
+
+ // 静默更新完成事件
+    addEventUpdate = function () {
+        api.addEventListener({
+            name:'smartupdatefinish'
+            }, function(ret, err){
+            api.rebootApp();
+        });
+    }
+
+
+
+    function funIniGroup(){
+ 
+        var eHeaderLis = $api.domAll('header li'),
+            frames = [];
+        for (var i = 0,len = eHeaderLis.length; i < len; i++) {
+                frames.push( {
+                    name: 'frame'+i,
+                    url: './html/mainframe/frame'+i+'.html',
+                    bgColor : 'rgba(0,0,0,.2)',
+                    bounces:true,
+                    pageParam:{
+                        headerH : $api.dom('header').offsetHeight,
+                        footerH : $api.byId('footer').offsetHeight,
+                    }
+                } )
+        }
+        api.openFrameGroup({
+            name: 'group',
+            scrollEnabled: false,
+            rect: {
+                x: 0,
+                y: $api.dom('header').offsetHeight,
+                w: api.winWidth,
+                h: $api.dom('#main').offsetHeight
+            },
+            index: 0,
+            preload:0,
+            frames: frames
+        }, function (ret, err) {
+
+
+        });
+    }
+
+    // 随意切换按钮
+    function randomSwitchBtn( tag , index) {
+
+        if(tag == $api.dom('#footer li.active')) return;
+
+        activeTab(index);
+
+    }
+
+    activeTab = function (index,reload) {
+
+        var eFootLis = $api.domAll('#footer li'),
+            eHeaderLis = $api.domAll('header li');
+
+        for (var i = 0,len = eFootLis.length; i < len; i++) {
+
+                $api.removeCls(eFootLis[i], 'active');
+                $api.removeCls(eHeaderLis[i], 'active');
+
+        }
+
+        $api.addCls( eFootLis[index], 'active');
+        $api.addCls( eHeaderLis[index], 'active');
+
+
+        api.setFrameGroupIndex({
+            name: 'group',
+            index:  index,
+            reload : reload ? reload : false
+        });
+
+    }
+</script>

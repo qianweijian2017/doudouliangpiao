@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title> 拼享汇</title>
+    <meta name="description" content="">
+    <meta name="keywords" content=""> 
+    <link rel="stylesheet" type="text/css" href="../../../../css/api.css"/>  
+    <link rel="stylesheet" type="text/css" href="../../../../css/headTab.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../../script/aui/css/aui.css"/> 
+    <style type="text/css"> 
+    #header{
+      display: none;
+    }
+      
+   </style>
+    </head>
+  <body class="clearfix"  >
+
+  <section class="list form-list" id="header"  >
+       <div class="tablist" id="tab">
+          <div class="tabItem active" onclick="tab(0)" tapmode>收件箱</div> 
+          <div class="tabItem" onclick="tab(1)" tapmode>发件箱</div> 
+          <div class="tabItem" onclick="tab(2)" tapmode>草稿箱</div> 
+      </div>
+   </section>
+ 
+  
+  </body>
+<script type="text/javascript" src='../../../../script/api.js'></script>   
+<script type="text/javascript" src='../../../../script/common.js'></script>   
+   
+<script type="text/javascript">
+    
+    var headerH ,footerH  ,indexData    ;
+
+    var canSend = null;
+   
+    apiready = function(){
+
+        loadCommonJs();
+        
+        api.parseTapmode();  
+
+        headerH = api.pageParam.params.headerH
+
+        footerH = api.pageParam.params.footerH 
+
+        canSend = api.pageParam.params.addmail
+
+
+ 
+        loadFrameGroup();
+
+        
+
+        
+ 
+  } 
+
+  
+   
+  loadFrameGroup = function () {
+
+
+       var frames = [];
+
+        frames.push({
+                name: 'shoujianxiang', 
+                url: './shoujianxiang.html',
+                pageParam: {
+                    name: 'value'
+                },
+                 bounces:true,
+                 bgColor: '#fff',
+                 hScrollBarEnabled:false, 
+                 allowEdit:true
+
+            });
+      
+
+       if(canSend){
+
+            $api.dom('#header').style.display =  'block'
+ 
+            frames.push({
+                name: 'fajianxiang', 
+                url: './fajianxiang.html',
+                pageParam: {
+                    name: 'value'
+                },
+                 bounces:true,
+                 bgColor: '#fff',
+                 hScrollBarEnabled:false,
+                 allowEdit:true
+
+            } ,{
+                name: 'caogaoxiang', 
+                url: './caogaoxiang.html',
+                pageParam: {
+                    name: 'value'
+                },
+                 bounces:false,
+                 bgColor: '#fff',
+                 hScrollBarEnabled:false,
+                 allowEdit:true
+
+            });
+            
+            var y = headerH +  $api.dom('#tab').offsetHeight  + 7;
+ 
+
+       }
+
+          
+
+
+
+        api.openFrameGroup({
+            name: 'workmail',
+            rect: {
+                 x: 0, 
+                 y: y, 
+                 w: api.winWidth,
+                 h: api.winHeight - y  
+            },
+            index : 0,
+            preload:1,
+            scrollEnabled: false,
+            frames:frames,
+            bgColor:'rgba(0,0,0,0)', 
+        }, function(ret, err) {
+ 
+            changeClass(ret.index)
+
+             
+
+   
+        });
+  }
+   
+  window.changeClass = function(index){
+
+      var tabs = $api.domAll('#tab .tabItem');
+
+    for(var i = 0 ; i < tabs.length ; i++ ){
+        if(i === index){
+          $api.addCls(tabs[i],'active')
+        }else{
+          $api.removeCls(tabs[i],'active')
+
+        }
+    }
+
+  }
+  tab = function(index){
+
+    changeClass(index)
+    api.setFrameGroupIndex({
+        name: 'workmail',
+        index: index,
+        scroll: true
+    });
+
+  }
+ </script>
+ 
+
+ 
+
+
+</html>

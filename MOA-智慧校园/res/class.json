@@ -1,0 +1,659 @@
+[
+    [
+        {
+            "x": 1,
+            "y": 1,
+            "duties": "生物",
+            "check": 0,
+            "suoding": 0,
+            "name": "华宜豪",
+            "sex": 0,
+            "editable": "1"
+        },
+       
+        {
+            "x": 0,
+            "y": 1,
+            "duties": "英语",
+            "check": 0,
+            "suoding": 0,
+            "name": "英语",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 0,
+            "y": 2,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "英语",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 0,
+            "y": 3,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "郎晶滢",
+            "sex": 1,
+            "editable": "0"
+        },
+        {
+            "x": 0,
+            "y": 4,
+            "duties": "班长",
+            "check": 0,
+            "suoding": 1,
+            "name": "薛嘉怡",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 0,
+            "y": 5,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "柏佳惠",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 0,
+            "y": 6,
+            "duties": "物理",
+            "check": 0,
+            "suoding": 0,
+            "name": "金榕润",
+            "sex": 0,
+            "editable": "0"
+        },
+        {
+            "x": 0,
+            "y": 7,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "韦清妍",
+            "sex": 1,
+            "editable": "1"
+        }
+    ],
+    [
+        {
+            "x": 1,
+            "y": 0,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "尹忠林",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 0,
+            "y": 0,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "郑欣宜",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 1,
+            "y": 2,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "雷建林",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 1,
+            "y": 3,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "袁佳昊",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 1,
+            "y": 4,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "魏佳怡",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 1,
+            "y": 5,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "花萌",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 1,
+            "y": 6,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "魏萌萌",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 1,
+            "y": 7,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "章春齐",
+            "sex": 1,
+            "editable": "1"
+        }
+    ],
+    [
+        {
+            "x": 2,
+            "y": 0,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "袁清妍",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 2,
+            "y": 1,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "和苒溪",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 2,
+            "y": 2,
+            "duties": "班长",
+            "check": 0,
+            "suoding": 1,
+            "name": "姜佳琪",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 2,
+            "y": 3,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "倪雅晗",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 2,
+            "y": 4,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "韩语晨",
+            "sex": 0,
+            "editable": "0"
+        },
+        {
+            "x": 2,
+            "y": 5,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "孟瑞辰",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 2,
+            "y": 6,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "毕美欣",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 3,
+            "y": 6,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "柳佳玉",
+            "sex": 0,
+            "editable": "1"
+        }
+    ],
+    [
+        {
+            "x": 3,
+            "y": 0,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "殷昊轩",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 3,
+            "y": 1,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "岑东东",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 3,
+            "y": 2,
+            "duties": "班长",
+            "check": 0,
+            "suoding": 1,
+            "name": "许伟洋",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 3,
+            "y": 3,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "鲍晨涛",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 3,
+            "y": 4,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "魏杨",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 3,
+            "y": 5,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "郝欣源",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 2,
+            "y": 7,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "殷明远",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 3,
+            "y": 7,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "尤新建",
+            "sex": 1,
+            "editable": "1"
+        }
+    ],
+    [
+        {
+            "x": 4,
+            "y": 0,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "戚佳怡",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 4,
+            "y": 1,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "严贺祥",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 4,
+            "y": 2,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "康慧嘉",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 4,
+            "y": 3,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "杨欣源",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 4,
+            "y": 4,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "朱伟洋",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 4,
+            "y": 5,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "汤敏",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 4,
+            "y": 6,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "史明远",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 4,
+            "y": 7,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "齐益帆",
+            "sex": 0,
+            "editable": "1"
+        }
+    ],
+    [
+        {
+            "x": 5,
+            "y": 0,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "奚慧嘉",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 5,
+            "y": 1,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "陶翔",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 5,
+            "y": 2,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "陈建政",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 5,
+            "y": 3,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "唐夫子",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 5,
+            "y": 4,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "陈佳昊",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 5,
+            "y": 5,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "卫欣源",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 5,
+            "y": 6,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "柳晶滢",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 5,
+            "y": 7,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "俞涵越",
+            "sex": 0,
+            "editable": "1"
+        }
+    ],
+    [
+        {
+            "x": 6,
+            "y": 0,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "昌泽惠",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 6,
+            "y": 1,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "赵运昊",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 6,
+            "y": 2,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "金添池",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 6,
+            "y": 3,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "许汝鑫",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 6,
+            "y": 4,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "俞萌",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 6,
+            "y": 5,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "尹贺祥",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 6,
+            "y": 6,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "柳天昊",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 6,
+            "y": 7,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "戚润莎",
+            "sex": 0,
+            "editable": "1"
+        }
+    ],
+    [
+        {
+            "x": 7,
+            "y": 0,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "喻凌晶",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 7,
+            "y": 1,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "廉易轩",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 7,
+            "y": 2,
+            "duties": "无",
+            "check": 0,
+            "suoding": 0,
+            "name": "钱紫轩",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 7,
+            "y": 3,
+            "duties": "班长",
+            "check": 0,
+            "suoding": 0,
+            "name": "鲁嘉怡",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 7,
+            "y": 4,
+            "duties": "无",
+            "check": 0,
+            "suoding": 1,
+            "name": "贺嘉乐",
+            "sex": 0,
+            "editable": "1"
+        },
+        {
+            "x": 7,
+            "y": 5,
+            "duties": "劳动代表",
+            "check": 0,
+            "suoding": 1,
+            "name": "邬宜豪",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 7,
+            "y": 6,
+            "duties": "你好",
+            "check": 0,
+            "suoding": 0,
+            "name": "彭尚",
+            "sex": 1,
+            "editable": "1"
+        },
+        {
+            "x": 7,
+            "y": 7,
+            "duties": "测试",
+            "check": 0,
+            "suoding": 1,
+            "name": "朱汝鑫",
+            "sex": 1,
+            "editable": "1"
+        }
+    ]
+]

@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>通知列表</title>
+    <link rel="stylesheet" type="text/css" href="../../../css/api.css"/> 
+    <link rel="stylesheet" type="text/css" href="../../../css/headTab.css"/>  
+    <link rel="stylesheet" type="text/css" href="../../../script/aui/css/aui.css"/> 
+   <style type="text/css">  
+	  
+     /*头部返回end*/
+#tab .aui-active{
+  color: #ff2222;
+  border-color: #e51c23;
+}
+.tablist{
+  height: 40px;
+  line-height: 40px; 
+}
+.tablist .tabItem{ 
+  height: 38px;
+  line-height: 38px;
+  border-bottom: 2px solid transparent;
+  text-align: center;
+  font-size: 13px;
+  margin: 0 20px;
+  color: #333;
+  display: none;
+
+}
+
+.tablist .tabItem.active {
+   
+  height: 38px;
+  line-height: 38px;
+  border-bottom: 2px solid #e51c23; 
+  color: #e51c23;
+ 
+}
+	 
+    
+  </style>
+ </head>
+<body> 
+  <header class="aui-bar aui-bar-nav themeBg" id="userBar">
+        <a class="aui-pull-left aui-btn" onclick="closeContact()">
+            <span class="aui-iconfont aui-icon-close"></span>
+        </a>
+        <div class="aui-title">
+             选择人员
+        </div>
+          <a class="aui-pull-right aui-btn" onclick="confirmContact()"> 
+            <!-- <i class="iconfont icon-team"></i> -->
+            确认
+        </a>
+    </header>
+
+     <section class="list form-list"  id="tab" style="padding: 0">
+       <div class="tablist" >
+          <div class="tabItem active" onclick="tab(0)" id="kezu"  tapmode >按部门科组</div>
+          <div class="tabItem" onclick="tab(1)" id="bumen" tapmode>按部门级组</div>
+          <div class="tabItem" onclick="tab(2)" id="zidingyi" tapmode>自定义分组</div>
+      </div>
+   </section>
+
+ 
+       
+</body>
+
+<script type="text/javascript" src='../../../script/api.js'></script> 
+<script type="text/javascript" src='../../../script/common.js'></script>
+ 
+
+<script type="text/javascript">
+    var   tabH = 0;
+      apiready = function(){
+
+        loadCommonJs(); 
+
+
+        // tabH = api.pageParam.tabH;
+
+        tabH = $api.dom('#tab').offsetHeight +  $api.dom('#userBar').offsetHeight   ;
+
+
+        loadRenYuanInfo(function () {
+
+             openSelect();
+          
+        })
+
+  
+
+      }
+
+      loadRenYuanInfo = function (callback) {
+
+        var currentTime = Date.parse(new Date())/1000;
+
+        var contact =  $api.getStorage('contact') || {};
+
+         
+               
+        if(contact.guoqi && currentTime < contact.guoqi + 120 ){
+ 
+            callback($api.getStorage('contact'));
+
+            return;
+ 
+        }
+
+        showProgress('正获取人员数据');
+
+        ajax({
+           aApi : 'Bgtongzhi/getCacheRenyuan',
+           params:{
+             xiaoqu_id : $api.getStorage('user').xiaoqu_id
+           } 
+        },function (data) {
+
+          hideProgress();
+          log('重新加载') 
+
+
+          if(data.code==1){
+
+
+                var contact = data.data;
+
+                contact.guoqi = currentTime;
+
+                $api.setStorage('contact',contact);
+   
+                callback(contact);
+
+  
+
+          }else{
+
+            toast(data.msg)
+
+          }
+        })
+
+
+
+        
+      }
+
+      closeContact = function () {
+
+              api.sendEvent({
+                    name: 'closecover'  
+                });
+ 
+ 
+            api.closeFrameGroup({
+                 name: 'selectcontact'
+             });
+
+             api.closeFrame();
+
+      }
+      saveMessage = function () {
+        alert(api.frameName)
+      }
+      confirmContact = function () {
+
+  
+          api.execScript({
+            name: api.pageParam.winName,
+            frameName: api.pageParam.winName,
+            script: 'updateName();'
+        });
+        
+        closeContact();
+      }
+
+
+
+
+
+
+      openSelect = function () {
+
+        var frames = [];
+ 
+
+        if(checkMenu(14)){
+ 
+            frames.push({
+                name: 'kezu', 
+                url: './kezu.html',
+                pageParam: {
+                    contactHeight: api.pageParam.contactHeight
+                }
+              })
+
+            $api.dom('#kezu').style.display ='block'
+
+
+        }
+         if(checkMenu(15)){
+
+           frames.push({ 
+                name: 'bumen', 
+                url: './bumen.html',
+                pageParam: {
+                    contactHeight: api.pageParam.contactHeight
+                }
+            })
+            $api.dom('#bumen').style.display ='block'
+
+
+        }
+         if(checkMenu(16)){
+
+          frames.push({ 
+                name: 'zidingyi', 
+                url: './zidingyi.html',
+                pageParam: {
+                    contactHeight: api.pageParam.contactHeight
+                }
+            }) 
+            $api.dom('#zidingyi').style.display ='block'
+          
+        }
+
+       
+           
+  
+
+        api.openFrameGroup({
+            name: 'selectcontact',
+            rect: {
+                 x: 0, 
+                 y: api.winHeight - api.pageParam.contactHeight + tabH - api.safeArea.bottom , 
+                 w: api.winWidth,
+                 h: api.pageParam.contactHeight - tabH  + api.safeArea.bottom
+            },
+            bgColor:'#fff',
+            preload:0,
+            scrollEnabled: true,
+            frames: frames
+        }, function(ret, err) {
+            if (ret) {
+
+               tab(ret.index);
+
+
+            } else {
+                // alert(JSON.stringify(err));
+            }
+        });
+       
+      }
+
+      window.changeClass = function(index){
+
+         var tabs = $api.domAll('#tab .tabItem');
+
+          for(var i = 0 ; i < tabs.length ; i++ ){
+              if(i === index){
+                $api.addCls(tabs[i],'active')
+              }else{
+                $api.removeCls(tabs[i],'active')
+
+              }
+          }
+
+      }
+      tab = function(index){
+  
+
+          changeClass(index)
+
+          api.setFrameGroupIndex({
+              name: 'selectcontact',
+              index: index,
+              scroll: true
+          });
+
+      }
+
+    
+  
+</script>
+  
+ 

@@ -1,0 +1,153 @@
+[   
+    { 
+        "name": "我的课表", 
+        "title":"我的课表",
+        "url" : "widget://html/frame1/timetable.html",
+        "icon":"../../icon/frame1/mykebiao.png",
+        "iconclass":"icon-kebiao-shi",
+        "menuid": 1,
+        "badge" :88
+    },
+    { 
+        "name": "我的班级",
+        "title":"我的班级",
+        "url" : "widget://html/frame1/classlist.html",
+        "icon":"../../icon/frame1/myclass.png", 
+        "iconclass":"icon-team",
+        "menuid": 2,
+        "badge" :88
+    },
+    { 
+        "name": "岗位安排",
+        "title":"岗位安排",
+        "url" : "widget://html/frame1/gangwei.html",
+        "icon":"../../icon/frame1/gangwei.png",
+        "iconclass":"icon-bumen",
+        "menuid": 3,
+        "badge" :88
+    },
+    { 
+        "name": "我的年级",
+        "title":"我的年级",
+        "url" : "widget://html/frame1/nianji.html",
+        "icon":"../../icon/frame1/nianji.png",
+        "iconclass":"icon-nianji",
+        "menuid": 4 
+    },
+    { 
+        "name": "我的科组",
+        "title":"我的科组",
+        "url" : "widget://html/frame1/mykebiao.html",
+        "icon":"../../icon/frame1/mykebiao.png",
+        "iconclass":"icon-kebiao",
+        "menuid": 5 
+    },
+    { 
+        "name": "我的文件",
+        "title":"我的文件",
+        "url" : "widget://html/frame1/myfile.html",
+        "icon":"../../icon/frame0/file.png",
+        "iconclass":"icon-wodewenjianjia",
+        "menuid": 6 
+    },
+    { 
+        "name": "教育应用",
+        "title":"教育应用",
+        "url" : "widget://html/frame1/jiaoyu.html",
+        "icon":"../../icon/frame1/jiaoyu.png",
+        "iconclass":"icon-5109",
+        "menuid":7 
+    },
+    { 
+        "name": "教务管理",
+        "title":"教务管理",
+        "url" : "widget://html/frame1/jiaowu.html",
+        "icon":"../../icon/frame1/jiaowu.png",
+        "iconclass":"icon-jiaowuguanli",
+        "menuid":8 
+    },
+    { 
+        "name": "德育管理",
+        "title":"德育管理",
+        "url" : "widget://html/frame1/deyu.html",
+        "icon":"../../icon/frame1/deyu.png",
+        "iconclass":"icon-zhineng-deyuguanli",
+        "menuid":9 
+    },
+    { 
+        "name": "总务管理",
+        "title":"总务管理",
+        "url" : "widget://html/frame1/zongwu.html",
+        "icon":"../../icon/frame1/zongwu.png",
+        "iconclass":"icon-zongwuguanli",
+        "menuid":10 
+    },
+    { 
+        "name": "人事管理",
+        "title":"人事管理",
+        "url" : "widget://html/frame1/renshi.html",
+        "icon":"../../icon/frame1/renshi.png",
+        "iconclass":"icon-renshiguanli",
+        "menuid":11 
+    },
+    { 
+        "name": "系统管理",
+        "title":"系统管理",
+        "url" : "widget://html/frame1/xitong.html",
+        "icon":"../../icon/frame1/xitong.png",
+        "iconclass":"icon-xitongguanli",
+        "menuid":12 
+    },
+    { 
+        "name": "学校通知",
+        "title":"学校通知",
+        "url" : "widget://html/frame0/messageWin.html",
+        "icon":"../../icon/frame1/xitong.png",
+        "iconclass":"icon-xitongguanli",
+        "menuid":13
+    },
+    { 
+        "name": "按部门科组",
+        "title":"按部门科组",
+        "url" : "widget://html/frame0/messageWin.html",
+        "icon":"../../icon/frame1/xitong.png",
+        "iconclass":"icon-xitongguanli",
+        "menuid":14
+    },
+    { 
+        "name": "按部门级组",
+        "title":"按部门级组",
+        "url" : "widget://html/frame0/messageWin.html",
+        "icon":"../../icon/frame1/xitong.png",
+        "iconclass":"icon-xitongguanli",
+        "menuid":15
+    },
+    { 
+        "name": "自定义分组",
+        "title":"自定义分组",
+        "url" : "widget://html/frame0/messageWin.html",
+        "icon":"../../icon/frame1/xitong.png",
+        "iconclass":"icon-xitongguanli",
+        "menuid":16
+    } ,
+    { 
+        "name": "办公邮件允许发邮件",
+        "title":"办公邮件允许发邮件",
+        "url" : "widget://html/frame0/messageWin.html",
+        "icon":"../../icon/frame1/xitong.png",
+        "iconclass":"icon-xitongguanli",
+        "menuid":17
+    }  ,
+    { 
+        "name": "消息中心",
+        "title":"消息中心",
+        "url" : "widget://html/frame0/messageWin.html",
+        "icon":"../../icon/frame1/xitong.png",
+        "iconclass":"icon-xitongguanli",
+        "menuid":18
+    } 
+
+
+
+]
+

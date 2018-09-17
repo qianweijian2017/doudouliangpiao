@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/>
+    <title>开发</title>
+    <link rel="stylesheet" type="text/css" href="../../css/api.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="../../script/aui/css/aui.css" />
+
+
+    <style>
+    header:active,header:hover{
+      background-color: #efefef;
+    }
+    .header{
+      background-color: #fff;
+    }
+    .header .headPic{
+      display: block;
+      margin: auto;
+      margin-top: 3rem;
+      border-radius: 50%;
+      border:1px solid #efefef;
+    }
+    .header .username{
+        text-align: center;
+        padding-bottom: 1rem;
+        padding-top: .5rem;
+        color: #333;
+        font-size: 15px;
+
+    }
+    .header:active,.header:hover,.header:focus{
+      background-color: #fff;
+    }
+    .settingRow{
+
+    }
+    .settingRow i.iconfont{
+      /*color: #e51c23;*/
+      font-size: 20px;
+    }
+
+    </style>
+</head>
+<body>
+  <!-- <header class="header" tapmode="hover">
+
+      <ul class="aui-list aui-media-list ">
+
+            <li class="aui-list-item aui-list-item-middle">
+                <div class="aui-media-list-item-inner">
+                    <div class="aui-list-item-media" style="width: 3rem;">
+                        <img src="http://www.auicss.com/aui2.0/image/liulangnan.png" class="aui-img-round">
+                    </div>
+                    <div class="aui-list-item-inner">
+                       <h3  id="username">智慧君</h3>
+                        
+                        <h6 id="xuenian_mingcheng">年度</h6>
+
+                    </div>
+
+                </div>
+                     
+
+            </li>
+       </ul>
+ </header> -->
+
+ <header class="header">
+    <div class="headPic" style="width: 3rem;" onclick="UpdateHeadPic()">
+        <img src="" id="touxiang_url" class="aui-img-round" onerror="this.src='../../icon/common/touxiang.png'">
+    </div>
+    <div class="username" id="username"></div>
+
+ </header>
+
+ <section class="settingRow">
+
+   <div class="aui-content aui-margin-t-15">
+ 
+
+        <ul class="aui-list aui-list-in  aui-margin-b-5">
+
+            <li class="aui-list-item" onclick="openPersonal()">
+                <div class="aui-list-item-label-icon">
+                    <i class="iconfont icon-mingpian" style="font-size: 14px;"></i>
+                </div>
+                <div class="aui-list-item-inner aui-list-item-arrow">
+                    个人信息
+                </div>
+            </li> 
+
+          </ul>
+
+    <!--       <ul class="aui-list aui-list-in aui-margin-b-5">
+              <li class="aui-list-item" onclick="openJiaoyu();">
+                  <div class="aui-list-item-label-icon">
+                      <i class="iconfont icon-dangan"></i>
+                  </div>
+                  <div class="aui-list-item-inner aui-list-item-arrow">
+                      教育档案
+                        <div class="aui-list-item-right">
+                          <div class="aui-badge" style="position:relative;top:0; left:0">88</div>
+                        </div>
+
+                    </div>
+                  </div>
+              </li>
+          </ul> -->
+          
+        <!--    <ul class="aui-list aui-list-in aui-margin-b-5">
+              <li class="aui-list-item" onclick="openFazhan()">
+                  <div class="aui-list-item-label-icon">
+                      <i class="iconfont icon-bumen"></i>
+                  </div>
+                  <div class="aui-list-item-inner aui-list-item-arrow">
+                      专业发展档案
+
+                       <div class="aui-list-item-right">
+                         <div class="aui-badge" style="position:relative;top:0; left:0">88</div>
+                       </div>
+                  </div>
+              </li>
+          </ul> -->
+
+
+          <!--  <ul class="aui-list aui-list-in aui-margin-b-5">
+              <li class="aui-list-item" onclick="openGongzi()">
+                  <div class="aui-list-item-label-icon">
+                      <i class="iconfont icon-jixiao"></i>
+                  </div>
+                  <div class="aui-list-item-inner aui-list-item-arrow">
+                      工资绩效
+                      <div class="aui-list-item-right">
+                        <div class="aui-dot" style="position:relative;top:0; right:0"></div>
+                     </div>
+                  </div>
+              </li>
+          </ul> -->
+           
+           <ul class="aui-list aui-list-in aui-margin-b-5">
+              <li class="aui-list-item" onclick="openXitong()">
+                  <div class="aui-list-item-label-icon">
+                      <i class="iconfont icon-setting"></i>
+                  </div>
+                  <div class="aui-list-item-inner aui-list-item-arrow">
+                      系统设置
+                  </div>
+              </li>
+          </ul>
+         <!--  <ul class="aui-list aui-list-in aui-margin-b-5" onclick="exit()">
+              <li class="aui-list-item">
+                  <div class="aui-list-item-label-icon">
+                      <i class="iconfont icon-tuichu"></i>
+                  </div>
+                  <div class="aui-list-item-inner aui-list-item-arrow">
+                      退出
+                  </div>
+              </li>
+          </ul> -->
+
+
+    </div>
+
+ </section>
+
+</body>
+</html>
+
+<script type="text/javascript" src="../../script/api.js" ></script>
+<script type="text/javascript" src="../../script/common.js" ></script>
+
+<script type="text/javascript" src="../../script/demo/alioss.js" ></script>
+<script type="text/javascript" src="../../script/frame0/fileoper.js" ></script>
+
+<script type="text/javascript" src="../../script/base/updateHeadPic.js" ></script>
+
+<script type="text/javascript">
+    apiready = function(){
+      loadCommonJs();
+
+      initAliOss();
+
+      initUserInfo();
+
+
+       initUpdateHeadPic(function () {
+
+           appendUser(); 
+        
+      });
+
+      initRefresh(function () { 
+
+
+         initUserInfo();
+ 
+
+      })
+
+   
+    }
+
+    initUserInfo= function () {
+ 
+      if(!$api.getStorage('user')){
+
+            goLogin();
+
+      }else{
+
+          updateUser();
+
+
+      }
+    }
+ 
+    updateUser = function () {
+ 
+      ajax({
+        aApi :　'index/getJiaoshi',
+        params:{
+           jiaoshi_id : $api.getStorage('user').id
+        }
+      },function (data) {
+
+        hideRefresh();
+ 
+          // if(data.err)
+          if(data.code == 1){
+
+                $api.setStorage('user',data.data); 
+
+                api.setPrefs({   key: 'user',   value : data.data   });
+
+
+                toast(data.msg)
+
+
+                appendUser();
+
+
+          }else{
+            
+            toast(data.msg)
+
+          }
+ 
+
+
+
+      })
+
+
+    
+
+
+    }
+
+
+
+
+    appendUser = function () {
+
+        var user = $api.getStorage('user') || {} ;
+       
+
+        $api.dom('#username').innerHTML = user.mingcheng;
+
+ 
+        $api.dom('#touxiang_url').src = user.touxiang_url  ;
+
+        // $api.dom('#xuenian_mingcheng').innerHTML = user.xuenian_mingcheng;
+        
+    }
+
+    openPersonal = function () {
+
+      api.openWin({
+          name: '个人信息',
+          url: 'widget://html/common/win.html',
+          pageParam: {
+              name: '个人信息',
+              title: '个人信息',
+              url : 'widget://html/frame2/personal.html' 
+          }
+      });
+      
+    }
+    //教育档案
+   openJiaoyu = function () {
+
+      api.openWin({
+          name: '教育档案',
+          url: 'widget://html/common/win.html',
+          pageParam: {
+              name: '教育档案',
+              title: '教育档案',
+              url : 'widget://html/frame2/jiaoyudangan.html' 
+          }
+      });
+      
+    }
+
+     //专业发展档案
+   openFazhan = function () {
+
+      api.openWin({
+          name: '专业发展档案',
+          url: 'widget://html/common/win.html',
+          pageParam: {
+              name: '专业发展档案',
+              title: '专业发展档案',
+              url : 'widget://html/frame2/fazhandangan.html' 
+          }
+      });
+      
+    }
+
+     //工资绩效
+   openGongzi = function () {
+
+      api.openWin({
+          name: '工资绩效',
+          url: 'widget://html/common/win.html',
+          pageParam: {
+              name: '工资绩效',
+              title: '工资绩效',
+              url : 'widget://html/frame2/gonzixiaoji.html' 
+          }
+      });
+      
+    }
+      //系统设置
+   openXitong = function () {
+
+      api.openWin({
+          name: '系统设置',
+          url: 'widget://html/common/win.html',
+          pageParam: {
+              name: '系统设置',
+              title: '系统设置',
+              url : 'widget://html/frame2/xitongSetting.html' 
+          }
+      });
+      
+    }
+
+
+
+
+
+
+
+
+
+
+        
+    
+</script>

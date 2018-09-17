@@ -1,0 +1,86 @@
+   
+      #contactBox{
+
+        background-color: #999;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        left: 0;
+        right: 0;
+
+      }
+     .contactBox .leftBar{
+         width: 45vw;
+         overflow-y: scroll;
+         left: 0;
+         top: 0; 
+         bottom: 0; 
+      background-color: #f7f7f7;
+
+     }
+     .contactBox .leftBar:after{
+
+     }
+	   .contactBox .rightBar{
+         width: 55vw;
+         overflow-y: scroll;
+         right: 0; 
+         bottom: 0;
+         top: 0; 
+         background-color: #fff;
+     }
+     .colRowBox{
+      position: absolute;
+      height: 100%;
+
+      background-color: #fff;
+
+     }
+     .colRowBox .ulList{
+      max-width: 100%;
+      
+     }
+      .colRowBox .ulList li{
+          height: 35px;
+          line-height: 35px; 
+          width: 100%;
+ 
+          float: left;
+          clear: both; 
+          text-indent: 15px;
+          font-size: 13px;
+          background-color: #efefef;
+
+
+      }
+      .leftBar.colRowBox .ulList li.active{
+          background: #fff!important;
+         color: #333;
+         
+      }
+       
+      .rightBar.colRowBox .ulList li.active, .rightBar.colRowBox .ulList li.activeTitle{
+        background: #fff!important;
+         color: #e51c23;
+        
+      }
+       .rightBar.colRowBox .ulList li i{
+         display: none;
+         color: #e51c23;
+         
+       }
+        .rightBar.colRowBox .ulList li.active i, .rightBar.colRowBox .ulList li.activeTitle i{
+           color: #e51c23;
+             display: inline-block;
+        
+       }
+        
+       .colRowBox  .noContact{
+        text-align: center;
+        
+        display: block;
+        
+        width: 100%;
+        margin-top: 30px;
+
+      }
